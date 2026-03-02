@@ -1,0 +1,9 @@
+<div class="search-bar">
+  <form class="d-flex" action="{url path="/search"}">
+    <label for="q" class="sr-only">{intl l="Search a product" d="hooksearch.fo.default"}</label>
+    <input class="form-control" type="search" name="q" id="q" placeholder="{intl l="Search for products" d="hooksearch.fo.default"}" autocomplete="off" required pattern=".{ldelim}2,{rdelim}" title="{intl l="Minimum 2 characters." d="hooksearch.fo.default"}">
+    <button class="btn btn-outline-gray-400 text-muted" type="submit">
+      <i class="bi bi-search"></i>
+    </button>
+  </form>
+</div>

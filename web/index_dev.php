@@ -26,8 +26,16 @@ $trustedIp = array(
   '127.0.0.1',
 );
 
+
+
+
+
 $request = Request::createFromGlobals();
 $thelia = new Thelia("dev", true);
+
+
+    $response = $thelia->handle($request)->prepare($request)->send();
+    $thelia->terminate($request, $response);/* 
 
 if (false === in_array($request->getClientIp(), $trustedIp)) {
     $response = Response::create('Forbidden', 403)->send();
@@ -36,3 +44,4 @@ if (false === in_array($request->getClientIp(), $trustedIp)) {
     $response = $thelia->handle($request)->prepare($request)->send();
     $thelia->terminate($request, $response);
 }
+ */

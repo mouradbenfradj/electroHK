@@ -1,0 +1,56 @@
+{ifloop rel="carousel.front"}
+<section class="mt-8">
+    <div class="container">
+    <div class="hero-slider">
+        <div class="swiper-container swiper slide" id="swiper-1" data-pagination-type="" data-speed="400"
+            data-space-between="100" data-pagination="true" data-navigation="false" data-autoplay="true"
+            data-autoplay-delay="3000" data-effect="fade"
+            data-breakpoints='{literal}{"480": {"slidesPerView": 1}, "768": {"slidesPerView": 1}, "1024": {"slidesPerView": 1}}{/literal}'>
+            <div class="swiper-wrapper pb-8">
+                {loop type="carousel" name="carousel.front" resize_mode="borders"}
+                <div class="swiper-slide"
+                    style="background: url({$IMAGE_URL}) no-repeat; background-size: cover; border-radius: 0.5rem; background-position: center">
+                    <div class="lg:py-32 p-12 lg:pl-12 xl:w-2/5 md:w-3/5">
+                        {if $CHAPO}
+                        <span
+                            class="inline-block p-2 text-sm align-baseline leading-none rounded-lg bg-yellow-500 text-gray-900 font-semibold">{$CHAPO}</span>
+                        {/if}
+                        <div class="my-7 flex flex-col gap-2">
+                            {if $TITLE}
+                            <h1 class="text-gray-900 text-xl lg:text-5xl font-bold leading-tight">{$TITLE}</h1>
+                            {/if}
+                            {if $DESCRIPTION}
+                            <p class="text-md font-light">{$DESCRIPTION nofilter}</p>
+                            {/if}
+                        </div>
+                        {if $URL}
+                        <a href="{$URL}"
+                            class="btn inline-flex items-center gap-x-2 bg-gray-800 text-white border-gray-800 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-gray-900 hover:border-gray-900 active:bg-gray-900 active:border-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300">
+                            {intl l="Shop Now" d="fo.electro"}
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-arrow-right inline-block" width="14"
+                                height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M5 12l14 0" />
+                                <path d="M13 18l6 -6" />
+                                <path d="M13 6l6 6" />
+                            </svg>
+                        </a>
+                        {/if}
+                    </div>
+                </div>
+                {/loop}
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination !bottom-14"></div>
+            <!-- Add Navigation -->
+            <div class="swiper-navigation">
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+{/ifloop}
