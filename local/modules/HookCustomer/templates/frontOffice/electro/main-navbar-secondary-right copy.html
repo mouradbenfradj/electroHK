@@ -1,0 +1,30 @@
+{loop type="auth" name="customer_info_block" role="CUSTOMER"}
+<div class="dropdown">
+    <a href="#" class="text-gray-600 dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="22" height="22"
+            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+        </svg>
+    </a>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{url path="/account"}">{intl l="My Account" d="hookcustomer.fo.default"}</a></li>
+        <li><a class="dropdown-item" href="{url path="/logout"}">{intl l="Log out!" d="hookcustomer.fo.default"}</a></li>
+    </ul>
+</div>
+{/loop}
+{elseloop rel="customer_info_block"}
+<div>
+    <a href="#!" class="text-gray-600" data-bs-toggle="modal" data-bs-target="#userModal">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="22" height="22"
+            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+        </svg>
+    </a>
+</div>
+{/elseloop}

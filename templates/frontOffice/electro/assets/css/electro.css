@@ -1,0 +1,371 @@
+/* Electro Theme - Main Styles */
+
+/* ===== Base Styles ===== */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --body-bg: #ffffff;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: var(--body-bg);
+}
+
+/* ===== Header Styles ===== */
+.header-container {
+    background: var(--light-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-secondary {
+    background: var(--light-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.5rem 0;
+}
+
+.navbar-nav .nav-link {
+    color: var(--dark-color);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.navbar-nav .dropdown-menu {
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Hero Slider ===== */
+.hero-slider {
+    margin-bottom: 2rem;
+}
+
+.hero-slider .swiper-slide {
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-slider .badge {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+}
+
+/* ===== Category Section ===== */
+.category-slider .item {
+    padding: 0 0.5rem;
+}
+
+.category-slider .card {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.category-slider .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.category-slider .card-body {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+/* ===== Product Cards ===== */
+.card-product {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card-product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.card-product .card-body {
+    padding: 1.5rem;
+}
+
+.card-product .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.card-product-action {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card-product:hover .card-product-action {
+    opacity: 1;
+}
+
+.card-product-action .btn-action {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--light-color);
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    color: var(--dark-color);
+    font-size: 0.875rem;
+    margin: 0 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.card-product-action .btn-action:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* ===== Banner Section ===== */
+.banner-section {
+    padding: 3rem 0;
+    background: var(--light-color);
+}
+
+.banner-section .rounded {
+    border-radius: 0.5rem;
+    background-size: cover;
+    background-position: center;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Features Section ===== */
+.features-section {
+    padding: 4rem 0;
+    background: var(--light-color);
+}
+
+.feature-icon {
+    width: 4rem;
+    height: 4rem;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+/* ===== Testimonials Section ===== */
+.testimonials-section {
+    padding: 4rem 0;
+    background: var(--light-color);
+}
+
+.testimonial-card {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.rating {
+    color: var(--warning-color);
+    margin-bottom: 1rem;
+}
+
+/* ===== Newsletter Section ===== */
+.newsletter-section {
+    padding: 4rem 0;
+    background: var(--light-color);
+}
+
+.newsletter-section .form-control {
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+}
+
+.btn-subscribe {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-subscribe:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* ===== Footer ===== */
+.footer-container {
+    background: var(--dark-color);
+    color: white;
+    padding: 3rem 0 0;
+}
+
+.footer-banner {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem 0;
+}
+
+.footer-banner .banner-col-3 {
+    text-align: center;
+}
+
+.footer-info {
+    background: var(--dark-color);
+    color: white;
+    padding: 2rem 0;
+}
+
+.footer-info a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer-info a:hover {
+    color: var(--primary-color);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .hero-slider .swiper-slide {
+        min-height: 400px;
+        padding: 1rem;
+    }
+    
+    .category-slider .item {
+        padding: 0 0.25rem;
+    }
+    
+    .card-product-action {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    
+    .card-product-action .btn-action {
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: 0.75rem;
+        margin: 0 0.125rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-slider .swiper-slide {
+        min-height: 300px;
+    }
+    
+    .category-slider .card-body {
+        padding: 1rem;
+    }
+}
+
+/* ===== Utility Classes ===== */
+.text-decoration-line-through {
+    text-decoration: line-through;
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.top-0 {
+    top: 0;
+}
+
+.start-0 {
+    left: 0;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* ===== Custom Scrollbar ===== */
+.simplebar-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.simplebar-scrollbar::-webkit-scrollbar {
+    width: thin;
+}
+
+.simplebar-scrollbar::-webkit-scrollbar-track {
+    background: var(--light-color);
+}
+
+.simplebar-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}

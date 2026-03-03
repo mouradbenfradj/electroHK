@@ -1,16 +1,16 @@
-<div class="w-1/2 text-right hidden lg:block">
-    <div class="dropdown flex justify-end">
-        <a class="dropdown-toggle text-inherit flex items-center" href="{url path="/login"}" data-bs-toggle="dropdown"
-            id="dropdownMenuLink">
+<div class="ms-6">
+    <div class="dropdown selectBox">
+        <a class="dropdown-toggle selectValue text-reset" href="{url path="/login"}" data-bs-toggle="dropdown"
+            aria-expanded="false">
             <span class="mr-2">
                 <img width="16" height="13" src="{image file="assets/images/flags/{lang attr="code"}.png"}"alt="{$TITLE}" />
             </span>
-            <span id="selectedLanguage">{lang attr="title"}</span>
+            {lang attr="title"}
         </a>
         <ul class="dropdown-menu">
             {loop type="lang" name="lang_available" exclude="{lang attr="id"}"}
             <li>
-                <a class="dropdown-item" href="{url path="{navigate to="current"}" lang={$LOCALE}}" onclick="changeLanguage('{$TITLE}')">
+                <a href="{url path="{navigate to="current"}" lang={$LOCALE}}">
                     <span>
                         <img width="16" height="13" src="{image file="assets/images/flags/{$CODE}.png"}"
                             alt="{$TITLE}" />
@@ -19,7 +19,6 @@
                 </a>
             </li>
             {/loop}
-            <!-- Add more languages as needed -->
         </ul>
     </div>
 </div>

@@ -1,0 +1,145 @@
+/* Brand Page Styles */
+.brand-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.brand-header .brand-image {
+    max-height: 100px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.brand-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.toolbar-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.toolbar-section .form-select {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 8px 12px;
+}
+
+.products-grid {
+    margin-top: 30px;
+}
+
+.products-grid .card {
+    transition: transform 0.3s ease;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.products-grid .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.products-grid .card-body {
+    padding: 20px;
+}
+
+.products-grid .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+.card-product-action {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.products-grid .card:hover .card-product-action {
+    opacity: 1;
+}
+
+.pagination {
+    margin-top: 30px;
+}
+
+.pagination .page-link {
+    color: #666;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+    background: #007bff;
+    color: white;
+}
+
+.pagination .page-item.active .page-link {
+    background: #007bff;
+    color: white;
+}
+
+.brands-list {
+    margin-top: 30px;
+}
+
+.brands-list .card {
+    transition: transform 0.3s ease;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.brands-list .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.brands-list .card-body {
+    padding: 30px;
+}
+
+.brands-list .brand-logo {
+    max-width: 100px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.brands-list h5 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.brands-list p {
+    color: #666;
+    font-size: 0.875rem;
+}
