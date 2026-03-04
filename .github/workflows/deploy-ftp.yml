@@ -1,0 +1,82 @@
+name: Deploy via FTP
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup FTP credentials
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
+        run: |
+          echo "Host: $FTP_HOST"
+          echo "Port: ${FTP_PORT:-21}"
+          echo "Username: $FTP_USERNAME"
+
+      - name: Deploy to FTP server
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT || 21 }}
+          local-dir: ./
+          remote-dir: www/
+          # Exclude files/directories that shouldn't be uploaded
+          exclude: |
+            **/.git**
+            **/.gitignore**
+            **/.github**
+            **/.vscode**
+            **/node_modules/**
+            **/vendor/**
+            **/*.md
+            **/README*
+            **/CHANGELOG*
+            **/LICENSE*
+            **/.travis.yml**
+            **/.gitattributes**
+            **/phpunit.xml**
+            **/composer.json
+            **/composer.lock
+            **/docker-compose.yml
+            **/docker/
+            **/tests/
+            **/cache/**
+            **/log/**
+            **/setup/**
+            **/Thelia
+            **/bin/
+            **/core/
+            **/UPGRADE*
+            **/UPDATE*
+            **/CONTRIBUTORS*
+            **/COPYRIGHT*
+            **/reset_install*
+            **/run-tests*
+            **/travis.php*
+            **/unit-tests*
+            **/php-cs
+            **/php-cs.bat
+            **/commits*
+          # Delete files on server that don't exist locally
+          # Uncomment the next line if you want to delete extra files on server
+          # delete: true
+          # Set connection timeout (default is 30 seconds)
+          timeout: 60
+

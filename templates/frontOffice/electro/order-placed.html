@@ -6,7 +6,7 @@
 {/block}
 
 {* Body Class *}
-{block name="body-class"}page-order-payment{/block}
+{block name="body-class"}page-order-placed{/block}
 
 {* Breadcrumb *}
 {block name='no-return-functions' append}
@@ -18,47 +18,102 @@
 
 
 {block name="main-content"}
-    <div class="main">
-        <article class="col-main clearfix" role="main" aria-labelledby="main-label">
-
-            <h1 id="main-label" class="page-header">{intl l="Your Cart"}</h1>
-
-            {include file="misc/checkout-progress.tpl" step="last"}
-
-            {loop type="order" name="placed-order" id=$placed_order_id}
-            {ifhook rel="order-placed.body"}
-                {hook name="order-placed.body" module="$PAYMENT_MODULE"}
-            {/ifhook}
-            {elsehook rel="order-placed.body"}
-                <div id="payment-success" class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{intl l="You choose"} : <span class="payment-method label label-primary">{loop name="payment-module" type="module" id=$PAYMENT_MODULE}{$TITLE}{/loop}</span></h3>
-                    </div>
-                    <div class="panel-body">
-                        <h3>{intl l="Thank you for the trust you place in us."}</h3>
-                        <p>{intl l="A summary of your order has been sent to the following address"} : {customer attr="email"}</p>
-                        <p>{intl l="Your order will be confirmed by us upon receipt of your payment."}</p>
-                        <dl class="dl-horizontal">
-                            <dt>{intl l="Order number"} : </dt>
-                            <dd>{$REF}</dd>
-                            <dt>{intl l="Date"} : </dt>
-                            <dd>{format_date date=$CREATE_DATE output="date"}</dd>
-                            <dt>{intl l="Total"} : </dt>
-                            <dd>{format_money number={$TOTAL_TAXED_AMOUNT} currency_id=$CURRENCY}</dd>
-                        </dl>
-
-                        {block name='additional-payment-info'}{/block}
-
-                        {hook name="order-placed.additional-payment-info" module="$PAYMENT_MODULE" placed_order_id=$placed_order_id}
-                    </div>
+<section class="py-lg-14 py-8">
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-8">
+                    <h1 class="fw-bold mb-0">{intl l="Order Confirmation"}</h1>
                 </div>
-            {/elsehook}
-            {/loop}
+            </div>
+        </div>
 
-            <a href="{navigate to="index"}" role="button" class="btn btn-default">{intl l="Go home"}</a>
+        {include file="misc/checkout-progress.tpl" step="last"}
 
-        </article>
+        <div class="row">
+            <div class="col-lg-8 col-md-10">
+                {loop type="order" name="placed-order" id=$placed_order_id}
+                {ifhook rel="order-placed.body"}
+                    {hook name="order-placed.body" module="$PAYMENT_MODULE"}
+                {/ifhook}
+                {elsehook rel="order-placed.body"}
+                    <!-- Success Message Card -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-6">
+                            <!-- Success Icon -->
+                            <div class="text-center mb-4">
+                                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check text-success">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
 
+                            <!-- Payment Method Badge -->
+                            <div class="text-center mb-4">
+                                <span class="badge bg-primary fs-6">
+                                    {intl l="Payment method"}: {loop name="payment-module" type="module" id=$PAYMENT_MODULE}{$TITLE}{/loop}
+                                </span>
+                            </div>
+
+                            <!-- Thank You Message -->
+                            <div class="text-center mb-4">
+                                <h3 class="fw-bold">{intl l="Thank you for your order!"}</h3>
+                                <p class="text-muted mb-0">{intl l="A summary of your order has been sent to the following address"}: <strong>{customer attr="email"}</strong></p>
+                                {if $STATUS != 2}
+                                <p class="text-muted">{intl l="Your order will be confirmed by us upon receipt of your payment."}</p>
+                                {/if}
+                            </div>
+
+                            <!-- Order Details -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-transparent py-3">
+                                    <h5 class="mb-0">{intl l="Order Details"}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <dl class="row mb-0">
+                                        <dt class="col-sm-5">{intl l="Order number"}</dt>
+                                        <dd class="col-sm-7 mb-0"><strong>{$REF}</strong></dd>
+                                        
+                                        <dt class="col-sm-5">{intl l="Date"}</dt>
+                                        <dd class="col-sm-7 mb-0">{format_date date=$CREATE_DATE output="date"}</dd>
+                                        
+                                        <dt class="col-sm-5">{intl l="Total"}</dt>
+                                        <dd class="col-sm-7 mb-0">
+                                            <span class="fw-bold text-primary fs-5">{format_money number={$TOTAL_TAXED_AMOUNT} currency_id=$CURRENCY}</span>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            {block name='additional-payment-info'}{/block}
+
+                            {hook name="order-placed.additional-payment-info" module="$PAYMENT_MODULE" placed_order_id=$placed_order_id}
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-between flex-column flex-md-row gap-3">
+                                <a href="{navigate to="index"}" role="button" class="btn btn-outline-secondary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home me-2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                    </svg>
+                                    {intl l="Go home"}
+                                </a>
+                                <a href="{url path="/order/invoice"}" role="button" class="btn btn-primary">
+                                    {intl l="View Order Details"}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right ms-2">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {/elsehook}
+                {/loop}
+            </div>
+        </div>
     </div>
 {/block}
 

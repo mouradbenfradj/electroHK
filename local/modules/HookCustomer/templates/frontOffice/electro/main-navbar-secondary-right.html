@@ -1,8 +1,26 @@
 
                    
     {loop type="auth" name="customer_info_block" role="CUSTOMER"}
-    <li><a href="{url path="/logout"}" class="logout">{intl l="Log out!" d="hookcustomer.fo.default"}</a></li>
-    <li><a href="{url path="/account"}" class="account">{intl l="My Account" d="hookcustomer.fo.default"}</a></li>
+    <div class="ms-6 text-center">
+        <a href="{url path="/account"}" class="text-reset">
+            <div class="lh-1">
+                <div class="mb-2">
+                    <i class="bi bi-person-circle fs-4"></i>
+                </div>
+                <p class="mb-0 d-none d-xl-block small">{intl l="My Account" d="hookcustomer.fo.default"}</p>
+            </div>
+        </a>
+    </div>
+    <div class="ms-6 text-center">
+        <a href="{url path="/logout"}" class="text-reset">
+            <div class="lh-1">
+                <div class="mb-2">
+                    <i class="bi bi-box-arrow-right fs-4"></i>
+                </div>
+                <p class="mb-0 d-none d-xl-block small">{intl l="Log out!" d="hookcustomer.fo.default"}</p>
+            </div>
+        </a>
+    </div>
     {/loop}
     {elseloop rel="customer_info_block"}
     <div class="ms-6 text-center">
