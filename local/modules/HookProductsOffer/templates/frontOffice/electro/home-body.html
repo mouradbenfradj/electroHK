@@ -1,0 +1,116 @@
+{ifloop rel="current-sales"}
+    <section id="products-offer" class="grid">
+    {loop name="current-sales" type="sale" limit="2"}
+        <section id="product-sale-{$ID}">
+            <div class="products-heading">
+                <h2>{$SALE_LABEL} <a href="{url path="/sale" sale=$ID}" class="btn-all">{intl l="+ View All" d="hookproductsoffer.fo.default"}</a></h2>
+                <div class="short-description" itemprop="description">{$CHAPO}</div>
+            </div>
+
+            <div class="products-content">
+                <ul class="products-grid list-unstyled row">
+                    {loop name="products_in_sale" type="product" limit="4" sale=$ID}
+                        {include file="includes/single-product.html" colClass="col-md-3 col-sm-4" product_id=$ID hasBtn=false hasDescription=false width="218" height="146"}
+                    {/loop}
+                </ul>
+            </div>
+        </section><!-- #products-sale-XX -->
+    {/loop}
+    </section>
+{/ifloop}
+{* Display "regular" promos, if any, only if we don't have active sales *}
+
+{elseloop rel="current-sales"}
+{ifloop rel="product_promo"}
+<section class="my-lg-14 my-8">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-6">
+                <h3 class="mb-0">{intl l="Offers" d="hookproductsoffer.fo.default"} <a href="{url path="/view_all" type="offers"}" class="btn-all">{intl l="+ View All" d="hookproductsoffer.fo.default"}</a></h3>
+            </div>
+        </div>
+
+        <div class="row g-4 row-cols-lg-5 row-cols-2 row-cols-md-3">
+            {*{loop type="product" name="featured_products" visible="1" limit="10" order="position"}*}
+            {loop name="product_promo" type="product" limit="10" promo="yes"}
+            <div class="col">
+                <div class="card card-product">
+                    <div class="card-body">
+                        <div class="text-center position-relative">
+                            {if $IS_PROMO}
+                            <div class="position-absolute top-0 start-0">
+                                <span class="badge bg-danger">{intl l="Sale" d="hookproductsoffer.fo.default"}</span>
+                            </div>
+                            {/if}
+                            <a href="{$URL}">
+                                {ifloop rel="product_image"}
+                                {loop type="image" name="product_image" product=$ID limit="1" width="280" height="196" resize_mode="borders"}
+                                <img src="{$IMAGE_URL}" alt="{$TITLE}" class="mb-3 img-fluid">
+                                {/loop}
+                                {/ifloop}
+                                {elseloop rel="product_image"}
+                                <img src="{image file='assets/dist/img/218x146.png'}" alt="{$TITLE}" class="mb-3 img-fluid">
+                                {/elseloop}
+                            </a>
+
+                            <div class="card-product-action">
+                                <a href="#!" class="btn-action" data-bs-toggle="modal"
+                                    data-bs-target="#quickViewModal">
+                                    <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true"
+                                        aria-label="Quick View" data-bs-original-title="Quick View"></i>
+                                </a>
+                                <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
+                                    aria-label="Wishlist" data-bs-original-title="Wishlist"><i
+                                        class="bi bi-heart"></i></a>
+                                <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
+                                    aria-label="Compare" data-bs-original-title="Compare"><i
+                                        class="bi bi-arrow-left-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-small mb-1">
+                            <a href="{url path="/catalog"}" class="text-decoration-none text-muted"><small>{$DEFAULT_CATEGORY_TITLE}</small></a>
+                        </div>
+                        <h2 class="fs-6">
+                            <a href="{$URL}" class="text-inherit text-decoration-none">{$TITLE}</a>
+                        </h2>
+                        <div>
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </small>
+                            <span class="text-muted small">4.5(149)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                {if $IS_PROMO}
+                                <span class="text-dark">{format_money number=$PROMO_PRICE}</span>
+                                <span class="text-decoration-line-through text-muted">{format_money number=$PRICE}</span>
+                                {else}
+                                <span class="text-dark">{format_money number=$PRICE}</span>
+                                {/if}
+                            </div>
+                            <div>
+                                <a href="{$URL}" class="btn btn-primary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    Add
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/loop}
+        </div>
+    </div>
+</section>
+
+{/ifloop}
+{/elseloop}

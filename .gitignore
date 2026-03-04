@@ -52,6 +52,7 @@ templates/*
 !templates/frontOffice
 templates/frontOffice/*
 !templates/frontOffice/default
+!templates/frontOffice/electro
 !templates/backOffice
 templates/backOffice/*
 !templates/backOffice/default

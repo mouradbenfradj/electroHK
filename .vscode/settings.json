@@ -1,3 +1,18 @@
 {
-    "snyk.advanced.autoSelectOrganization": true
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": null,
+  "[html]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": null
+  },
+  "[smarty]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": null
+  },
+  "prettier.enable": false,
+  "beautify.enable": false,
+  "[html] [smarty]": {
+    "editor.formatOnSave": false
+  },
+  "snyk.advanced.autoSelectOrganization": true
 }

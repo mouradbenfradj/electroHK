@@ -1,0 +1,211 @@
+{extends file="layout.tpl"}
+
+{* Security *}
+{block name="no-return-functions" prepend}
+    {check_auth role="CUSTOMER" login_tpl="login"}
+    {check_cart_not_empty}
+{/block}
+
+{* Body Class *}
+{block name="body-class"}page-order-delivery{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [
+        ['title' => {intl l="Panier"}, 'url'=>{url path="/cart"}],
+        ['title' => {intl l="Facturation et livraison"}, 'url'=>{url path="/order/delivery"}]
+    ]}
+{/block}
+
+{block name="main-content"}
+
+<section class="mb-lg-14 mb-8 mt-8">
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- col -->
+            <div class="col-12">
+                <div>
+                    <div class="mb-8">
+                        <!-- text -->
+                        <h1 class="fw-bold mb-0">{intl l="Facturation et livraison"}</h1>
+                        <p class="mb-0">
+                            {intl l="Déjà client ? Cliquez ici pour"}
+                            <a href="{url path="/login"}">{intl l="Vous identifier"}</a>
+                            .
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {hook name="order-delivery.top"}
+
+        {form name="thelia.order.delivery"}
+        {assign var="isPost" value={$smarty.post|count}}
+        <form id="form-cart-delivery" action="{url path="/order/delivery"}" method="post" {form_enctype}>
+
+            {form_hidden_fields}
+
+            {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+
+            {hook name="order-delivery.form-top"}
+
+            {form_field field='delivery-address'}
+
+            <!-- Delivery Address Section -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{intl l="Choisissez votre adresse de livraison"}</h5>
+                    <a href="{url path="/address/create" next={navigate to='current'} }" class="btn btn-outline-primary btn-sm">
+                        <i class="feather-icon icon-plus"></i> {intl l="Ajouter une nouvelle adresse"}
+                    </a>
+                    {if $error}
+                        <span class="help-block text-danger"><span class="fa fa-remove"></span> {$message}</span>
+                    {/if}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {loop type="address" name="customer.addresses" customer="current"}
+                        {assign var="isDeliveryAddressChecked" value="0"}
+                        {if $isPost}
+                            {if $value == $ID}
+                                {assign var="isDeliveryAddressChecked" value="1"}
+                            {/if}
+                        {elseif $delivery_address_id == $ID}
+                            {assign var="isDeliveryAddressChecked" value="1"}
+                        {/if}
+                        
+                        <div class="col-xl-6 col-lg-12 col-md-6 col-12 mb-4">
+                            <!-- form -->
+                            <div class="card card-body p-6 {if $isDeliveryAddressChecked}border-primary{/if}">
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input js-change-delivery-address" type="radio" name="{$name}" id="delivery-address_{$ID}" value="{$ID}" data-country="{$COUNTRY}" {if $isDeliveryAddressChecked} checked{/if}>
+                                    <label class="form-check-label text-dark" for="delivery-address_{$ID}">
+                                        {$LABEL|default:{intl l='Adresse n°%nb' nb={$LOOP_COUNT}}}
+                                        {if $isDeliveryAddressChecked}
+                                            <span class="badge bg-info">{intl l="Adresse principale"}</span>
+                                        {/if}
+                                    </label>
+                                </div>
+                                <!-- address -->
+                                <address>
+                                    <strong>{loop type="title" name="customer.title.info" id=$TITLE}{$SHORT}{/loop} {$LASTNAME|upper} {$FIRSTNAME|ucwords}</strong>
+                                    <br>
+                                    {if $COMPANY}{$COMPANY}<br>{/if}
+                                    {$ADDRESS1}
+                                    {if $ADDRESS2 != ""}<br>{$ADDRESS2}{/if}
+                                    {if $ADDRESS3 != ""}<br>{$ADDRESS3}{/if}
+                                    <br>
+                                    {$ZIPCODE} {$CITY}
+                                    <br>
+                                    {loop type="country" name="customer.country.info" id=$COUNTRY}{$TITLE}{/loop}
+                                    {if $STATE}, {loop type="state" name="customer.state.info" id=$STATE}{$TITLE}{/loop}{/if}
+                                    <br>
+                                    <abbr title="Téléphone">Tél:</abbr> {if $CELLPHONE != ""}{$CELLPHONE}{else}{$PHONE}{/if}
+                                </address>
+                                
+                                <div class="mt-3">
+                                    <a href="{url path="/address/update/%id" id=$ID next={navigate to="current"}}" class="btn btn-sm btn-outline-primary">
+                                        <i class="feather-icon icon-edit"></i> {intl l="Modifier"}
+                                    </a>
+                                    {if $DEFAULT != 1}
+                                        <a href="{url path="/address/delete/%id" id=$ID}" class="btn btn-sm btn-outline-danger ms-2" data-confirm="{intl l="Voulez-vous vraiment supprimer cette adresse ?"}">
+                                            <i class="feather-icon icon-trash"></i> {intl l="Supprimer"}
+                                        </a>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                        {/loop}
+                        
+                        {elseloop rel="customer.addresses"}
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    {intl l="Aucune adresse disponible. Veuillez ajouter une nouvelle adresse."}
+                                    <a href="{url path="/address/create" next={navigate to='current'} }" class="btn btn-primary btn-sm ms-2">
+                                        {intl l="Ajouter une nouvelle adresse"}
+                                    </a>
+                                </div>
+                            </div>
+                        {/elseloop}
+                    </div>
+                </div>
+            </div>
+
+            {/form_field}
+
+            {form_field field='delivery-module'}
+
+            <!-- Delivery Method Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">{intl l="Choisissez votre mode de livraison"}</h5>
+                    {if $error}
+                        <span class="help-block text-danger"><span class="fa fa-remove"></span> {$message}</span>
+                    {/if}
+                </div>
+                <div class="card-body" id="delivery-module-list-block">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">{intl l="Chargement..."}</span>
+                        </div>
+                        <p class="mt-2 text-muted">{intl l="Veuillez d'abord sélectionner une adresse de livraison"}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/form_field}
+
+            {hook name="order-delivery.form-bottom"}
+
+            <div class="d-flex justify-content-between">
+                <a href="{url path="/cart"}" role="button" class="btn btn-outline-secondary">
+                    <i class="feather-icon icon-arrow-left"></i> {intl l="Retour"}
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="feather-icon icon-arrow-right"></i> {intl l="Étape suivante"}
+                </button>
+            </div>
+
+        </form>
+        {/form}
+
+        {hook name="order-delivery.bottom"}
+
+    </div>
+</section>
+
+{/block}
+
+{block name="javascript-initialization"}
+
+<script type="text/javascript">
+    jQuery(function($) {
+        $('.js-change-delivery-address').change(function(e) {
+            if (this.checked) {
+                $('#delivery-module-list-block').load(
+                    '{url path="/order/deliveryModuleList"}',
+                    {
+                        country_id: $(this).data('country'),
+                        address_id: $(this).attr('value')
+                    }
+                );
+            }
+        });
+
+        // Trigger change on page load if an address is already selected
+        $('.js-change-delivery-address:checked').change();
+    });
+</script>
+{hook name="order-delivery.javascript-initialization"}
+
+{/block}
+
+{block name="stylesheet"}
+{hook name="order-delivery.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+{hook name="order-delivery.after-javascript-include"}
+{/block}

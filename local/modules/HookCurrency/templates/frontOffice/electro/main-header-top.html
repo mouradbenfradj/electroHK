@@ -1,0 +1,10 @@
+<div class="dropdown selectBox">
+    <a class="dropdown-toggle selectValue text-reset" href="{url path="{navigate to="current"}"}" data-bs-toggle="dropdown"
+        aria-expanded="false">{currency attr="code"} {$SYMBOL}</a>
+
+    <ul class="dropdown-menu">
+        {loop type="currency" name="currency_available" exclude="{currency attr="id"}" }
+        <li><a class="dropdown-item" href="{url path="{navigate to="current"}" currency={$ISOCODE}}">{$SYMBOL} - {$NAME}</a></li>
+        {/loop}
+    </ul>
+</div>

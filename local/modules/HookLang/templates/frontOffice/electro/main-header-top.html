@@ -1,0 +1,24 @@
+<div class="ms-6">
+    <div class="dropdown selectBox">
+        <a class="dropdown-toggle selectValue text-reset" href="{url path="/login"}" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <span class="mr-2">
+                <img width="16" height="13" src="{image file="assets/images/flags/{lang attr="code"}.png"}"alt="{$TITLE}" />
+            </span>
+            {lang attr="title"}
+        </a>
+        <ul class="dropdown-menu">
+            {loop type="lang" name="lang_available" exclude="{lang attr="id"}"}
+            <li>
+                <a href="{url path="{navigate to="current"}" lang={$LOCALE}}">
+                    <span>
+                        <img width="16" height="13" src="{image file="assets/images/flags/{$CODE}.png"}"
+                            alt="{$TITLE}" />
+                    </span>
+                    {$TITLE}
+                </a>
+            </li>
+            {/loop}
+        </ul>
+    </div>
+</div>

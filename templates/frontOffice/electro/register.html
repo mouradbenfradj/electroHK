@@ -1,0 +1,282 @@
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-register{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="Register" d="fo.electro"}, 'url'=>{url path="/register"}]]}
+{/block}
+
+{block name="main-content"}
+
+    {* This page should not replace the current previous URL *}
+    {set_previous_url ignore_current="1"}
+
+    <div class="main">
+        <section class="my-lg-14 my-8">
+            <div class="container">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-12 col-md-6 col-lg-4 order-lg-1 order-2">
+                       {* <img src="{theme url='assets/images/svg-graphics/signup-g.svg'}" alt="" class="img-fluid">*}
+                    </div>
+                    <div class="col-12 col-md-6 offset-lg-1 col-lg-4 order-lg-2 order-1">
+                        <div class="mb-lg-9 mb-5">
+                            <h1 class="mb-1 h2 fw-bold">{intl l="Get Start Shopping" d="fo.electro"}</h1>
+                            <p>{intl l="Welcome to FreshCart! Enter your email to get started." d="fo.electro"}</p>
+                        </div>
+                        
+                        {form name="thelia.front.customer.create"}
+                        <form id="form-register" class="needs-validation" action="{url path="/register"}" method="post" {form_enctype} novalidate>
+                            {form_field field='success_url'}
+                                <input type="hidden" name="{$name}" value="{navigate to="previous"}" />
+                            {/form_field}
+
+                            {form_field field='error_message'}
+                                <input type="hidden" name="{$name}" value="{intl l="missing or invalid data" d="fo.electro"}" />
+                            {/form_field}
+                            {form_hidden_fields}
+                            
+                            {if $form_error}
+                            <div class="alert alert-danger">{$form_error_message}</div>
+                            {/if}
+                            
+                            {hook name="register.form-top"}
+                            
+                            <div class="row g-3">
+                                {form_field field="title"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <select name="{$name}" id="{$label_attr.for}" class="form-select"{if $required} aria-required="true" required{/if}>
+                                        <option value="">-- {intl l="Select Title" d="fo.electro"} --</option>
+                                        {loop type="title" name="title.list"}
+                                            <option value="{$ID}" {if $value == $ID}selected{/if}>{$LONG}</option>
+                                        {/loop}
+                                    </select>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="firstname"}
+                                <div class="col-sm-6">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder firstname" d="fo.electro"}" value="{$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="lastname"}
+                                <div class="col-sm-6">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder lastname" d="fo.electro"}" value="{$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="email"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="email" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder email" d="fo.electro"}" value="{$smarty.get.email|default:$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {if {config key="customer_confirm_email"}}
+                                {form_field field="email_confirm"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="email" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder email confirm" d="fo.electro"}" value="{$smarty.get.email|default:$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+                                {/if}
+
+                                {form_field field="phone"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="{intl l="Placeholder phone" d="fo.electro"}" value="{$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="cellphone"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="{intl l="Placeholder cellphone" d="fo.electro"}" value="{$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                <div class="col-12">
+                                    <hr class="my-4">
+                                    <h5>{intl l="Delivery Information" d="fo.electro"}</h5>
+                                </div>
+
+                                {form_field field="company"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder company" d="fo.electro"}" value="{$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="address1"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder address1" d="fo.electro"}" value="{$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="address2"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder address2" d="fo.electro"}" value="{$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="zipcode"}
+                                <div class="col-sm-4">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="10" placeholder="{intl l="Placeholder zipcode" d="fo.electro"}" value="{$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="city"}
+                                <div class="col-sm-8">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder city" d="fo.electro"}" value="{$value}" {if $required} aria-required="true" required{/if}>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="country"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <select name="{$name}" id="{$label_attr.for}" class="form-select"{if $required} aria-required="true" required{/if}>
+                                        <option value="">-- {intl l="Select Country" d="fo.electro"} --</option>
+                                        {loop type="country" name="country.list"}
+                                            <option value="{$ID}"
+                                                {if $value != ""}
+                                                    {if $value == $ID}selected{/if}
+                                                {else}
+                                                    {if $IS_DEFAULT}selected{/if}
+                                                {/if}
+                                            >{$TITLE}</option>
+                                        {/loop}
+                                    </select>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                <div class="col-12">
+                                    <hr class="my-4">
+                                    <h5>{intl l="Login Information" d="fo.electro"}</h5>
+                                </div>
+
+                                {form_field field="password"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <div class="password-field position-relative">
+                                        <input type="password" name="{$name}" id="{$label_attr.for}" class="form-control fakePassword" autocomplete="off" {if $required} aria-required="true" required{/if}>
+                                        <span class="position-absolute end-0 top-50 translate-middle-y me-3 cursor-pointer passwordToggler"><i class="bi bi-eye-slash"></i></span>
+                                    </div>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="password_confirm"}
+                                <div class="col-12">
+                                    <label for="{$label_attr.for}" class="form-label">{$label}{if $required} <span class="text-danger">*</span>{/if}</label>
+                                    <div class="password-field position-relative">
+                                        <input type="password" name="{$name}" id="{$label_attr.for}" class="form-control fakePassword" autocomplete="off" {if $required} aria-required="true" required{/if}>
+                                        <span class="position-absolute end-0 top-50 translate-middle-y me-3 cursor-pointer passwordToggler"><i class="bi bi-eye-slash"></i></span>
+                                    </div>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {form_field field="newsletter"}
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="{$name}" id="{$label_attr.for}" class="form-check-input" value="{$value}" {if $checked}checked{/if} {if $required} aria-required="true" required{/if}>
+                                        <label class="form-check-label" for="{$label_attr.for}">
+                                            {$label}
+                                        </label>
+                                    </div>
+                                    {if $error}
+                                    <div class="invalid-feedback d-block">{$message}</div>
+                                    {/if}
+                                </div>
+                                {/form_field}
+
+                                {hook name="register.form-bottom"}
+
+                                <div class="col-12 d-grid">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-chevron-right"></i> {intl l="Register" d="fo.electro"}
+                                    </button>
+                                </div>
+
+                                <div class="col-12">
+                                    <p class="text-muted small">
+                                        {intl l="By continuing, you agree to our" d="fo.electro"} 
+                                        <a href="{url path="/conditions-generales"}">{intl l="Terms of Service" d="fo.electro"}</a> 
+                                        &amp; 
+                                        <a href="{url path="/politique-confidentialite"}">{intl l="Privacy Policy" d="fo.electro"}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                        {/form}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{/block}
+
+
+{block name="stylesheet"}
+{hook name="register.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+{hook name="register.after-javascript-include"}
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="register.javascript-initialization"}
+{/block}

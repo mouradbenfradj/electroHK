@@ -1,0 +1,7 @@
+{* HookSearch - Dynamic navbar secondary search via hooks *}
+{hook name="main.navbar-secondary.search"}
+
+{* Fallback content *}
+{if !$smarty.cookies.__search_hooked}
+    {include file="./main-navbar-secondary.html"}
+{/if}

@@ -1,0 +1,267 @@
+/* Category Page Specific Styles */
+
+/* Category Sidebar */
+.offcanvas-collapse {
+    background-color: #fff;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.nav-category .nav-link {
+    padding: 0.75rem 1rem;
+    color: #212529;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-category .nav-link:hover {
+    color: #28a745;
+    background-color: #f8f9fa;
+}
+
+.nav-category .nav-link.active {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.nav-category .nav-link.collapsed::after {
+    content: "›";
+    position: absolute;
+    right: 1rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.nav-category .nav-link:not(.collapsed)::after {
+    content: "›";
+    position: absolute;
+    right: 1rem;
+    transform: rotate(90deg);
+}
+
+/* Product Cards */
+.card-product {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.card-product:hover {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-product .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card-product:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* Product Actions */
+.card-product-action {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.card-product:hover .card-product-action {
+    opacity: 1;
+}
+
+.btn-action {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #6c757d;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-action:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* Toolbar */
+.toolbar {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sorter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .sorter-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Pagination */
+.pagination .page-link {
+    padding: 0.5rem 0.75rem;
+    margin: 0 0.125rem;
+    border: 1px solid #dee2e6;
+    color: #28a745;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination .page-link:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+/* Filters */
+.form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.form-check-input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Price Range */
+#priceRange {
+    margin: 1rem 0;
+}
+
+#priceRange-value {
+    font-weight: 500;
+    color: #28a745;
+}
+
+/* Rating Stars */
+.text-warning {
+    color: #ffc107 !important;
+}
+
+/* Grid/List View Toggle */
+.view-mode-btn {
+    display: inline-flex;
+    gap: 0.25rem;
+}
+
+.view-mode-btn .btn {
+    padding: 0.375rem 0.5rem;
+    margin: 0 0.125rem;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    color: #6c757d;
+}
+
+.view-mode-btn .btn:hover,
+.view-mode-btn .btn.active {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+}
+
+/* Banner in Sidebar */
+.position-relative .position-absolute {
+    z-index: 1;
+}
+
+/* Loading States */
+.loading .card-product {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .card-product .card-img-top {
+        height: 150px;
+    }
+    
+    .sorter-container .amount {
+        font-size: 0.875rem;
+    }
+    
+    .toolbar {
+        padding: 0.75rem;
+    }
+}
+
+/* Product grid animations */
+.products-content .row {
+    transition: all 0.3s ease-in-out;
+}
+
+.products-content .col {
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Empty state */
+.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 0.5rem;
+}
+
+/* Accessibility improvements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus styles */
+.btn:focus,
+.form-control:focus,
+.form-check-input:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}

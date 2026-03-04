@@ -1,0 +1,62 @@
+
+<section class="mt-8">
+  <div class="container">
+    <div class="hero-slider">
+      <div class="slide" style="background: url('{image file='assets/images/slider/slider-2.jpg'}') center center / cover no-repeat; border-radius: 0.5rem;">
+        <div class="ps-lg-12 py-lg-16 col-xxl-5 col-md-7 py-14 px-8 text-xs-center">
+          <span class="badge text-bg-warning">Free Shipping - orders over $100</span>
+          <h2 class="text-dark display-5 fw-bold mt-4">
+            Free Shipping on
+            <br>
+            orders over
+            <span class="text-primary">$100</span>
+          </h2>
+          <p class="lead">Free Shipping to First-Time Customers Only, After promotions and discounts are applied.</p>
+          <a href="{url path='/category'}" class="btn btn-dark mt-3">
+            Shop Now
+            <i class="feather-icon icon-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+      <div class="slide" style="background: url('{image file='assets/images/slider/slide-1.jpg'}') center center / cover no-repeat; border-radius: 0.5rem;">
+        <div class="ps-lg-12 py-lg-16 col-xxl-5 col-md-7 py-14 px-8 text-xs-center">
+          <span class="badge text-bg-warning">Opening Sale Discount 50%</span>
+          <h2 class="text-dark display-5 fw-bold mt-4">SuperMarket For Fresh Grocery</h2>
+          <p class="lead">Introduced a new model for online grocery shopping and convenient home delivery.</p>
+          <a href="{url path='/category'}" class="btn btn-dark mt-3">
+            Shop Now
+            <i class="feather-icon icon-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Category Section Start-->
+<section class="mb-lg-10 mt-lg-14 my-8">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 mb-6">
+        <h3 class="mb-0">Featured Categories</h3>
+      </div>
+    </div>
+    <div class="category-slider">
+      {loop type="category" name="categories" limit="10"}
+      <div class="item">
+        <a href="{$URL}" class="text-decoration-none text-inherit">
+          <div class="card card-product mb-lg-4">
+            <div class="card-body text-center py-8">
+              {loop name="category.image" type="image" source="category" source_id=$ID width=100 height=100 resize_mode="borders" limit="1"}
+              <img src="{$IMAGE_URL}" alt="{$TITLE}" class="mb-3">
+              {/loop}
+              <div class="text-truncate">{$TITLE}</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {/loop}
+    </div>
+  </div>
+</section>
+<!-- Category Section End-->

@@ -1,0 +1,393 @@
+{extends file="layout.tpl"}
+
+{* Security *}
+{block name="no-return-functions" prepend}
+    {check_auth role="CUSTOMER" login_tpl="login"}
+    {check_cart_not_empty}
+    {check_valid_delivery}
+{/block}
+
+{* Body Class *}
+{block name="body-class"}page-order-invoice{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [
+        ['title' => {intl l="Cart"}, 'url'=>{url path="/cart"}],
+        ['title' => {intl l="My order"}, 'url'=>{url path="/order/invoice"}]
+    ]}
+{/block}
+
+{block name="main-content"}
+<section class="mb-lg-14 mb-8 mt-8">
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- col -->
+            <div class="col-12">
+                <div>
+                    <div class="mb-8">
+                        <!-- text -->
+                        <h1 class="fw-bold mb-0">{intl l="Check my order"}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {hook name="order-invoice.top"}
+
+        {form name="thelia.order.coupon"}
+        <form id="form-coupon" action="{url path="/order/coupon"}" method="post" {form_enctype}>
+            {form_hidden_fields}
+            
+            {form_field field='success_url'}
+                <input type="hidden" name="{$name}" value="{url path="/order/invoice"}" />
+            {/form_field}
+            
+            {form_field field='error_url'}
+                <input type="hidden" name="{$name}" value="{url path="/order/invoice"}" />
+            {/form_field}
+            
+            {form_field field='coupon-code'}
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <label class="control-label sr-only" for="coupon">{intl l="Code promo"}</label>
+                        <input id="coupon" class="form-control" type="text" name="{$name}" value="{$value}" placeholder="{intl l="Enter promo code"}">
+                        <button type="submit" class="btn btn-outline-secondary">{intl l="Apply"}</button>
+                    </div>
+                    {if $error}<span class="help-block text-danger">{$message}</span>{/if}
+                </div>
+            </div>
+            {/form_field}
+        </form>
+        {/form}
+
+        <div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-xl-7 col-lg-6 col-md-12">
+                    <!-- accordion -->
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <!-- Delivery Address Section -->
+                        <div class="accordion-item py-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- heading one -->
+                                <a href="#" class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    <i class="feather-icon icon-map-pin me-2 text-muted"></i>
+                                    {intl l="Delivery address"}
+                                </a>
+                            </div>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="mt-5">
+                                    {ifhook rel="order-invoice.delivery-address"}
+                                        {hook name="order-invoice.delivery-address" module={order attr="delivery_module"}}
+                                    {/ifhook}
+                                    {elsehook rel="order-invoice.delivery-address"}
+                                    <div class="row">
+                                        {loop type="address" name="delivery-address" id={order attr="delivery_address"}}
+                                        <div class="col-xl-6 col-lg-12 col-md-6 col-12 mb-4">
+                                            <div class="card card-body p-6">
+                                                <address>
+                                                    <strong>{loop type="title" name="customer.title.info" id=$TITLE}{$SHORT}{/loop} {$LASTNAME|upper} {$FIRSTNAME|ucwords}</strong>
+                                                    <br>
+                                                    {if $COMPANY}{$COMPANY}<br>{/if}
+                                                    {$ADDRESS1}
+                                                    {if $ADDRESS2 != ""}<br>{$ADDRESS2}{/if}
+                                                    {if $ADDRESS3 != ""}<br>{$ADDRESS3}{/if}
+                                                    <br>
+                                                    {$ZIPCODE} {$CITY}
+                                                    <br>
+                                                    {loop type="country" name="customer.country.info" id=$COUNTRY}{$TITLE}{/loop}
+                                                    {if $STATE}, {loop type="state" name="customer.state.info" id=$STATE}{$TITLE}{/loop}{/if}
+                                                    <br>
+                                                    <abbr title="Phone">P:</abbr> {if $CELLPHONE != ""}{$CELLPHONE}{else}{$PHONE}{/if}
+                                                </address>
+                                                <span class="text-danger">{intl l="Selected address"}</span>
+                                            </div>
+                                        </div>
+                                        {/loop}
+                                    </div>
+                                    {/elsehook}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Billing Address Section -->
+                        {form name="thelia.order.payment"}
+                        {assign var="isPost" value=$smarty.post|count}
+                        <form id="form-cart-payment" action="{url path="/order/invoice"}" method="post" {form_enctype}>
+                            {form_hidden_fields}
+                            
+                            {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+                            
+                            <div class="accordion-item py-4">
+                                <a href="#" class="fs-5 text-inherit h4 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    <i class="feather-icon icon-file-text me-2 text-muted"></i>
+                                    {intl l="Billing address"}
+                                </a>
+                                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                    <div class="mt-5">
+                                        {form_field field='invoice-address'}
+                                        <div class="row">
+                                            {loop type="address" name="invoice-address" customer="current"}
+                                                {assign var="isInvoiceAddressChecked" value="0"}
+                                                {if $isPost}
+                                                    {if $value == $ID && $value != ""}
+                                                        {assign var="isInvoiceAddressChecked" value="1"}
+                                                    {elseif $DEFAULT}
+                                                        {assign var="isInvoiceAddressChecked" value="1"}
+                                                    {/if}
+                                                {elseif $DEFAULT}
+                                                    {assign var="isInvoiceAddressChecked" value="1"}
+                                                {/if}
+                                                
+                                                <div class="col-xl-6 col-lg-12 col-md-6 col-12 mb-4">
+                                                    <div class="card card-body p-6 {if $isInvoiceAddressChecked}border-primary{/if}">
+                                                        <div class="form-check mb-4">
+                                                            <input class="form-check-input" type="radio" name="{$name}" id="invoice-address_{$ID}" value="{$ID}" {if $isInvoiceAddressChecked} checked{/if}>
+                                                            <label class="form-check-label text-dark" for="invoice-address_{$ID}">
+                                                                {$LABEL|default:{intl l='Address n°%nb' nb={$LOOP_COUNT}}}
+                                                                {if $DEFAULT}
+                                                                    <span class="badge bg-info">{intl l="Default"}</span>
+                                                                {/if}
+                                                            </label>
+                                                        </div>
+                                                        <address>
+                                                            <strong>{loop type="title" name="customer.title.info" id=$TITLE}{$SHORT}{/loop} {$LASTNAME|upper} {$FIRSTNAME|ucwords}</strong>
+                                                            <br>
+                                                            {if $COMPANY}{$COMPANY}<br>{/if}
+                                                            {$ADDRESS1}
+                                                            {if $ADDRESS2 != ""}<br>{$ADDRESS2}{/if}
+                                                            {if $ADDRESS3 != ""}<br>{$ADDRESS3}{/if}
+                                                            <br>
+                                                            {$ZIPCODE} {$CITY}
+                                                            <br>
+                                                            {loop type="country" name="customer.country.info" id=$COUNTRY}{$TITLE}{/loop}
+                                                            {if $STATE}, {loop type="state" name="customer.state.info" id=$STATE}{$TITLE}{/loop}{/if}
+                                                        </address>
+                                                    </div>
+                                                </div>
+                                            {/loop}
+                                        </div>
+                                        {if $error}
+                                            <span class="help-block text-danger">{$message}</span>
+                                        {/if}
+                                        {/form_field}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Method Section -->
+                            <div class="accordion-item py-4">
+                                <a href="#" class="text-inherit h5 collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                    <i class="feather-icon icon-credit-card me-2 text-muted"></i>
+                                    {intl l="Payment Method"}
+                                </a>
+                                <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                    <div class="mt-5">
+                                        {form_field field='payment-module'}
+                                        <div>
+                                            {if $error}
+                                                <span class="help-block text-danger">{$message}</span>
+                                            {/if}
+                                            
+                                            {loop type="payment" name="payments" force_return="true"}
+                                                {assign "paymentModuleId" $ID}
+                                                <div class="card card-bordered shadow-none mb-2">
+                                                    <div class="card-body p-6">
+                                                        <div class="d-flex">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{$name}" id="payment_{$paymentModuleId}" value="{$paymentModuleId}" {if $LOOP_TOTAL == 1 && $LOOP_COUNT == 1}checked{/if}>
+                                                                <label class="form-check-label ms-2" for="payment_{$paymentModuleId}"></label>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="mb-1 h6">
+                                                                    {loop type="image" name="paymentspicture" source="module" source_id=$ID force_return="true" width="50" height="36"}
+                                                                        <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="me-2">
+                                                                    {/loop}
+                                                                    {$TITLE}
+                                                                </h5>
+                                                                {loop type="module" name="payment-desc" id=$ID}
+                                                                    {if $DESCRIPTION != ""}
+                                                                        <p class="mb-0 small">{$DESCRIPTION}</p>
+                                                                    {/if}
+                                                                {/loop}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {hook name="order-invoice.payment-extra" module={$paymentModuleId}}
+                                            {/loop}
+                                        </div>
+                                        {/form_field}
+                                        
+                                        {form_field field="agreed"}
+                                        <div class="mt-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="{$name}" id="{$label_attr.for}" value="{$value}" {if $checked} checked{/if} {if $required} aria-required="true" required{/if}>
+                                                <label class="form-check-label" for="{$label_attr.for}">
+                                                    {$termsAndConditionsId={config key="terms_conditions_content_id"}}
+                                                    {if $termsAndConditionsId}
+                                                        {loop name="content-terms" type="content" id=$termsAndConditionsId}
+                                                            {intl l="I've read and agree to the"} <a href="{$URL nofilter}" target="_blank">{intl l="Terms &amp; Conditions"}</a>
+                                                        {/loop}
+                                                    {/if}
+                                                </label>
+                                                {if $error}
+                                                    <span class="help-block text-danger">{$message}</span>
+                                                {/if}
+                                            </div>
+                                        </div>
+                                        {/form_field}
+                                        
+                                        {hook name="order-invoice.payment-form"}
+                                        
+                                        <div class="mt-5 d-flex justify-content-between">
+                                            <a href="{url path="/order/delivery"}" role="button" class="btn btn-outline-secondary">
+                                                <i class="feather-icon icon-arrow-left"></i> {intl l="Back"}
+                                            </a>
+                                            <button type="submit" class="btn btn-primary">
+                                                {intl l="Confirm order"} <i class="feather-icon icon-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        {/form}
+                    </div>
+                </div>
+
+                <!-- Order Summary Sidebar -->
+                <div class="col-md-12 offset-xl-1 col-xl-4 col-lg-6">
+                    <div class="mt-4 mt-lg-0">
+                        <div class="card shadow-sm">
+                            <h5 class="px-6 py-4 bg-transparent mb-0">{intl l="Order Details"}</h5>
+                            <ul class="list-group list-group-flush">
+                                <!-- Cart Products -->
+                                {ifloop rel="cartloop"}
+                                    {loop type="cart" name="cartloop"}
+                                    <li class="list-group-item px-4 py-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-2 col-md-2">
+                                                {assign var="product_image_url" value=null}
+                                                {ifloop rel="pse-first-image"}
+                                                    {loop type="product-sale-elements-image" name="pse-first-image" product_sale_elements_id=$PRODUCT_SALE_ELEMENTS_ID limit="1"}
+                                                        {loop type="image" name="product-image" id=$PRODUCT_IMAGE_ID product=$PRODUCT_ID limit="1" width="118" height="85" force_return="true"}
+                                                            {assign var="product_image_url" value=$IMAGE_URL}
+                                                        {/loop}
+                                                    {/loop}
+                                                {/ifloop}
+                                                {elseloop rel="pse-first-image"}
+                                                    {loop type="image" name="product-image" product=$PRODUCT_ID limit="1" width="118" height="85" force_return="true"}
+                                                        {assign var="product_image_url" value=$IMAGE_URL}
+                                                    {/loop}
+                                                {/elseloop}
+                                                {if $product_image_url}
+                                                    <img src="{$product_image_url nofilter}" alt="{$TITLE}" class="img-fluid">
+                                                {else}
+                                                    <img src="{image file='assets/dist/img/product/1/118x85.png'}" alt="{$TITLE}" class="img-fluid">
+                                                {/if}
+                                            </div>
+                                            <div class="col-5 col-md-5">
+                                                <h6 class="mb-0">{$TITLE}</h6>
+                                                <span><small class="text-muted">
+                                                    {loop type="attribute_combination" name="product_options" product_sale_elements="$PRODUCT_SALE_ELEMENTS_ID" order="manual"}
+                                                        {$ATTRIBUTE_TITLE}: {$ATTRIBUTE_AVAILABILITY_TITLE}{if !$LOOP_LAST}, {/if}
+                                                    {/loop}
+                                                </small></span>
+                                            </div>
+                                            <div class="col-2 col-md-2 text-center text-muted">
+                                                <span>{$QUANTITY}</span>
+                                            </div>
+                                            <div class="col-3 text-lg-end text-start text-md-end col-md-3">
+                                                {if $IS_PROMO == 1}
+                                                    <span class="fw-bold text-danger">{format_money number=$TOTAL_PROMO_TAXED_PRICE}</span>
+                                                    <div class="text-decoration-line-through text-muted small">{format_money number=$TOTAL_TAXED_PRICE}</div>
+                                                {else}
+                                                    <span class="fw-bold">{format_money number=$TOTAL_TAXED_PRICE}</span>
+                                                {/if}
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {/loop}
+                                    
+                                    <!-- Order Summary Calculations -->
+                                    <li class="list-group-item px-4 py-3">
+                                        {$discount={order attr="discount"}}
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <div>{intl l="Item Subtotal"}</div>
+                                            <div class="fw-bold">{format_money number={cart attr="total_taxed_price"}}</div>
+                                        </div>
+                                        
+                                        {if $discount}
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <div>{intl l="Discount"}</div>
+                                            <div class="fw-bold text-success">-{format_money number=$discount}</div>
+                                        </div>
+                                        {/if}
+                                        
+                                        {if {cart attr="is_virtual"} != 1}
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <div>
+                                                {intl l="Shipping"}
+                                                {if {order attr="postage"} > 0}
+                                                    <i class="feather-icon icon-info text-muted" data-bs-toggle="tooltip" aria-label="Info" data-bs-original-title="{intl l="Shipping"}"></i>
+                                                {/if}
+                                            </div>
+                                            <div class="fw-bold">
+                                                {if {order attr="postage"} > 0}
+                                                    {format_money number={order attr="postage"}}
+                                                {else}
+                                                    {intl l="Free"}
+                                                {/if}
+                                            </div>
+                                        </div>
+                                        {/if}
+                                    </li>
+                                    
+                                    <!-- Total -->
+                                    <li class="list-group-item px-4 py-3">
+                                        <div class="d-flex align-items-center justify-content-between fw-bold">
+                                            <div>{intl l="Total"}</div>
+                                            <div>{format_money number={{cart attr="total_taxed_price"} + {order attr="postage"} - $discount}}</div>
+                                        </div>
+                                    </li>
+                                {/ifloop}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {hook name="order-invoice.bottom"}
+    </div>
+</section>
+{/block}
+
+{block name="javascript-initialization"}
+<script type="text/javascript">
+jQuery(function($) {
+    // Handle accordion toggle
+    $('#accordionFlushExample').on('show.bs.collapse', function(e) {
+        $(e.target).prev('.accordion-item').find('.collapsed').removeClass('collapsed');
+    });
+    
+    // Handle payment method change
+    $('input[name="payment-module"]').change(function() {
+        // Add any custom logic here
+    });
+});
+</script>
+{hook name="order-invoice.javascript-initialization"}
+{/block}
+
+{block name="stylesheet"}
+{hook name="order-invoice.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+{hook name="order-invoice.after-javascript-include"}
+{/block}

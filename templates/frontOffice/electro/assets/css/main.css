@@ -1,0 +1,170 @@
+/* Main Styles */
+.hero-slider {
+    margin-bottom: 40px;
+}
+
+.hero-slider .swiper-slide {
+    height: 500px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-slider .swiper-slide h2 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero-slider .swiper-slide p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.hero-slider .btn-dark {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 12px 24px;
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.hero-slider .btn-dark:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-2px);
+}
+
+.category-slider {
+    margin-bottom: 40px;
+}
+
+.category-slider .item {
+    text-align: center;
+}
+
+.category-slider .item img {
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.category-slider .item:hover img {
+    transform: scale(1.05);
+}
+
+.features-section {
+    padding: 60px 0;
+    background: #f8f9fa;
+}
+
+.features-section .feature-icon {
+    width: 60px;
+    height: 60px;
+    background: #007bff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.features-section .feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.testimonials-section {
+    padding: 60px 0;
+    background: #f8f9fa;
+}
+
+.testimonials-section .testimonial-card {
+    background: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.testimonials-section .testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.testimonials-section .rating {
+    color: #ffc107;
+    margin-bottom: 10px;
+}
+
+.newsletter-section {
+    background: #f8f9fa;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.newsletter-section .form-control {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 12px 20px;
+    background: white;
+}
+
+.btn-subscribe {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-subscribe:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+.product-card {
+    transition: transform 0.3s ease;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.product-card .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+.card-product-action {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .card-product-action {
+    opacity: 1;
+}
