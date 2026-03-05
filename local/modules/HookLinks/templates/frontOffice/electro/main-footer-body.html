@@ -1,0 +1,16 @@
+<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+    {loop name="footer_links" type="content" folder="2"}
+    <li><a href="{$URL}" class="text-decoration-none text-inherit">{$TITLE}</a></li>
+    {/loop}
+    {loop type="auth" name="customer_is_logged" role="CUSTOMER"}
+    <li><a href="{url path="/logout"}" class="logout text-decoration-none text-inherit"><i class="bi bi-box-arrow-right me-2"></i>{intl l="Log out!" d="hooklinks.fo.default"}</a></li>
+    <li><a href="{url path="/account"}" class="account text-decoration-none text-inherit"><i class="bi bi-person me-2"></i>{intl l="My Account" d="hooklinks.fo.default"}</a></li>
+    {/loop}
+    {elseloop rel="customer_is_logged"}
+    <li><a href="{url path="/login"}" class="text-decoration-none text-inherit"><i class="bi bi-box-arrow-in-right me-2"></i>{intl l="Login" d="hooklinks.fo.default"}</a></li>
+    <li><a href="{url path="/register"}" class="text-decoration-none text-inherit"><i class="bi bi-person-plus me-2"></i>{intl l="Register" d="hooklinks.fo.default"}</a></li>
+    {/elseloop}
+    <li><a href="{url path="/cart"}" class="text-decoration-none text-inherit"><i class="bi bi-cart me-2"></i>{intl l="Cart" d="hooklinks.fo.default"}</a></li>
+    <li><a href="{url path="/order/delivery"}" class="text-decoration-none text-inherit"><i class="bi bi-credit-card me-2"></i>{intl l="Checkout" d="hooklinks.fo.default"}</a></li>
+</ul>
+

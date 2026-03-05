@@ -15,201 +15,244 @@
 {block name="body-class"}page-account{/block}
 
 {block name="main-content"}
-    <div class="main">
-
-        <article class="col-main" role="main" aria-labelledby="main-label">
-
-            <h1 id="main-label" class="page-header">{intl l="My Account"}</h1>
-
-            {hook name="account.top"}
-            <div id="account" class="panel-group">
-                <div class="panel panel-default account-info">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#account" href="#account-info">
-                                {intl l="Personal Information"}
-                            </a>
-                        </h4>
+<section class="mb-lg-14 mb-8 mt-8">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-8">
+                    <h1 class="fw-bold mb-0">{intl l="My Account"}</h1>
+                </div>
+                
+                {hook name="account.top"}
+                
+                {* Personal Information *}
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">{intl l="Personal Information"}</h5>
                     </div>
-                    <div id="account-info" class="panel-collapse collapse in">
+                    <div class="card-body">
                         {loop type="customer" name="customer.info"}
-                        <div class="panel-body">
-                            <p class="fn">{loop type="title" name="customer.title.info" id=$TITLE}{$SHORT}{/loop} {$FIRSTNAME|ucwords} {$LASTNAME|upper}</p>
-                            {loop type="address" name="address.default" default="true"}
-                            <ul class="list-info list-unstyled row">
-                                <li class="col-sm-4">
-                                    {format_address address=$ID html_tag='address' html_class='adr'}
-                                </li>
-                                <li class="col-sm-4">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+                                {loop type="address" name="address.default" default="true"}
+                                <address>
+                                    <strong class="d-block mb-2">
+                                        {loop type="title" name="customer.title.info" id=$TITLE}{$SHORT}{/loop} {$FIRSTNAME|ucwords} {$LASTNAME|upper}
+                                    </strong>
+                                    <span class="street-address">{$ADDRESS1}</span><br>
+                                    {if $ADDRESS2 != ""}
+                                        <span class="street-address">{$ADDRESS2}</span><br>
+                                    {/if}
+                                    {if $ADDRESS3 != ""}
+                                        <span class="street-address">{$ADDRESS3}</span><br>
+                                    {/if}
+                                    <span class="postal-code">{$ZIPCODE}</span> <span class="locality">{$CITY}</span><br>
+                                    <span class="country-name">{loop type="country" name="customer.country.info" id=$COUNTRY}{$TITLE}{/loop}</span>
+                                    {if $STATE}<span class="state-name">, {loop type="state" name="customer.state.info" id=$STATE}{$TITLE}{/loop}</span>{/if}
+                                </address>
+                                {/loop}
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                {loop type="address" name="address.default" default="true"}
+                                <div class="mb-3">
+                                    <strong class="d-block mb-2">{intl l="Contact Information"}</strong>
                                     {if $PHONE != ""}
-                                        <span class="tel">{$PHONE}</span>
+                                        <p class="mb-1"><span class="text-muted">{intl l="Phone"}:</span> <span class="tel">{$PHONE}</span></p>
                                     {/if}
                                     {if $CELLPHONE != ""}
-                                        <span class="mobile">{$CELLPHONE}</span>
+                                        <p class="mb-1"><span class="text-muted">{intl l="Cellphone"}:</span> <span class="mobile">{$CELLPHONE}</span></p>
                                     {/if}
-                                    <span class="email">{mailto address=$EMAIL encode="hex"}</span>
-                                </li>
-                                <li class="group-btn col-sm-4">
-                                    <a href="{url path="/account/update"}" class="btn btn-link"><i class="fa fa-pencil"></i> {intl l="Change my account information"}</a>
-                                    <a href="{url path="/account/password"}" class="btn btn-link"><i class="fa fa-lock"></i> {intl l="Change my password"}</a>
-                                </li>
-                            </ul>
-                            {/loop}
+                                    <p class="mb-0"><span class="text-muted">{intl l="Email"}:</span> <span class="email">{mailto address=$EMAIL encode="hex"}</span></p>
+                                </div>
+                                <div class="mt-4">
+                                    <a href="{url path="/account/update"}" class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="feather-icon icon-edit-2"></i> {intl l="Change my account information"}
+                                    </a>
+                                    <a href="{url path="/account/password"}" class="btn btn-sm btn-outline-secondary">
+                                        <i class="feather-icon icon-lock"></i> {intl l="Change my password"}
+                                    </a>
+                                </div>
+                                {/loop}
+                            </div>
                         </div>
                         {/loop}
                     </div>
                 </div>
-                <div class="panel panel-default account-address">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#account" href="#account-address">
-                                {intl l="My Address book"}
-                            </a>
-                        </h4>
+
+                {* Address Book *}
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">{intl l="My Address book"}</h5>
+                        <a href="{url path="/address/create"}" class="btn btn-sm btn-primary">
+                            <i class="feather-icon icon-plus"></i> {intl l="Add a new address"}
+                        </a>
                     </div>
-                    <div id="account-address" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <a href="{url path="/address/create"}" class="btn btn-link pull-right"><i class="fa fa-plus"></i> {intl l="Add a new address"}</a>
-                            <table class="table table-address" role="presentation" summary="{intl l="My Address Books"}">
+                    <div class="card-body">
+                        {ifloop rel="customer.addresses"}
+                        <div class="table-responsive">
+                            <table class="table table-borderless" role="presentation" summary="{intl l="My Address Books"}">
                                 <tbody>
-                                {loop type="address" name="customer.addresses" customer="current"}
-                                <tr class="{if $DEFAULT == 1}address-primary{else}address-additional{/if}" id="customer-address-{$ID}">
-                                    <th>
-                                        {if $DEFAULT === 1}
-                                            {$LABEL|default:$default}
-                                            <span class="label label-info   ">{intl l="Main Address"}</span>
-                                        {else}
-                                            {$LABEL|default:$default}
-                                        {/if}
-                                    </th>
-                                    <td>
-                                        <ul class="list-address list-unstyled row">
-                                            <li class="col-sm-4">
-                                                <span class="fn">{loop type="title" name="customer.title.info" id=$TITLE}{$SHORT}{/loop} {$FIRSTNAME|ucwords} {$LASTNAME|upper}</span>
-                                                {if $COMPANY}
-                                                    <span class="org">{$COMPANY}</span>
+                                    {loop type="address" name="customer.addresses" customer="current"}
+                                    <tr id="customer-address-{$ID}" class="{if $DEFAULT == 1}address-primary{else}address-additional{/if}">
+                                        <td class="py-3">
+                                            <strong>
+                                                {$LABEL|default:$default}
+                                                {if $DEFAULT === 1}
+                                                    <span class="badge bg-info ms-2">{intl l="Main Address"}</span>
                                                 {/if}
-                                            </li>
-                                            <li class="col-sm-4">
-                                                <address class="adr">
-                                                    <span class="street-address">{$ADDRESS1}</span><br>
-                                                    {if $ADDRESS2 != ""}
-                                                        <span class="street-address">{$ADDRESS2}</span><br>
-                                                    {/if}
-                                                    {if $ADDRESS3 != ""}
-                                                        <span class="street-address">{$ADDRESS3}</span><br>
-                                                    {/if}
-                                                    <span class="postal-code">{$ZIPCODE}</span>
-                                                    <span class="locality">{$CITY},
-                                                    <span class="country-name">{loop type="country" name="customer.country.info" id=$COUNTRY}{$TITLE}{/loop}</span></span>
-                                                    {if $STATE}<span class="state-name">{loop type="state" name="customer.state.info" id=$STATE}{$TITLE}{/loop}</span></span>{/if}
-                                                </address>
-                                            </li>
-                                            <li class="col-sm-4">
+                                            </strong>
+                                            <address class="mb-0 mt-2">
+                                                <span class="fn">{loop type="title" name="customer.title.info" id=$TITLE}{$SHORT}{/loop} {$FIRSTNAME|ucwords} {$LASTNAME|upper}</span><br>
+                                                {if $COMPANY}
+                                                    <span class="org">{$COMPANY}</span><br>
+                                                {/if}
+                                                <span class="street-address">{$ADDRESS1}</span><br>
+                                                {if $ADDRESS2 != ""}
+                                                    <span class="street-address">{$ADDRESS2}</span><br>
+                                                {/if}
+                                                {if $ADDRESS3 != ""}
+                                                    <span class="street-address">{$ADDRESS3}</span><br>
+                                                {/if}
+                                                <span class="postal-code">{$ZIPCODE}</span> <span class="locality">{$CITY}</span>, <span class="country-name">{loop type="country" name="customer.country.info" id=$COUNTRY}{$TITLE}{/loop}</span>
+                                                {if $STATE}<span class="state-name">, {loop type="state" name="customer.state.info" id=$STATE}{$TITLE}{/loop}</span>{/if}
+                                                <br>
                                                 {if $CELLPHONE != ""}
-                                                    <span class="tel">{$CELLPHONE}</span><br>
+                                                    <span class="tel">{intl l="Phone"}: {$CELLPHONE}</span><br>
                                                 {/if}
                                                 {if $PHONE != ""}
-                                                    <span class="tel">{$PHONE}</span><br>
+                                                    <span class="tel">{intl l="Phone"}: {$PHONE}</span>
                                                 {/if}
-                                            </li>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <div class="group-btn">
-                                            <a href="{url path="/address/update/%id" id=$ID}" class="btn btn-primary" data-toggle="tooltip" title="{intl l="Edit this address"}"><i class="fa fa-pencil"></i> {intl l="Edit"}</a>
+                                            </address>
+                                        </td>
+                                        <td class="text-end py-3">
+                                            <a href="{url path="/address/update/%id" id=$ID}" class="btn btn-sm btn-outline-primary" title="{intl l="Edit this address"}">
+                                                <i class="feather-icon icon-edit-2"></i> {intl l="Edit"}
+                                            </a>
                                             {if $DEFAULT != 1}
-                                                <a href="{url path="/address/delete/%id" id=$ID}" class="btn btn-primary" data-confirm="{intl l="Do you really want to delete this address ?"}" data-confirm-callback="address.delete" title="{intl l="Remove this address"}" data-toggle="tooltip"><i class="fa fa-remove"></i> {intl l="Cancel"}</a>
+                                                <a href="{url path="/address/delete/%id" id=$ID}" class="btn btn-sm btn-outline-danger ms-2" data-confirm="{intl l="Do you really want to delete this address ?"}" data-confirm-callback="address.delete" title="{intl l="Remove this address"}">
+                                                    <i class="feather-icon icon-trash-2"></i> {intl l="Cancel"}
+                                                </a>
                                             {/if}
-                                        </div>
-                                    </td>
-                                </tr>
-                                {/loop}
+                                        </td>
+                                    </tr>
+                                    {/loop}
                                 </tbody>
                             </table>
                         </div>
+                        {/ifloop}
                     </div>
                 </div>
-                <div class="panel panel-default account-orders">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#account" href="#account-orders">
-                                {intl l="My Orders"}
-                            </a>
-                        </h4>
+
+                {* Orders *}
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">{intl l="My Orders"}</h5>
                     </div>
-                    <div id="account-orders" class="panel-collapse collapse">
-                        <div class="panel-body table-responsive">
-                            {ifloop rel="customer.orders"}
-                            <table class="table table-orders table-bordered table-hover" summary="{intl l="List of orders"}">
-                                <thead>
-                                <tr>
-                                    <th>{intl l="Order number"}</th>
-                                    <th>{intl l="Date"}</th>
-                                    <th>{intl l="Amount"}</th>
-                                    <th>{intl l="Status"}</th>
-                                    <th>{intl l="View"}</th>
-                                </tr>
+                    <div class="card-body">
+                        {ifloop rel="customer.orders"}
+                        <div class="table-responsive">
+                            <table class="table" role="presentation" summary="{intl l="List of orders"}">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>{intl l="Order number"}</th>
+                                        <th>{intl l="Date"}</th>
+                                        <th>{intl l="Amount"}</th>
+                                        <th>{intl l="Status"}</th>
+                                        <th>{intl l="View"}</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                {loop type="order" name="customer.orders"}
-                                <tr>
-                                    <td>{$REF}</td>
-                                    <td>{format_date date=$CREATE_DATE}</td>
-                                    <td>{format_money number=$TOTAL_TAXED_AMOUNT currency_id=$CURRENCY}</td>
-                                    <td>
-                                        {loop type="order-status" name="order.status" id={$STATUS}}
-                                            {assign "orderStatusCode" "order_$CODE"}
-                                            {if #$orderStatusCode# == ''}
-                                                {assign "defaultLabel" "label-default"}
-                                                {assign "orderStatusLabel" $CODE}
-                                            {else}
-                                                {assign "defaultLabel" ''}
-                                                {assign "orderStatusLabel" #$orderStatusCode#}
-                                            {/if}
-                                            <span class="label {$defaultLabel} label-{$orderStatusLabel}">{$TITLE}</span>
-                                        {/loop}
-                                    </td>
-                                    <td>
-                                        <a href="{url path="/account/order/%id" id=$ID}" class="btn btn-link" data-toggle="tooltip" title="{intl l="View order %ref details" ref={$REF}}">{intl l="Order details"}</a>
-                                    </td>
-                                </tr>
-                                {/loop}
+                                    {loop type="order" name="customer.orders"}
+                                    <tr>
+                                        <td><strong>{$REF}</strong></td>
+                                        <td>{format_date date=$CREATE_DATE}</td>
+                                        <td><strong>{format_money number=$TOTAL_TAXED_AMOUNT currency_id=$CURRENCY}</strong></td>
+                                        <td>
+                                            {loop type="order-status" name="order.status" id={$STATUS}}
+                                                {assign "orderStatusCode" "order_$CODE"}
+                                                {if #$orderStatusCode# == ''}
+                                                    {assign "defaultLabel" "bg-secondary"}
+                                                    {assign "orderStatusLabel" $CODE}
+                                                {else}
+                                                    {assign "defaultLabel" ""}
+                                                    {assign "orderStatusLabel" #$orderStatusCode#}
+                                                {/if}
+                                                <span class="badge {$defaultLabel} {$orderStatusLabel}">{$TITLE}</span>
+                                            {/loop}
+                                        </td>
+                                        <td>
+                                            <a href="{url path="/account/order/%id" id=$ID}" class="btn btn-sm btn-outline-primary" title="{intl l="View order %ref details" ref={$REF}}">
+                                                <i class="feather-icon icon-eye"></i> {intl l="Order details"}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {/loop}
                                 </tbody>
                             </table>
-                            {/ifloop}
-                            {elseloop rel="customer.orders"}
-                            <div class="alert alert-warning">
-                                <strong>{intl l="Warning"}!</strong> {intl l="You don't have orders yet."}
-                            </div>
-                            {/elseloop}
                         </div>
+                        {/ifloop}
+                        {elseloop rel="customer.orders"}
+                        <div class="alert alert-warning" role="alert">
+                            <strong>{intl l="Warning"}!</strong> {intl l="You don't have orders yet."}
+                        </div>
+                        {/elseloop}
                     </div>
                 </div>
+
+                {* Additional Hook Blocks *}
                 {hookblock name="account.additional" fields="id,title,content"}
                     {forhook rel="account.additional"}
-                        <div class="panel panel-default account-{$id}">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#account" href="#account-{$id}">
-                                        {$title}
-                                    </a>
-                                </h4>
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">{$title}</h5>
                             </div>
-                            <div id="account-{$id}" class="panel-collapse collapse">
+                            <div class="card-body">
                                 {$content nofilter}
                             </div>
                         </div>
                     {/forhook}
                 {/hookblock}
+                
+                {hook name="account.bottom"}
             </div>
-            {hook name="account.bottom"}
-        </article>
-
-    </div><!-- /.layout -->
+        </div>
+    </div>
+</section>
 {/block}
 
 {block name="stylesheet"}
+<style>
+    /* Badge colors for order status */
+    .order_ordered,
+    .order_not_paid,
+    .order_payment_cancelled {
+        background-color: #6c757d !important;
+    }
+    .order_paid,
+    .order_processing {
+        background-color: #0d6efd !important;
+    }
+    .order_shipped,
+    .order_delivered {
+        background-color: #198754 !important;
+    }
+    .order_canceled {
+        background-color: #dc3545 !important;
+    }
+    
+    /* Table styling */
+    .table tbody tr {
+        border-bottom: 1px solid #dee2e6;
+    }
+    .table tbody tr:last-child {
+        border-bottom: 0;
+    }
+    
+    /* Address card styling */
+    .address-primary {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+</style>
 {hook name="account.stylesheet"}
 {/block}
 

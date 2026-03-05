@@ -1,0 +1,16 @@
+<p id="newsletter-describe" class="mb-3">{intl l="Sign up to receive our latest news." d="hooknewsletter.fo.default"}</p>
+{form name="thelia.front.newsletter"}
+<form id="form-newsletter-mini" class="row g-2 align-items-center" action="{url path="/newsletter"}" method="post">
+{form_hidden_fields}
+{form_field field="email"}
+<div class="col-auto">
+    <label for="{$label_attr.for}-mini" class="visually-hidden">{intl l="Email address" d="hooknewsletter.fo.default"}</label>
+    <input type="email" name="{$name}" id="{$label_attr.for}-mini" class="form-control" maxlength="255" placeholder="{intl l="Your email address" d="hooknewsletter.fo.default"}" aria-describedby="newsletter-describe" {if $required} aria-required="true" required{/if} autocomplete="off">
+</div>
+{/form_field}
+<div class="col-auto">
+    <button type="submit" class="btn btn-primary">{intl l="Subscribe" d="hooknewsletter.fo.default"}</button>
+</div>
+</form>
+{/form}
+
