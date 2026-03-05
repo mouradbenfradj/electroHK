@@ -11,37 +11,262 @@
 {/block}
 
 {block name="main-content"}
-<div class="main">
 
-    {$limit={$smarty.get.limit|default:8}}
-    {$product_page={$smarty.get.page|default:1}}
-    {$product_order={$smarty.get.order|default:'alpha'}}
+{$limit={$smarty.get.limit|default:12}}
+{$product_page={$smarty.get.page|default:1}}
+{$product_order={$smarty.get.order|default:'alpha'}}
+{$mode={$smarty.get.mode|default:'grid'}}
 
-    <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
-
-        <h1 id="main-label" class="page-header">{intl l="Search Result for"} <small>{$smarty.get.q}</small></h1>
-        {assign var="amount" value={count type="product" title={$smarty.get.q}}}
-        {include file="includes/toolbar.html" toolbar="top" limit=$limit order=$product_order amount={$amount}}
-        <div id="category-products">
-            <div class="products-content">
-                {ifloop rel="product_list"}
-                    <ul class="list-unstyled row">
-                        {loop type="product" name="product_list" title={$smarty.get.q}  limit=$limit page=$product_page order=$product_order}
-                            {include file="includes/single-product.html" product_id=$ID hasBtn=true hasDescription=true width="369" height="247"}
-                        {/loop}
-                    </ul>
-                {/ifloop}
-                {elseloop  rel="product_list"}
-                    <h2 class="text-center">{intl l="No results found"} </h2>
-                {/elseloop}
+{* Search Header *}
+<section class="search-header py-4 bg-light mb-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 id="main-label" class="h3 mb-2">{intl l="Search Result for"} <small>{$smarty.get.q}</small></h1>
+                <p class="text-muted mb-0">
+                    {assign var="amount" value={count type="product" title={$smarty.get.q}}}
+                    {if ($amount > 1)}
+                        {intl l="%nb Items found" nb={$amount}}
+                    {else}
+                        {intl l="%nb Item found" nb={$amount}}
+                    {/if}
+                </p>
             </div>
-        </div><!-- /#category-products -->
-        {ifloop rel="product_list"}
-            {include file="includes/toolbar.html" toolbar="bottom" amount={$amount}}
-        {/ifloop}
-    </article>
+            <div class="col-md-4 text-md-end">
+                <i class="bi bi-search display-4 text-muted"></i>
+            </div>
+        </div>
+    </div>
+</section>
 
-</div><!-- /.layout -->
+<div class="container">
+    <div class="row">
+        {* Sidebar - Search Info *}
+        <div class="col-lg-3 col-md-4">
+            <div class="filters-sidebar">
+                {* Search Tips *}
+                <div class="card mb-4">
+                    <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#searchTips" role="button">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            {intl l="Search Tips"}
+                            <i class="bi bi-chevron-down small"></i>
+                        </h5>
+                    </div>
+                    <div class="collapse show" id="searchTips">
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0 small text-muted">
+                                <li class="mb-2"><i class="bi bi-check-circle me-2"></i>{intl l="Check spelling"}</li>
+                                <li class="mb-2"><i class="bi bi-check-circle me-2"></i>{intl l="Try different keywords"}</li>
+                                <li class="mb-2"><i class="bi bi-check-circle me-2"></i>{intl l="Use more general terms"}</li>
+                                <li><i class="bi bi-check-circle me-2"></i>{intl l="Browse categories"}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {* Categories *}
+                {ifloop rel="search_categories"}
+                <div class="card mb-4">
+                    <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#searchCategories" role="button">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            {intl l="Categories"}
+                            <i class="bi bi-chevron-down small"></i>
+                        </h5>
+                    </div>
+                    <div class="collapse show" id="searchCategories">
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush">
+                                {loop name="search_categories" type="category" limit="10"}
+                                <li class="list-group-item">
+                                    <a href="{$URL}" class="text-decoration-none text-dark">
+                                        <i class="bi bi-folder me-2"></i>{$TITLE}
+                                    </a>
+                                </li>
+                                {/loop}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {/ifloop}
+            </div>
+        </div>
+
+        {* Products Section *}
+        <div class="col-lg-9 col-md-8">
+            {* Toolbar - Sorting *}
+            <div class="toolbar mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <span class="text-muted">
+                            {if ($amount > 1)}
+                                {intl l="%nb Items" nb={$amount}}
+                            {else}
+                                {intl l="%nb Item" nb={$amount}}
+                            {/if}
+                        </span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-md-end gap-3 align-items-center">
+                            <div class="d-flex align-items-center">
+                                <label for="sortby-top" class="me-2 mb-0 text-muted">{intl l="Sort By"}:</label>
+                                <select id="sortby-top" name="order" class="form-select form-select-sm" style="width: auto;" onchange="window.location.href=this.value">
+                                    <option value="{url current="1" order="alpha" limit=$limit mode=$mode}" {if $product_order=="alpha"}selected{/if}>{intl l="Name A-Z"}</option>
+                                    <option value="{url current="1" order="alpha_reverse" limit=$limit mode=$mode}" {if $product_order=="alpha_reverse"}selected{/if}>{intl l="Name Z-A"}</option>
+                                    <option value="{url current="1" order="min_price" limit=$limit mode=$mode}" {if $product_order=="min_price"}selected{/if}>{intl l="Price: Low to High"}</option>
+                                    <option value="{url current="1" order="max_price" limit=$limit mode=$mode}" {if $product_order=="max_price"}selected{/if}>{intl l="Price: High to Low"}</option>
+                                    <option value="{url current="1" order="create-desc" limit=$limit mode=$mode}" {if $product_order=="create-desc"}selected{/if}>{intl l="Newest"}</option>
+                                </select>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <label for="limit-top" class="me-2 mb-0 text-muted">{intl l="Show"}:</label>
+                                <select id="limit-top" name="limit" class="form-select form-select-sm" style="width: auto;" onchange="window.location.href=this.value">
+                                    <option value="{url current="1" limit=12 order=$product_order mode=$mode}" {if $limit==12}selected{/if}>12</option>
+                                    <option value="{url current="1" limit=24 order=$product_order mode=$mode}" {if $limit==24}selected{/if}>24</option>
+                                    <option value="{url current="1" limit=48 order=$product_order mode=$mode}" {if $limit==48}selected{/if}>48</option>
+                                    <option value="{url current="1" limit=100000 order=$product_order mode=$mode}" {if $limit==100000}selected{/if}>{intl l="All"}</option>
+                                </select>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <a href="{url current="1" mode="grid" limit=$limit order=$product_order}" class="btn btn-sm {if $mode=='grid'}btn-primary{else}btn-outline-secondary{/if}" title="{intl l="Grid"}">
+                                    <i class="bi bi-grid-3x3-gap"></i>
+                                </a>
+                                <a href="{url current="1" mode="list" limit=$limit order=$product_order}" class="btn btn-sm {if $mode=='list'}btn-primary{else}btn-outline-secondary{/if}" title="{intl l="List"}">
+                                    <i class="bi bi-list"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {* Products Grid/List *}
+            {ifloop rel="product_list"}
+            <div class="row g-4 {if $mode == 'list'}row-cols-1{else}row-cols-2 row-cols-md-3 row-cols-lg-4{/if}">
+                {loop type="product" name="product_list" title={$smarty.get.q} limit=$limit page=$product_page order=$product_order}
+                <div class="col">
+                    <div class="card card-product h-100">
+                        <div class="card-body">
+                            <div class="text-center position-relative">
+                                {$product_id=$ID}
+                                {* Brand *}
+                                {loop name="brand_info" type="brand" product=$ID limit="1"}
+                                <div class="text-small mb-1">
+                                    <a href="{url path="/brand/`$ID`/`$URL`"}" class="text-muted text-decoration-none">{$TITLE}</a>
+                                </div>
+                                {/loop}
+
+                                {* Sale Badge *}
+                                {if $IS_PROMO}
+                                <div class="position-absolute top-0 start-0">
+                                    <span class="badge bg-danger">{intl l="Sale"}</span>
+                                </div>
+                                {/if}
+
+                                {* New Badge *}
+                                {if $IS_NEW}
+                                <div class="position-absolute top-0 end-0">
+                                    <span class="badge bg-success">{intl l="New"}</span>
+                                </div>
+                                {/if}
+
+                                {* Image *}
+                                <a href="{$URL}" class="product-image d-block mb-3">
+                                    {loop name="image_product" type="image" product=$ID limit="1" width="280" height="196" resize_mode="borders"}
+                                    <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-fluid">
+                                    {/loop}
+                                </a>
+
+                                {* Quick Actions *}
+                                <div class="card-product-action">
+                                    <a href="{$URL}" class="btn-action" data-bs-toggle="tooltip" title="{intl l="Quick View"}">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="#" class="btn-action" data-bs-toggle="tooltip" title="{intl l="Wishlist"}">
+                                        <i class="bi bi-heart"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            {* Title *}
+                            <h2 class="fs-6 mb-2">
+                                <a href="{$URL}" class="text-inherit text-decoration-none text-dark">{$TITLE}</a>
+                            </h2>
+
+                            {* Price *}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    {if $IS_PROMO}
+                                    <span class="text-dark fw-bold">{format_money number=$PROMO_PRICE}</span>
+                                    <span class="text-decoration-line-through text-muted small ms-1">{format_money number=$PRICE}</span>
+                                    {else}
+                                    <span class="text-dark fw-bold">{format_money number=$PRICE}</span>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 pt-0">
+                            <button type="button" class="btn btn-primary btn-sm w-100 add-to-cart-btn" 
+                                    data-product-id="{$ID}" 
+                                    data-pse-id="{$PRODUCT_SALE_ELEMENT}"
+                                    data-url="{$URL}">
+                                <i class="bi bi-cart-plus me-1"></i>
+                                {intl l="Add to Cart"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {/loop}
+            </div>
+
+            {* Pagination *}
+            {if $amount > $limit}
+            <nav aria-label="Products pagination" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {if $product_page le 1}
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-left"></i> {intl l="Previous"}</span>
+                    </li>
+                    {else}
+                    <li class="page-item">
+                        <a class="page-link" href="{url current="1" page={$product_page-1} order={$product_order} limit={$limit} mode={$mode}}"><i class="bi bi-chevron-left"></i> {intl l="Previous"}</a>
+                    </li>
+                    {/if}
+
+                    {pageloop rel="product_list"}
+                    <li class="page-item{if $PAGE eq $CURRENT} active{/if}">
+                        <a class="page-link" href="{url current="1" page=$PAGE order={$product_order} limit={$limit} mode={$mode}}">{$PAGE}</a>
+                    </li>
+                    {/pageloop}
+
+                    {if $product_page ge $LAST}
+                    <li class="page-item disabled">
+                        <span class="page-link">{intl l="Next"} <i class="bi bi-chevron-right"></i></span>
+                    </li>
+                    {else}
+                    <li class="page-item">
+                        <a class="page-link" href="{url current="1" page={$product_page+1} order={$product_order} limit={$limit} mode={$mode}}">{intl l="Next"} <i class="bi bi-chevron-right"></i></a>
+                    </li>
+                    {/if}
+                </ul>
+            </nav>
+            {/if}
+            {/ifloop}
+
+            {* No Products *}
+            {elseloop rel="product_list"}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox display-1 text-muted"></i>
+                <h4 class="mt-3">{intl l="No results found"}</h4>
+                <p class="text-muted">{intl l="Try adjusting your search terms to find what you're looking for."}</p>
+                <a href="{url path="/"}" class="btn btn-primary">
+                    <i class="bi bi-house me-1"></i> {intl l="Go to Homepage"}
+                </a>
+            </div>
+            {/elseloop}
+        </div>
+    </div>
+</div>
+
 {/block}
 
 
@@ -56,3 +281,4 @@
 {block name="javascript-initialization"}
 {hook name="search.javascript-initialization"}
 {/block}
+
