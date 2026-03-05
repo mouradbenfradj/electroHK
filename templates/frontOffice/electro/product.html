@@ -40,309 +40,392 @@
     {if $product_id}
     <div class="main">
         {loop name="product.details" type="product" id=$product_id limit="1" with_prev_next_info="1" with_prev_next_visible="1"}
-        <article id="product" class="col-main row" role="main" itemscope itemtype="http://schema.org/Product">
+        {$pse_count=$PSE_COUNT}
 
-            {$pse_count=$PSE_COUNT}
+        {hook name="product.top" product={$ID}}
 
-            {* Use the meta tag to specify content that is not visible on the page in any way *}
-            {loop name="brand.feature" type="brand" product={$ID}}
-                <meta itemprop="brand" content="{$TITLE}">
-            {/loop}
+        <section class="my-lg-14 my-8">
+            <div class="container">
+                <div class="row">
+                    {* Product Gallery - Single large image with clickable thumbnails *}
+                    {ifhook rel="product.gallery"}
+                        {hook name="product.gallery" product={$ID}}
+                    {/ifhook}
+                    {elsehook rel="product.gallery"}
+                    <div class="col-md-6">
+                        <!-- Main large image - This area remains and displays selected image -->
+                        <div class="product-main-image mb-3">
+                            {ifloop rel="image.main"}
+                            {loop type="image" name="image.main" product={$ID} width="560" height="445" resize_mode="borders" limit="1"}
+                            <div class="zoom main-zoom" id="mainProductImage" onmousemove="zoom(event)" style="background-image: url({$IMAGE_URL nofilter}); height: 400px; cursor: crosshair; border-radius: 8px; background-size: cover; background-position: center center;">
+                                <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" itemprop="image" id="mainProductImg" class="img-fluid w-100 h-100" style="opacity: 0;">
+                            </div>
+                            {/loop}
+                            {/ifloop}
+                            {elseloop rel="image.main"}
+                            <div class="zoom main-zoom" id="mainProductImage" style="height: 400px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                <img src="{image file='assets/dist/img/560x445.png'}" alt="{$TITLE}" class="img-fluid" id="mainProductImg">
+                            </div>
+                            {/elseloop}
+                        </div>
+                        
+                        <!-- Thumbnails below - clickable to change main image -->
+                        {ifloop rel="image.carousel"}
+                        <div class="product-thumbnails">
+                            <div class="row g-2" id="productThumbnails">
+                                {loop name="image.carousel" type="image" product={$ID} width="118" height="85" resize_mode="borders"}
+                                <div class="col-3">
+                                    <div class="thumbnail-img cursor-pointer" onclick="changeMainImage('{$IMAGE_URL nofilter}')" data-img="{$IMAGE_URL nofilter}" style="border: 2px solid {if $LOOP_COUNT == 1}#0d6efd{else}#dee2e6{/if}; border-radius: 4px; overflow: hidden; transition: border-color 0.2s;">
+                                        <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-fluid w-100" style="height: 80px; object-fit: cover;">
+                                    </div>
+                                </div>
+                                {/loop}
+                            </div>
+                        </div>
+                        {/ifloop}
+                    </div>
+                    {/elsehook}
 
-            {* Add custom feature if needed
-            {loop name="isbn.feature" type="feature" product={$ID} title="isbn"}
-                {loop name="isbn.value" type="feature_value" feature={$ID} product=$product_id}
-                    <meta itemprop="productID" content="isbn:{$TITLE}">
-                {/loop}
-            {/loop}
-            *}
+                    {* Product Details *}
+                    <div class="col-md-6">
+                        <div class="ps-lg-10 mt-6 mt-md-0">
+                            {hook name="product.details-top" product={$ID}}
 
-            {hook name="product.top" product={$ID}}
+                            <!-- content -->
+                            {loop type="category" name="category_link" id=$DEFAULT_CATEGORY}
+                            <a href="{$URL nofilter}" class="mb-4 d-block">{$TITLE}</a>
+                            {/loop}
 
-            {ifhook rel="product.gallery"}
-               {hook name="product.gallery" product={$ID}}
-            {/ifhook}
-            {elsehook rel="product.gallery"}
-            <section id="product-gallery" class="col-sm-6">
-                {ifloop rel="image.main"}
-                <figure class="product-image">
-                    {loop type="image" name="image.main" product={$ID} width="560" height="445" resize_mode="borders" limit="1"}
-                        <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive" itemprop="image" data-toggle="magnify">
-                    {/loop}
-                </figure>
-                {/ifloop}
+                            <!-- heading -->
+                            <h1 class="mb-1" itemprop="name">{$TITLE}</h1>
 
-                {ifloop rel="image.carousel"}
-                <div id="product-thumbnails" class="carousel slide" style="position:relative;">
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <ul class="list-inline">
-                                {loop name="image.carousel" type="image" product={$ID} width="560" height="445" resize_mode="borders" limit="5"}
-                                <li>
-                                    <a href="{$IMAGE_URL nofilter}" class="thumbnail {if $LOOP_COUNT == 1}active{/if}">
-                                        {loop type="image" name="image.thumbs" id={$ID} product="$OBJECT_ID" width="118" height="85" resize_mode="borders"}
-                                            <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+                            {if $REF}
+                            <div class="mb-2 text-muted">
+                                <small>{intl l="Ref." d="fo.electro"}: <span itemprop="sku">{$REF}</span></small>
+                            </div>
+                            {/if}
+
+                            <!-- rating -->
+                            {ifhook rel="product.rating"}
+                                {hook name="product.rating" product={$ID}}
+                            {elsehook rel="product.rating"}
+                            <div class="mb-4">
+                                <small class="text-warning">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-half"></i>
+                                </small>
+                            </div>
+                            {/elsehook}
+                            {/ifhook}
+
+                            {loop type="sale" name="product-sale-info" product={$ID} active="1"}
+                            <div class="alert alert-info">
+                                <p class="mb-1"><strong>{$SALE_LABEL}</strong></p>
+                                <p class="mb-0">{intl l="Save %amount%sign on this product" amount={$PRICE_OFFSET_VALUE} sign={$PRICE_OFFSET_SYMBOL} d="fo.electro"}</p>
+                                {if $HAS_END_DATE}
+                                    <p class="mb-0 small">{intl l="This offer is valid until %date" date={format_date date=$END_DATE output="date"} d="fo.electro"}</p>
+                                {/if}
+                            </div>
+                            {/loop}
+
+                            <!-- price -->
+                            <div class="fs-4 mb-4" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                {if $IS_PROMO}
+                                <span class="fw-bold text-dark" id="pse-price">{format_money number=$TAXED_PROMO_PRICE}</span>
+                                <span class="text-decoration-line-through text-muted" id="pse-price-old">{format_money number=$TAXED_PRICE}</span>
+                                <span><small class="fs-6 ms-2 text-danger">{intl l="%percentage% Off" percentage={$PROMO_PERCENTAGE} d="fo.electro"}</small></span>
+                                <meta itemprop="price" content="{$TAXED_PROMO_PRICE}">
+                                {else}
+                                <span class="fw-bold text-dark" id="pse-price">{format_money number=$TAXED_PRICE}</span>
+                                <meta itemprop="price" content="{$TAXED_PRICE}">
+                                {/if}
+                                <meta itemprop="priceCurrency" content="{currency attr="code"}">
+                                <meta itemprop="availability" content="{if $QUANTITY > 0}InStock{else}OutOfStock{/if}">
+                            </div>
+
+                            <!-- availability -->
+                            <div class="mb-4">
+                                <span class="availibity-label">{intl l="Availability" d="fo.electro"}: </span>
+                                <span id="pse-availability" class="badge {if $QUANTITY > 0}bg-success{else}bg-danger{/if}">
+                                    {if $QUANTITY > 0}
+                                        {intl l="In Stock" d="fo.electro"}
+                                    {else}
+                                        {intl l="Out of Stock" d="fo.electro"}
+                                    {/if}
+                                </span>
+                            </div>
+
+                            <!-- hr -->
+                            <hr class="my-6">
+
+                            {form name="thelia.cart.add"}
+                            <form id="form-product-details" action="{url path="/cart/add"}" method="post" class="form-product">
+                                {form_hidden_fields}
+                                <input type="hidden" name="view" value="product">
+                                <input type="hidden" name="product_id" value="{$ID}">
+                                {form_field field="append"}
+                                    <input type="hidden" name="{$name}" value="1">
+                                {/form_field}
+                                {form_field form=$form field="success_url"}
+                                    <input type="hidden" name="{$name}" value="{url path='/cart'}">
+                                {/form_field}
+
+                                {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+
+                                {form_field field="product"}
+                                    <input id="{$label_attr.for}" type="hidden" name="{$name}" value="{$ID}" {$attr}>
+                                {/form_field}
+
+                                {* pse *}
+                                {form_field field='product_sale_elements_id'}
+                                <input id="pse-id" class="pse-id" type="hidden" name="{$name}" value="{$PRODUCT_SALE_ELEMENT}" {$attr}>
+                                {/form_field}
+
+                                {if $pse_count > 1}
+                                    {* We have more than 1 combination: custom form *}
+                                    <div id="pse-options" class="mb-4">
+                                        {loop name="attributes" type="attribute" product="$product_id" order="manual"}
+                                        <div class="mb-3">
+                                            <label for="option-{$ID}" class="form-label">{$TITLE}</label>
+                                            <select id="option-{$ID}" name="option-{$ID}" class="form-select pse-option" data-attribute="{$ID}"></select>
+                                        </div>
                                         {/loop}
+                                        <div class="mb-3 option-fallback" style="display:none;">
+                                            <label for="option-fallback" class="form-label">{intl l="Options" d="fo.electro"}</label>
+                                            <select id="option-fallback" name="option-fallback" class="form-select pse-option pse-fallback" data-attribute="0"></select>
+                                        </div>
+                                    </div>
+                                {/if}
+
+                                <div id="pse-validity" class="alert alert-warning" style="display: none;">
+                                    {intl l="Sorry but this combination does not exist." d="fo.electro"}
+                                </div>
+
+                                <!-- quantity and add to cart -->
+                                <div class="mt-3 row justify-content-start g-2 align-items-center">
+                                    <div class="col-auto">
+                                        {form_field field='quantity'}
+                                        <div class="input-group input-spinner">
+                                            <input type="button" value="-" class="button-minus btn btn-sm" data-field="quantity">
+                                            <input type="number" step="1" max="10" value="1" name="{$name}" id="{$label_attr.for}" class="quantity-field form-control-sm form-input">
+                                            <input type="button" value="+" class="button-plus btn btn-sm" data-field="quantity">
+                                        </div>
+                                        {/form_field}
+                                    </div>
+                                    <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
+                                        <button id="pse-submit" type="submit" class="btn btn-primary">
+                                            <i class="feather-icon icon-shopping-bag me-2"></i>{intl l="Add to cart" d="fo.electro"}
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4 col-4">
+                                        <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true" aria-label="{intl l="Compare" d="fo.electro"}">
+                                            <i class="bi bi-arrow-left-right"></i>
+                                        </a>
+                                        <a class="btn btn-light" href="#!" data-bs-toggle="tooltip" data-bs-html="true" aria-label="{intl l="Wishlist" d="fo.electro"}">
+                                            <i class="feather-icon icon-heart"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                            {/form}
+
+                            {hook name="product.details-bottom" product={$ID}}
+
+                            <!-- hr -->
+                            <hr class="my-6">
+
+                            <!-- product info table -->
+                            <div>
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        {if $REF}
+                                        <tr>
+                                            <td>{intl l="Product Code" d="fo.electro"}:</td>
+                                            <td>{$REF}</td>
+                                        </tr>
+                                        {/if}
+                                        <tr>
+                                            <td>{intl l="Availability" d="fo.electro"}:</td>
+                                            <td>{if $QUANTITY > 0}{intl l="In Stock" d="fo.electro"}{else}{intl l="Out of Stock" d="fo.electro"}{/if}</td>
+                                        </tr>
+                                        {loop type="category" name="product_type" id=$DEFAULT_CATEGORY}
+                                        <tr>
+                                            <td>{intl l="Category" d="fo.electro"}:</td>
+                                            <td>{$TITLE}</td>
+                                        </tr>
+                                        {/loop}
+                                        {loop name="brand_info" type="brand" product={$ID} limit="1"}
+                                        <tr>
+                                            <td>{intl l="Brand" d="fo.electro"}:</td>
+                                            <td><a href="{$URL nofilter}">{$TITLE}</a></td>
+                                        </tr>
+                                        {/loop}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- share -->
+                            <div class="mt-8">
+                                <div class="dropdown">
+                                    <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {intl l="Share" d="fo.electro"}
                                     </a>
-                                </li>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="bi bi-facebook me-2"></i>Facebook</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="bi bi-twitter me-2"></i>Twitter</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="bi bi-instagram me-2"></i>Instagram</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {* Product Tabs *}
+                {strip}
+                    {capture "additional"}
+                        {ifloop rel="feature_info"}
+                            <ul class="list-unstyled">
+                                {loop name="feature_info" type="feature" product={$ID}}
+                                {ifloop rel="feature_value_info"}
+                                    <li class="mb-2">
+                                        <strong>{$TITLE}</strong> :
+                                        {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
+                                            {if $LOOP_COUNT > 1}, {else} {/if}
+                                            <span>{if $IS_FREE_TEXT == 1}{$FREE_TEXT_VALUE}{else}{$TITLE}{/if}</span>
+                                        {/loop}
+                                    </li>
+                                {/ifloop}
                                 {/loop}
                             </ul>
-                        </div>
-                        {ifloop rel="image.carouselsup"}
-                        <div class="item">
-                            <ul class="list-inline">
-                                {loop name="image.carouselsup" type="image" product={$ID} width="560" height="445" resize_mode="borders" offset="5"}
-                                    <li>
-                                        <a href="{$IMAGE_URL nofilter}" class="thumbnail">
-                                            {loop type="image" name="image.thumbssup" id={$ID} product="$OBJECT_ID" width="118" height="85" resize_mode="borders"}
-                                                <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
-                                            {/loop}
+                        {/ifloop}
+                    {/capture}
+                {/strip}
+
+                {strip}
+                    {capture "brand_info"}
+                        {loop name="brand_info" type="brand" product={$ID} limit="1"}
+                            <div class="brand-section">
+                                <h4><a href="{$URL nofilter}">{$TITLE}</a></h4>
+                                {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=218 height=146 resize_mode="borders"}
+                                    <p><a href="{$URL nofilter}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-fluid"></a></p>
+                                {/loop}
+                                {if $CHAPO}
+                                    <div class="chapo mb-3">
+                                        {$CHAPO}
+                                    </div>
+                                {/if}
+                                {if $DESCRIPTION}
+                                    <div class="description">
+                                        {$DESCRIPTION nofilter}
+                                    </div>
+                                {/if}
+                            </div>
+                        {/loop}
+                    {/capture}
+                {/strip}
+
+                {strip}
+                    {capture "document"}
+                        {ifloop rel="document"}
+                            <ul class="list-unstyled">
+                                {loop name="document" type="document" product=$ID visible="yes"}
+                                    <li class="mb-2">
+                                        <a href="{$DOCUMENT_URL}" title="{$TITLE}" target="_blank" class="text-decoration-none">
+                                            <i class="bi bi-file-earmark-text me-2"></i>{$TITLE}
                                         </a>
                                     </li>
                                 {/loop}
                             </ul>
-                        </div>
                         {/ifloop}
-                    </div>
-                    {ifloop rel="image.carouselsup"}
-                        <a class="left carousel-control" href="#product-thumbnails" data-slide="prev"><i class="fa fa-caret-left"></i></a>
-                        <a class="right carousel-control" href="#product-thumbnails" data-slide="next"><i class="fa fa-caret-right"></i></a>
-                    {/ifloop}
-                </div>
-                {/ifloop}
-            </section>
-            {/elsehook}
+                    {/capture}
+                {/strip}
 
-            <section id="product-details" class="col-sm-6">
-                {hook name="product.details-top" product={$ID}}
-
-                <div class="product-info">
-                    <h1 class="name"><span itemprop="name">{$TITLE}</span><span id="pse-name" class="pse-name"></span></h1>
-                    {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
-
-                    {loop name="brand_info" type="brand" product={$ID} limit="1"}
-                        <p><a href="{$URL nofilter}" title="{intl l="More information about this brand"}"><span itemprop="brand">{$TITLE}</span></a></p>
-                    {/loop}
-
-                    {if $POSTSCRIPTUM}<div class="short-description">
-                        <p>{$POSTSCRIPTUM}</p>
-                    </div>{/if}
-                </div>
-
-                {loop type="sale" name="product-sale-info" product={$ID} active="1"}
-                    <div class="product-promo">
-                        <p class="sale-label">{$SALE_LABEL}</p>
-                        <p class="sale-saving"> {intl l="Save %amount%sign on this product" amount={$PRICE_OFFSET_VALUE} sign={$PRICE_OFFSET_SYMBOL}}</p>
-                        {if $HAS_END_DATE}
-                            <p class="sale-period">{intl l="This offer is valid until %date" date={format_date date=$END_DATE output="date"}}</p>
-                        {/if}
-                    </div>
-                 {/loop}
-
-                <div class="product-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                    <div class="availability">
-                        <span class="availibity-label sr-only">{intl l="Availability"}: </span>
-                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
-                            <span class="in">{intl l='In Stock'}</span>
-                            <span class="out">{intl l='Out of Stock'}</span>
-                        </span>
-                    </div>
-
-                    <div class="price-container">
-                        {loop type="category" name="category_tag" id=$DEFAULT_CATEGORY}
-                            <meta itemprop="category" content="{$TITLE}">
-                        {/loop}
-                        {* List of condition : NewCondition, DamagedCondition, UsedCondition, RefurbishedCondition *}
-                        <meta itemprop="itemCondition" itemtype="http://schema.org/ItemCondition" content="NewCondition">
-                        {* List of currency : The currency used to describe the product price, in three-letter ISO format. *}
-                        <meta itemprop="priceCurrency" content="{currency attr="code"}">
-
-                        <span id="pse-promo">
-                            <span class="special-price"><span class="price-label">{intl l="Special Price:"} </span><span id="pse-price" class="price">{format_money number=$TAXED_PROMO_PRICE symbol={currency attr="symbol"}}</span></span>
-                            <meta itemprop="price" content="{$TAXED_PROMO_PRICE}">
-                            {if $SHOW_ORIGINAL_PRICE}
-                                <span class="old-price"><span class="price-label">{intl l="Regular Price:"} </span><span id="pse-price-old" class="price">{format_money number=$TAXED_PRICE}</span></span>
+                <div class="row mt-8">
+                    <div class="col-12">
+                        {hookblock name="product.additional" product=$product_id fields="id,class,title,content"}
+                        <ul class="nav nav-tabs" id="productTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">{intl l="Description" d="fo.electro"}</button>
+                            </li>
+                            {if $smarty.capture.additional ne ""}
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="additional-tab" data-bs-toggle="tab" data-bs-target="#additional" type="button" role="tab" aria-controls="additional" aria-selected="false">{intl l="Additional Info" d="fo.electro"}</button>
+                            </li>
                             {/if}
-                        </span>
-                    </div>
-
-                    <div id="pse-validity" class="validity alert alert-warning" style="display: none;" >
-                        {intl l="Sorry but this combination does not exist."}
-                    </div>
-
-                </div>
-
-                {form name="thelia.cart.add" }
-                <form id="form-product-details" action="{url path="/cart/add" }" method="post" class="form-product">
-                    {form_hidden_fields}
-                    <input type="hidden" name="view" value="product">
-                    <input type="hidden" name="product_id" value="{$ID}">
-                    {form_field field="append"}
-                        <input type="hidden" name="{$name}" value="1">
-                    {/form_field}
-                    {form_field form=$form field="success_url"}
-                        <input type="hidden" name="{$name}" value="{url path='/cart'}">
-                    {/form_field}
-
-                    {if $form_error}<div class="alert alert-error">{$form_error_message}</div>{/if}
-
-                    {form_field field="product"}
-                        <input id="{$label_attr.for}" type="hidden" name="{$name}" value="{$ID}" {$attr} >
-                    {/form_field}
-
-                    {* pse *}
-                    {form_field field='product_sale_elements_id'}
-                    <input id="pse-id" class="pse-id" type="hidden" name="{$name}" value="{$PRODUCT_SALE_ELEMENT}" {$attr} >
-                    {/form_field}
-
-                    {if $pse_count > 1}
-                        {* We have more than 1 combination: custom form *}
-                        <fieldset id="pse-options" class="product-options">
-                            {loop name="attributes" type="attribute" product="$product_id" order="manual"}
-                            <div class="option option-option">
-                                <label for="option-{$ID}" class="option-heading">{$TITLE}</label>
-                                <div class="option-content clearfix">
-                                    <select id="option-{$ID}" name="option-{$ID}" class="form-control input-sm pse-option" data-attribute="{$ID}"></select>
-                                </div>
-                            </div>
-                            {/loop}
-                            <div class="option option-fallback">
-                                <label for="option-fallback" class="option-heading">{intl l="Options"}</label>
-                                <div class="option-content clearfix">
-                                    <select id="option-fallback" name="option-fallback" class="form-control input-sm pse-option pse-fallback" data-attribute="0"></select>
-                                </div>
-                            </div>
-                        </fieldset>
-
-
-                    {/if}
-
-                    <fieldset class="product-cart form-inline">
-                        {form_field field='quantity'}
-                        <div class="form-group group-qty {if $error}has-error{elseif $value != "" && !$error}has-success{/if}">
-                            <label for="{$label_attr.for}">{$label}</label>
-                            <input type="number" name="{$name}" id="{$label_attr.for}" class="form-control" value="{$value|default:1}" min="1" required>
-                            {if $error }
-                                <span class="help-block">{$message}</span>
-                            {elseif $value != "" && !$error}
-                                <span class="help-block"><i class="fa fa-check"></i></span>
+                            {if $smarty.capture.brand_info ne ""}
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="brand-tab" data-bs-toggle="tab" data-bs-target="#brand" type="button" role="tab" aria-controls="brand" aria-selected="false">{intl l="Brand" d="fo.electro"}</button>
+                            </li>
                             {/if}
-                        </div>
-                        {/form_field}
-
-                        <div class="form-group group-btn">
-                            <button id="pse-submit" type="submit" class="btn btn_add_to_cart btn-primary"><i class="fa fa-chevron-right"></i> {intl l="Add to cart"}</button>
-                        </div>
-                    </fieldset>
-
-                </form>
-                {/form}
-                {hook name="product.details-bottom" product={$ID}}
-            </section>
-
-            {strip}
-                {capture "additional"}
-                    {ifloop rel="feature_info"}
-                        <ul>
-                            {loop name="feature_info" type="feature" product={$ID}}
-                            {ifloop rel="feature_value_info"}
-                                <li>
-                                    <strong>{$TITLE}</strong> :
-                                    {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
-                                        {if $LOOP_COUNT > 1}, {else} {/if}
-                                        <span>{if $IS_FREE_TEXT == 1}{$FREE_TEXT_VALUE}{else}{$TITLE}{/if}</span>
-                                    {/loop}
+                            {if $smarty.capture.document ne ""}
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents" type="button" role="tab" aria-controls="documents" aria-selected="false">{intl l="Documents" d="fo.electro"}</button>
+                            </li>
+                            {/if}
+                            {forhook rel="product.additional"}
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="tab{$id}" data-bs-toggle="tab" data-bs-target="#{$id}" type="button" role="tab" aria-controls="{$id}" aria-selected="false">{$title}</button>
                                 </li>
-                            {/ifloop}
-                            {/loop}
+                            {/forhook}
                         </ul>
-                    {/ifloop}
-                {/capture}
-            {/strip}
-
-            {strip}
-                {capture "brand_info"}
-                    {loop name="brand_info" type="brand" product={$ID} limit="1"}
-                        <p><strong><a href="{$URL nofilter}">{$TITLE}</a></strong></p>
-
-                        {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=218 height=146 resize_mode="borders"}
-                            <p><a href="{$URL nofilter}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></a></p>
-                        {/loop}
-
-                        {if $CHAPO}
-                            <div class="chapo">
-                                {$CHAPO}
+                        <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabContent">
+                            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab" itemprop="description">
+                                {if $DESCRIPTION}
+                                    {$DESCRIPTION nofilter}
+                                {else}
+                                    <p class="text-muted">{intl l="No description available." d="fo.electro"}</p>
+                                {/if}
                             </div>
-                        {/if}
-                        {if $DESCRIPTION}
-                            <div class="description">
-                                {$DESCRIPTION nofilter}
-                            </div>
-                        {/if}
-                        {if $POSTSCRIPTUM}
-                            <small class="postscriptum">
-                                {$POSTSCRIPTUM}
-                            </small>
-                        {/if}
-                    {/loop}
-                {/capture}
-            {/strip}
-
-            {strip}
-                {capture "document"}
-                    {ifloop rel="document"}
-                    <ul>
-                    {loop name="document" type="document" product=$ID visible="yes"}
-                        <li>
-                            <a href="{$DOCUMENT_URL}" title="{$TITLE}" target="_blank">{$TITLE}</a>
-                        </li>
-                    {/loop}
-                    </ul>
-                    {/ifloop}
-                {/capture}
-            {/strip}
-
-            <section id="product-tabs" class="col-sm-12">
-                {hookblock name="product.additional" product=$product_id fields="id,class,title,content"}
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="active" role="presentation"><a id="tab1" href="#description" data-toggle="tab" role="tab">{intl l="Description"}</a></li>
-                    {if $smarty.capture.additional ne ""}<li role="presentation"><a id="tab2" href="#additional" data-toggle="tab" role="tab">{intl l="Additional Info"}</a></li>{/if}
-                    {if $smarty.capture.brand_info ne ""}<li role="presentation"><a id="tab3" href="#brand_info" data-toggle="tab" role="tab">{intl l="Brand information"}</a></li>{/if}
-                    {if $smarty.capture.document ne ""}<li role="presentation"><a id="tab4" href="#document" data-toggle="tab" role="tab">{intl l="Documents"}</a></li>{/if}
-                    {forhook rel="product.additional"}
-                        <li role="presentation"><a id="tab{$id}" href="#{$id}" data-toggle="tab" role="tab">{$title}</a></li>
-                    {/forhook}
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active in" id="description" itemprop="description" role="tabpanel" aria-labelledby="tab1">
-                        <p>{$DESCRIPTION|default:'N/A' nofilter}</p>
+                            {if $smarty.capture.additional ne ""}
+                                <div class="tab-pane fade" id="additional" role="tabpanel" aria-labelledby="additional-tab">
+                                    {$smarty.capture.additional nofilter}
+                                </div>
+                            {/if}
+                            {if $smarty.capture.brand_info ne ""}
+                                <div class="tab-pane fade" id="brand" role="tabpanel" aria-labelledby="brand-tab">
+                                    {$smarty.capture.brand_info nofilter}
+                                </div>
+                            {/if}
+                            {if $smarty.capture.document ne ""}
+                                <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+                                    {$smarty.capture.document nofilter}
+                                </div>
+                            {/if}
+                            {forhook rel="product.additional"}
+                                <div class="tab-pane fade" id="{$id}" role="tabpanel" aria-labelledby="tab{$id}">
+                                    {$content nofilter}
+                                </div>
+                            {/forhook}
+                        </div>
+                        {/hookblock}
                     </div>
-                    {if $smarty.capture.additional ne ""}
-                        <div class="tab-pane" id="additional" role="tabpanel" aria-labelledby="tab2">
-                            {$smarty.capture.additional nofilter}
-                        </div>
-                    {/if}
-                    {if $smarty.capture.brand_info ne ""}
-                        <div class="tab-pane" id="brand_info" role="tabpanel" aria-labelledby="tab3">
-                            {$smarty.capture.brand_info nofilter}
-                        </div>
-                    {/if}
-                    {if $smarty.capture.document ne ""}
-                        <div class="tab-pane" id="document" role="tabpanel" aria-labelledby="tab4">
-                            {$smarty.capture.document nofilter}
-                        </div>
-                    {/if}
-                    {forhook rel="product.additional"}
-                    <div class="tab-pane" id="{$id}" role="tabpanel" aria-labelledby="tab{$id}">
-                        {$content nofilter}
-                    </div>
-                    {/forhook}
                 </div>
-                {/hookblock}
-            </section>
-            {hook name="product.bottom" product={$ID}}
+            </div>
+        </section>
 
-{* javascript confiuguration to display pse *}
+        {hook name="product.bottom" product={$ID}}
+
+        {* Previous/Next Product Navigation *}
+        <div class="container mb-5">
+            <ul class="pager d-flex justify-content-between">
+                {if $HAS_PREVIOUS == 1}
+                    {loop type="product" name="prev_product" id={$PREVIOUS}}
+                        <li class="previous"><a href="{$URL nofilter}" class="btn btn-outline-primary"><i class="bi bi-chevron-left"></i> {intl l="Previous product" d="fo.electro"}</a></li>
+                    {/loop}
+                {/if}
+                {if $HAS_NEXT == 1}
+                    {loop type="product" name="next_product" id={$NEXT}}
+                        <li class="next"><a href="{$URL nofilter}" class="btn btn-outline-primary">{intl l="Next product" d="fo.electro"} <i class="bi bi-chevron-right"></i></a></li>
+                    {/loop}
+                {/if}
+            </ul>
+        </div>
+
+{* javascript configuration to display pse *}
 {$pse=[]}
 {$combination_label=[]}
 {$combination_values=[]}
@@ -375,30 +458,45 @@
     var PSE = {$pse|json_encode nofilter};
     var PSE_COMBINATIONS = {$combination_label|json_encode nofilter};
     var PSE_COMBINATIONS_VALUE = {$combination_values|json_encode nofilter};
+
+    // Change main product image when clicking on thumbnail
+    // This function keeps the main image area and updates only the background image
+    function changeMainImage(imageUrl) {
+        var mainImage = document.getElementById('mainProductImage');
+        var mainImg = document.getElementById('mainProductImg');
+        
+        if (mainImage) {
+            // Update background image for zoom effect
+            mainImage.style.backgroundImage = "url(" + imageUrl + ")";
+        }
+        
+        if (mainImg) {
+            // Update hidden img src (for SEO and accessibility)
+            mainImg.src = imageUrl;
+        }
+        
+        // Update border on thumbnails to show which is selected
+        var thumbnails = document.querySelectorAll('.thumbnail-img');
+        thumbnails.forEach(function(thumb) {
+            if (thumb.getAttribute('data-img') === imageUrl) {
+                thumb.style.borderColor = '#0d6efd';
+            } else {
+                thumb.style.borderColor = '#dee2e6';
+            }
+        });
+    }
 </script>
 
         </article><!-- /#product -->
-
-        <ul class="pager">
-            {if $HAS_PREVIOUS == 1}
-                {loop type="product" name="prev_product" id={$PREVIOUS}}
-                    <li class="previous"><a href="{$URL nofilter}"><i class="fa fa-chevron-left"></i> {intl l="Previous product"}</a></li>
-                {/loop}
-            {/if}
-            {if $HAS_NEXT == 1}
-                {loop type="product" name="next_product" id={$NEXT}}
-                    <li class="next"><a href="{$URL nofilter}"><i class="fa fa-chevron-right"></i> {intl l="Next product"}</a></li>
-                {/loop}
-            {/if}
-        </ul>
         {/loop}
-
     </div><!-- /.main -->
     {else}
     <div class="main">
-        <article id="content-main" class="col-main" role="main" aria-labelledby="main-label">
-            {include file="includes/empty.html"}
-        </article>
+        <div class="container">
+            <article id="content-main" class="col-main" role="main">
+                {include file="includes/empty.html"}
+            </article>
+        </div>
     </div><!-- /.layout -->
     {/if}
 {/block}

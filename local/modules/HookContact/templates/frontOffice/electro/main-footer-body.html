@@ -1,0 +1,37 @@
+<div itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="{$store_name}">
+    
+    <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+        <li class="contact-address">
+            <address class="adr mb-0" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-geo-alt text-primary me-2 mt-1"></i>
+                    <div>
+                        <span class="street-address" itemprop="streetAddress">{config key="store_address1"} {config key="store_address2"} {config key="store_address3"}</span><br>
+                        <span class="postal-code" itemprop="postalCode">{config key="store_zipcode"}</span>
+                        <span class="locality" itemprop="addressLocality">
+                            {config key="store_city"}
+                            {if {config key="store_country"} }
+                                {loop type="country" name="address.country.title" id={config key="store_country"}}, <span class="country-name">{$TITLE}</span>{/loop}
+                            {/if}
+                        </span>
+                    </div>
+                </div>
+            </address>
+        </li>
+        {if {config key="store_phone"} }
+        <li class="contact-phone">
+            <a href="tel:{config key="store_phone"}" class="text-decoration-none text-inherit d-flex align-items-center" itemprop="telephone">
+                <i class="bi bi-telephone text-primary me-2"></i>
+                {config key="store_phone"}
+            </a>
+        </li>
+        {/if}
+        <li class="contact-contact">
+            <a href="{url path='/contact'}" class="text-decoration-none d-flex align-items-center">
+                <i class="bi bi-envelope text-primary me-2"></i>
+                {intl l="Contact us" d="hookcontact.fo.default"}
+            </a>
+        </li>
+    </ul>
+</div>

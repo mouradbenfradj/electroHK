@@ -5,8 +5,6 @@
     <div class="container">
         <div class="row">
             <div class="col-12 mb-6">
-                {* <h3 class="mb-0">
-                    {intl l="Latest" d="hookproductsnew.fo.default"} <a href="{url path="/view_all"  type="new"}" class="btn-all">{intl l="+ View All" d="hookproductsnew.fo.default"}</a></h3>*}
                 <h3 class="text-lg">{$TITLE} <a href="{viewurl view="category" category_id=$ID}" class="btn-all">{intl l="+ View All" d="hookproductsnew.fo.default"}</a></h3>
             </div>
         </div>
@@ -46,17 +44,11 @@
                                 {/elseloop}
                             </a>
                             <div class="card-product-action">
-                                <a href="#!" class="btn-action" data-bs-toggle="modal"
-                                    data-bs-target="#quickViewModal">
-                                    <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true"
-                                        aria-label="Quick View" data-bs-original-title="Quick View"></i>
+                                <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                                    <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" aria-label="Quick View" data-bs-original-title="Quick View"></i>
                                 </a>
-                                <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
-                                    aria-label="Wishlist" data-bs-original-title="Wishlist"><i
-                                        class="bi bi-heart"></i></a>
-                                <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
-                                    aria-label="Compare" data-bs-original-title="Compare"><i
-                                        class="bi bi-arrow-left-right"></i></a>
+                                <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" aria-label="Wishlist" data-bs-original-title="Wishlist"><i class="bi bi-heart"></i></a>
+                                <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" aria-label="Compare" data-bs-original-title="Compare"><i class="bi bi-arrow-left-right"></i></a>
                             </div>
                         </div>
                         <div class="text-small mb-1">
@@ -85,15 +77,16 @@
                                 {/if}
                             </div>
                             <div>
-                                <a href="{$URL}" class="btn btn-primary btn-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
+                                <button type="button" class="btn btn-primary btn-sm add-to-cart-btn" 
+                                        data-product-id="{$ID}" 
+                                        data-pse-id="{$PRODUCT_SALE_ELEMENT}"
+                                        data-url="{$URL}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
                                         <line x1="12" y1="5" x2="12" y2="19"></line>
                                         <line x1="5" y1="12" x2="19" y2="12"></line>
                                     </svg>
-                                    Add
-                                </a>
+                                    {intl l="Add" d="hookproductsnew.fo.default"}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -103,6 +96,104 @@
         </div>
     </div>
 </section>
-<!-- #products-new -->
 {/ifloop}
 {/loop}
+
+<script type="text/javascript">
+(function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        var buttons = document.querySelectorAll('.add-to-cart-btn');
+        
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                var productId = this.getAttribute('data-product-id');
+                var pseId = this.getAttribute('data-pse-id') || '';
+                var productUrl = this.getAttribute('data-url');
+                
+                // Get the cart URL from the form in product page or use a default
+                var cartUrl = '/web/index_dev.php/cart/add';
+                
+                // Try AJAX first
+                var formData = new FormData();
+                formData.append('product_id', productId);
+                formData.append('quantity', 1);
+                formData.append('view', 'product');
+                formData.append('append', 1);
+                
+                if (pseId) {
+                    formData.append('product_sale_elements_id', pseId);
+                }
+                
+                // Try AJAX add to cart
+                fetch(cartUrl, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        // Success - update cart count and show message
+                        updateCartCount();
+                        showNotification('Product added to cart!', 'success');
+                    } else if (response.status === 404) {
+                        // AJAX failed, redirect to product page
+                        window.location.href = productUrl + '?add_to_cart=1';
+                    } else {
+                        // Other error, try redirect
+                        window.location.href = productUrl + '?add_to_cart=1';
+                    }
+                })
+                .catch(function(error) {
+                    // Network error, redirect to product page
+                    window.location.href = productUrl + '?add_to_cart=1';
+                });
+            });
+        });
+        
+        function updateCartCount() {
+            var countUrl = '/web/index_dev.php/cart/count';
+            fetch(countUrl, {
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                var cartCountElements = document.querySelectorAll('.cart-count');
+                cartCountElements.forEach(function(el) {
+                    el.textContent = data.count || 0;
+                });
+            })
+            .catch(function(error) {
+                console.log('Error updating cart count:', error);
+            });
+        }
+        
+        function showNotification(message, type) {
+            // Create notification element
+            var notification = document.createElement('div');
+            notification.className = 'toast-notification toast-notification-' + type;
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.zIndex = '9999';
+            notification.style.padding = '15px 20px';
+            notification.style.borderRadius = '5px';
+            notification.style.color = '#fff';
+            notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+            notification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(function() {
+                notification.remove();
+            }, 3000);
+        }
+    });
+})();
+</script>
