@@ -96,5 +96,3 @@ jobs:
             **/php-cs/**
             **/php-cs.bat
             **/commits/**
-            **/templates/frontOffice/electro/assets/images/products/**
-            **/templates/frontOffice/electro/assets/images/product/**
