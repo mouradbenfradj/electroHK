@@ -54,6 +54,30 @@ jobs:
           
           cat local/config/database_prod.yml
 
+      - name: Drop and recreate database
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          # Install MySQL client if needed
+          sudo apt-get update && sudo apt-get install -y mysql-client
+          
+          # Drop and recreate database
+          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e "SET FOREIGN_KEY_CHECKS = 0; DROP DATABASE IF EXISTS $DB_NAME; SET FOREIGN_KEY_CHECKS = 1; CREATE DATABASE $DB_NAME;"
+          echo "Database $DB_NAME dropped and recreated successfully"
+
+      - name: Install Thelia database
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          php Thelia thelia:install --db_host=$DB_HOST --db_username=$DB_USER --db_password=$DB_PASSWORD --db_name=$DB_NAME
+          echo "Thelia database installed successfully"
+
       - name: Deploy to FTP server
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
