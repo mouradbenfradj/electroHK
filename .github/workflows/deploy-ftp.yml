@@ -17,16 +17,28 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup FTP credentials
+      - name: Setup FTP credentials and replace database config
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_PORT: ${{ secrets.FTP_PORT }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           echo "Host: $FTP_HOST"
           echo "Port: ${FTP_PORT:-21}"
           echo "Username: $FTP_USERNAME"
+          
+          # Replace database placeholder values with GitHub secrets
+          sed -i "s/__DB_HOST__/$DB_HOST/g" local/config/database_prod.yml
+          sed -i "s/__DB_NAME__/$DB_NAME/g" local/config/database_prod.yml
+          sed -i "s/__DB_USER__/$DB_USER/g" local/config/database_prod.yml
+          sed -i "s/__DB_PASSWORD__/$DB_PASSWORD/g" local/config/database_prod.yml
+          
+          cat local/config/database_prod.yml
 
       - name: Deploy to FTP server
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
@@ -37,32 +49,31 @@ jobs:
           port: ${{ secrets.FTP_PORT || 21 }}
           local-dir: ./
           server-dir: www/
-          # Exclude files/directories that shouldn't be uploaded
           exclude: |
-            **/.git**
-            **/.gitignore**
-            **/.github**
-            **/.vscode**
+            **/.git/**
+            **/.gitignore
+            **/.github/**
+            **/.vscode/**
             **/node_modules/**
             **/vendor/**
             **/*.md
             **/README*
             **/CHANGELOG*
             **/LICENSE*
-            **/.travis.yml**
-            **/.gitattributes**
-            **/phpunit.xml**
+            **/.travis.yml
+            **/.gitattributes
+            **/phpunit.xml
             **/composer.json
             **/composer.lock
             **/docker-compose.yml
-            **/docker/
-            **/tests/
+            **/docker/**
+            **/tests/**
             **/cache/**
             **/log/**
             **/setup/**
-            **/Thelia
-            **/bin/
-            **/core/
+            **/Thelia/**
+            **/bin/**
+            **/core/**
             **/UPGRADE*
             **/UPDATE*
             **/CONTRIBUTORS*
@@ -71,12 +82,9 @@ jobs:
             **/run-tests*
             **/travis.php*
             **/unit-tests*
-            **/php-cs
+            **/php-cs/**
             **/php-cs.bat
-            **/commits*
-          # Delete files on server that don't exist locally
-          # Uncomment the next line if you want to delete extra files on server
-          # delete: true
-          # Set connection timeout (default is 30 seconds)
-          timeout: 60
+            **/commits/**
+            **/templates/frontOffice/electro/assets/images/products/**
+            **/templates/frontOffice/electro/assets/images/product/**
 

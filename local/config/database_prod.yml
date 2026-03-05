@@ -1,0 +1,7 @@
+database:
+  connection:
+    driver: mysql
+    user: __DB_USER__
+    password: __DB_PASSWORD__
+    dsn: mysql:host=__DB_HOST__;dbname=__DB_NAME__;port=3306
+
