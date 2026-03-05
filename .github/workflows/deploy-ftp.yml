@@ -28,7 +28,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install --optimize-autoloader --no-interaction --prefer-dist
+          composer install --no-interaction --prefer-dist
 
       - name: Setup FTP credentials and replace database config
 
