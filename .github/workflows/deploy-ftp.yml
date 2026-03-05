@@ -29,6 +29,7 @@ jobs:
       - name: Install Composer dependencies
         run: |
           composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+          composer dump-autoload --optimize --no-dev
 
       - name: Setup FTP credentials and replace database config
 
@@ -76,14 +77,12 @@ jobs:
             **/.travis.yml
             **/.gitattributes
             **/phpunit.xml
-
             **/docker-compose.yml
             **/docker/**
             **/tests/**
             **/cache/**
             **/log/**
             **/setup/**
-            **/Thelia/**
             **/bin/**
             **/UPGRADE*
             **/UPDATE*
