@@ -137,11 +137,13 @@ GNU General Public License : http://www.gnu.org/licenses/
         <div class="page" role="document">
             {hook name="main.header-bottom"}
 
-            <main class="main-container" role="main">
-                {hook name="main.content-top"}
-                {block name="breadcrumb"}{include file="misc/breadcrumb.tpl"}{/block}
-                <div id="content">{block name="main-content"}{/block}</div>
-                {hook name="main.content-bottom"}
+            <main class="main-container my-lg-14 my-8" role="main">
+                <div class="container">
+                    {hook name="main.content-top"}
+                    {block name="breadcrumb"}{include file="misc/breadcrumb.tpl"}{/block}
+                    <div id="content" class="row">{block name="main-content"}{/block}</div>
+                    {hook name="main.content-bottom"}
+                </div>
             </main><!-- /.main-container -->
 
             <section class="my-lg-14 my-8">

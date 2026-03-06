@@ -468,28 +468,35 @@ var pseManager = (function($){
             if (doAjax) {
                 var url_action  = $(this).attr("action"),
                     product_id  = $("input[name$='product_id']",this).val(),
-                    pse_id  = $("input.pse-id",this).val();
+                    pse_id  = $("input.pse-id",this).val(),
+                    $thisBtn = $(this).find('button[type="submit"]');
+
+                // Add loading state
+                $thisBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span>');
 
                 $.ajax({type: "POST", data: $(this).serialize(), url: url_action,
                     success: function(data){
-                        $(".cart-container").html($(data).html());
-                        // addCartMessageUrl is initialized in layout.tpl
-                        $.ajax({url:addCartMessageUrl, data:{ product_id: product_id, pse_id: pse_id },
-                            success: function (data) {
-                                // Hide all currently active bootbox dialogs
-                                bootbox.hideAll();
-                                // Show dialog
-                                bootbox.dialog({
-                                    message : data,
-                                    onEscape: function() {
-                                        bootbox.hideAll();
-                                    }
-                                });
+                        // Find offcanvas in response and replace it
+                        var newOffcanvas = $(data).find("#offcanvasRight");
+                        if (newOffcanvas.length) {
+                            var currentOffcanvas = $("#offcanvasRight");
+                            if (currentOffcanvas.length) {
+                                currentOffcanvas.replaceWith(newOffcanvas);
+                                // Show the offcanvas
+                                var offcanvasEl = document.getElementById("offcanvasRight");
+                                if (offcanvasEl) {
+                                    var bsOffcanvas = new bootstrap.Offcanvas(offcanvasEl);
+                                    bsOffcanvas.show();
+                                }
                             }
-                        });
+                        }
+                        
+                        // Reset button state
+                        $thisBtn.prop('disabled', false).html('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add');
                     },
                     error: function (e) {
-                        console.log('Error.', e);
+                        console.log('Error adding to cart:', e);
+                        $thisBtn.prop('disabled', false).html('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add');
                     }
                 });
                 return false;
