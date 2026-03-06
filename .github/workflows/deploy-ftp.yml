@@ -61,6 +61,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT || 21 }}
+          dangerous-clean-slate: true
           local-dir: ./
           server-dir: www/
           exclude: |
@@ -83,8 +84,8 @@ jobs:
             **/log/**
             **/setup/**
             **/bin/**
-            **/UPGRADE*
-            **/UPDATE*
+            #**/UPGRADE*
+            #**/UPDATE*
             **/CONTRIBUTORS*
             **/COPYRIGHT*
             **/reset_install*
