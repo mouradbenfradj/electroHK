@@ -54,29 +54,22 @@ jobs:
           
           cat local/config/database_prod.yml
 
-      - name: Drop and recreate database
-        env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      - name: Remove existing SQLite database (if any)
         run: |
-          # Install MySQL client if needed
-          sudo apt-get update && sudo apt-get install -y mysql-client
-          
-          # Drop and recreate database
-          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e "SET FOREIGN_KEY_CHECKS = 0; DROP DATABASE IF EXISTS $DB_NAME; SET FOREIGN_KEY_CHECKS = 1; CREATE DATABASE $DB_NAME;"
-          echo "Database $DB_NAME dropped and recreated successfully"
+          DB_FILE="var/database.sqlite"
+          if [ -f "$DB_FILE" ]; then
+            rm -v "$DB_FILE"
+            echo "✅ Ancienne base supprimée"
+          fi
 
-      - name: Install Thelia database
-        env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      - name: Install Thelia database with SQLite
         run: |
-          php Thelia thelia:install --db_host=$DB_HOST --db_username=$DB_USER --db_password=$DB_PASSWORD --db_name=$DB_NAME
-          echo "Thelia database installed successfully"
+          php Thelia thelia:install \
+            --db_driver=sqlite \
+            --db_name="var/database.sqlite" \
+            --db_username="" \
+            --db_password=""
+          echo "✅ Base de données SQLite installée"
 
       - name: Deploy to FTP server
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
