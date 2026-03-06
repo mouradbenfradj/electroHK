@@ -55,7 +55,7 @@ jobs:
           cat local/config/database_prod.yml
 
       - name: Deploy to FTP server
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.6
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
