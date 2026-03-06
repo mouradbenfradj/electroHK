@@ -39,7 +39,9 @@ local/modules/*
 !local/modules/Carousel/
 !local/modules/Front/
 !local/modules/Tinymce/
-!local/modules/Colissimo/
+!local/modules/FlatFeeDelivery/
+!local/modules/FreeOrder/
+!local/modules/FreeShipping/
 !local/modules/Hook*/
 !local/modules/VirtualProductDelivery/
 !local/modules/VirtualProductControl/
