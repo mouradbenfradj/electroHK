@@ -89,18 +89,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Quantity spinners
     document.addEventListener('click', function(e) {
-        if (e.target.matches('.button-minus, .button-plus')) {
+        const button = e.target.closest('.button-minus, .button-plus');
+        if (button) {
             e.preventDefault();
-            const inputGroup = e.target.closest('.input-spinner');
+            const inputGroup = button.closest('.input-spinner');
             const input = inputGroup.querySelector('.quantity-field');
             const currentValue = parseInt(input.value) || 0;
             const minValue = parseInt(input.getAttribute('min')) || 1;
             const maxValue = parseInt(input.getAttribute('max')) || 10;
             
             let newValue = currentValue;
-            if (e.target.classList.contains('button-minus')) {
+            if (button.classList.contains('button-minus')) {
                 newValue = Math.max(currentValue - 1, minValue);
-            } else if (e.target.classList.contains('button-plus')) {
+            } else if (button.classList.contains('button-plus')) {
                 newValue = Math.min(currentValue + 1, maxValue);
             }
             

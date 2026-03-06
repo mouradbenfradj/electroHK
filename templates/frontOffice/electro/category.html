@@ -53,6 +53,9 @@
 {$brand_filter={$smarty.get.brand|default:''}}
 {$price_min={$smarty.get.price_min|default:''}}
 {$price_max={$smarty.get.price_max|default:''}}
+{$in_stock={$smarty.get.in_stock|default:''}}
+{$on_sale={$smarty.get.on_sale|default:''}}
+{$is_new={$smarty.get.is_new|default:''}}
 
 {hook name="category.top" category="$category_id"}
 
@@ -85,114 +88,151 @@
     <div class="row">
         {* Sidebar - Filtres *}
         <div class="col-lg-3 col-md-4">
-            <form action="{url current='1'}" method="get" id="filter-form">
-                <input type="hidden" name="order" value="{$product_order}">
-                <input type="hidden" name="limit" value="{$limit}">
-                <input type="hidden" name="mode" value="{$mode}">
-                <input type="hidden" name="page" value="1">
-                
-                <div class="filters-sidebar">
-                    {* Subcategories *}
-                    {if #category_display_subcategories#}
-                    {ifloop rel="subcategories"}
-                    <div class="card mb-4">
-                        <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#filterCategories" role="button">
-                            <h5 class="mb-0 d-flex justify-content-between align-items-center">
-                                {intl l="Categories"}
-                                <i class="bi bi-chevron-down small"></i>
-                            </h5>
-                        </div>
-                        <div class="collapse show" id="filterCategories">
-                            <div class="card-body p-0">
-                                <ul class="list-group list-group-flush">
-                                    {loop name="subcategories" type="category" parent=$category_id}
-                                    <li class="list-group-item {if $ID == $category_id}active{/if}">
-                                        <a href="{$URL}" class="text-decoration-none text-dark">
-                                            <i class="bi bi-folder me-2"></i>{$TITLE}
-                                            <span class="text-muted small float-end">({count type="product" category=$ID})</span>
-                                        </a>
-                                    </li>
-                                    {/loop}
-                                </ul>
-                            </div>
-                        </div>
+            <input type="hidden" id="category-url" value="{category attr="url"}">
+            <div class="filters-sidebar">
+                {* Subcategories *}
+                {if #category_display_subcategories#}
+                {ifloop rel="subcategories"}
+                <div class="card mb-4">
+                    <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#filterCategories" role="button">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            {intl l="Categories"}
+                            <i class="bi bi-chevron-down small"></i>
+                        </h5>
                     </div>
-                    {/ifloop}
-                    {/if}
-
-                    {* Brands Filter *}
-                    {assign var="brand_count" value={count type="brand"}}
-                    {if $brand_count > 0}
-                    <div class="card mb-4">
-                        <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#filterBrand" role="button">
-                            <h5 class="mb-0 d-flex justify-content-between align-items-center">
-                                {intl l="Brand"}
-                                <i class="bi bi-chevron-down small"></i>
-                            </h5>
-                        </div>
-                        <div class="collapse show" id="filterBrand">
-                            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                {loop type="brand" name="brands_list" with_prev_next_info="false"}
-                                <div class="form-check">
-                                    <input class="form-check-input brand-filter" type="checkbox" name="brand" value="{$ID}" id="brand_{$ID}" 
-                                        {if $brand_filter && ($ID|in_array:$brand_filter|explode:',')}checked{/if}>
-                                    <label class="form-check-label" for="brand_{$ID}">
-                                        {$TITLE} <span class="text-muted small">({count type="product" brand=$ID category=$category_id})</span>
-                                    </label>
-                                </div>
+                    <div class="collapse show" id="filterCategories">
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush">
+                                {loop name="subcategories" type="category" parent=$category_id}
+                                <li class="list-group-item {if $ID == $category_id}active{/if}">
+                                    <a href="{$URL}" class="text-decoration-none text-dark">
+                                        <i class="bi bi-folder me-2"></i>{$TITLE}
+                                        <span class="text-muted small float-end">({count type="product" category=$ID})</span>
+                                    </a>
+                                </li>
                                 {/loop}
-                            </div>
+                            </ul>
                         </div>
-                    </div>
-                    {/if}
-
-                    {* Price Filter *}
-                    <div class="card mb-4">
-                        <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#filterPrice" role="button">
-                            <h5 class="mb-0 d-flex justify-content-between align-items-center">
-                                {intl l="Price"}
-                                <i class="bi bi-chevron-down small"></i>
-                            </h5>
-                        </div>
-                        <div class="collapse show" id="filterPrice">
-                            <div class="card-body">
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <input type="number" class="form-control form-control-sm" name="price_min" id="price_min" 
-                                            placeholder="{intl l='Min'}" value="{$price_min}" min="0">
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="number" class="form-control form-control-sm" name="price_max" id="price_max" 
-                                            placeholder="{intl l='Max'}" value="{$price_max}" min="0">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {* Apply Filters Button *}
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="bi bi-funnel me-1"></i> {intl l="Apply Filters"}
-                        </button>
-                        <a href="{url current='1'}" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-x-circle me-1"></i> {intl l="Clear Filters"}
-                        </a>
                     </div>
                 </div>
-            </form>
+                {/ifloop}
+                {/if}
+
+                {* Availability Filter *}
+                <div class="card mb-4">
+                    <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#filterAvailability" role="button">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            {intl l="Availability"}
+                            <i class="bi bi-chevron-down small"></i>
+                        </h5>
+                    </div>
+                    <div class="collapse show" id="filterAvailability">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" data-filter="in_stock" data-value="1" id="in_stock" 
+                                    {if $in_stock == '1'}checked{/if}>
+                                <label class="form-check-label" for="in_stock">
+                                    <i class="bi bi-check-circle text-success me-1"></i>{intl l="In Stock Only"}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {* Special Offers Filter *}
+                <div class="card mb-4">
+                    <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#filterSpecial" role="button">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            {intl l="Special Offers"}
+                            <i class="bi bi-chevron-down small"></i>
+                        </h5>
+                    </div>
+                    <div class="collapse show" id="filterSpecial">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" data-filter="on_sale" data-value="1" id="on_sale" 
+                                    {if $on_sale == '1'}checked{/if}>
+                                <label class="form-check-label" for="on_sale">
+                                    <i class="bi bi-tag text-danger me-1"></i>{intl l="On Sale"}
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" data-filter="is_new" data-value="1" id="is_new" 
+                                    {if $is_new == '1'}checked{/if}>
+                                <label class="form-check-label" for="is_new">
+                                    <i class="bi bi-star text-primary me-1"></i>{intl l="New Products"}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {* Brands Filter *}
+                {assign var="brand_count" value={count type="brand"}}
+                {if $brand_count > 0}
+                <div class="card mb-4">
+                    <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#filterBrand" role="button">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            {intl l="Brand"}
+                            <i class="bi bi-chevron-down small"></i>
+                        </h5>
+                    </div>
+                    <div class="collapse show" id="filterBrand">
+                        <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                            {loop type="brand" name="brands_list" with_prev_next_info="false"}
+                            <div class="form-check">
+                                <input class="form-check-input brand-filter-checkbox" type="checkbox" data-filter="brand" value="{$ID}" id="brand_{$ID}" 
+                                    {if $brand_filter && ($ID|in_array:($brand_filter|explode:','))}checked{/if}>
+                                <label class="form-check-label" for="brand_{$ID}">
+                                    {$TITLE} <span class="text-muted small">({count type="product" brand=$ID category=$category_id})</span>
+                                </label>
+                            </div>
+                            {/loop}
+                        </div>
+                    </div>
+                </div>
+                {/if}
+
+                {* Price Filter *}
+                <div class="card mb-4">
+                    <div class="card-header bg-white" data-bs-toggle="collapse" data-bs-target="#filterPrice" role="button">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            {intl l="Price"}
+                            <i class="bi bi-chevron-down small"></i>
+                        </h5>
+                    </div>
+                    <div class="collapse show" id="filterPrice">
+                        <div class="card-body">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm price-filter" name="price_min" id="price_min" 
+                                        placeholder="{intl l='Min'}" value="{$price_min}" min="0" step="0.01">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm price-filter" name="price_max" id="price_max" 
+                                        placeholder="{intl l='Max'}" value="{$price_max}" min="0" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {* Apply Filters Button *}
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-primary btn-sm" id="apply-filters-btn">
+                        <i class="bi bi-funnel me-1"></i> {intl l="Apply Filters"}
+                    </button>
+                    <a href="{category attr="url"}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-x-circle me-1"></i> {intl l="Clear Filters"}
+                    </a>
+                </div>
+            </div>
         </div>
 
         {* Products Section *}
         <div class="col-lg-9 col-md-8">
-            {* Build filter params for product loop *}
-            {if $brand_filter}
-                {$brand_filter_param="brand="|cat:$brand_filter}
-            {else}
-                {$brand_filter_param=""}
-            {/if}
-            
-            {assign var="amount" value={count type="product" category=$category_id brand=$brand_filter}}
+{* Count products with filters *}
+            {assign var="amount" value={count type="product" category=$category_id brand=$brand_filter price_min=$price_min price_max=$price_max}}
 
             {* Toolbar - Sorting *}
             <div class="toolbar mb-4">
@@ -204,7 +244,7 @@
                             {else}
                                 {intl l="%nb Item" nb={$amount}}
                             {/if}
-                            {if $brand_filter || $price_min || $price_max}
+                            {if $brand_filter || $price_min || $price_max || $in_stock || $on_sale || $is_new}
                                 <span class="badge bg-secondary ms-1">{intl l="Filtered"}</span>
                             {/if}
                         </span>
@@ -213,7 +253,7 @@
                         <div class="d-flex justify-content-md-end gap-3 align-items-center">
                             <div class="d-flex align-items-center">
                                 <label for="sortby-top" class="me-2 mb-0 text-muted">{intl l="Sort By"}:</label>
-                                <select id="sortby-top" name="order" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()">
+                                <select id="sortby-top" name="order" class="form-select form-select-sm" style="width: auto;" onchange="updateFilterUrl(this.value, 'order')">
                                     <option value="alpha" {if $product_order=="alpha"}selected{/if}>{intl l="Name A-Z"}</option>
                                     <option value="alpha_reverse" {if $product_order=="alpha_reverse"}selected{/if}>{intl l="Name Z-A"}</option>
                                     <option value="min_price" {if $product_order=="min_price"}selected{/if}>{intl l="Price: Low to High"}</option>
@@ -223,7 +263,7 @@
                             </div>
                             <div class="d-flex align-items-center">
                                 <label for="limit-top" class="me-2 mb-0 text-muted">{intl l="Show"}:</label>
-                                <select id="limit-top" name="limit" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()">
+                                <select id="limit-top" name="limit" class="form-select form-select-sm" style="width: auto;" onchange="updateFilterUrl(this.value, 'limit')">
                                     <option value="12" {if $limit==12}selected{/if}>12</option>
                                     <option value="24" {if $limit==24}selected{/if}>24</option>
                                     <option value="48" {if $limit==48}selected{/if}>48</option>
@@ -231,10 +271,10 @@
                                 </select>
                             </div>
                             <div class="btn-group" role="group">
-                                <a href="{url current="1" mode="grid"}" class="btn btn-sm {if $mode=='grid'}btn-primary{else}btn-outline-secondary{/if}" title="{intl l="Grid"}">
+                                <a href="{url current="1" mode="grid"}&brand={$brand_filter}&price_min={$price_min}&price_max={$price_max}&in_stock={$in_stock}&on_sale={$on_sale}&is_new={$is_new}&order={$product_order}&limit={$limit}" class="btn btn-sm {if $mode=='grid'}btn-primary{else}btn-outline-secondary{/if}" title="{intl l="Grid"}">
                                     <i class="bi bi-grid-3x3-gap"></i>
                                 </a>
-                                <a href="{url current="1" mode="list"}" class="btn btn-sm {if $mode=='list'}btn-primary{else}btn-outline-secondary{/if}" title="{intl l="List"}">
+                                <a href="{url current="1" mode="list"}&brand={$brand_filter}&price_min={$price_min}&price_max={$price_max}&in_stock={$in_stock}&on_sale={$on_sale}&is_new={$is_new}&order={$product_order}&limit={$limit}" class="btn btn-sm {if $mode=='list'}btn-primary{else}btn-outline-secondary{/if}" title="{intl l="List"}">
                                     <i class="bi bi-list"></i>
                                 </a>
                             </div>
@@ -243,10 +283,52 @@
                 </div>
             </div>
 
+            {* Active Filters Display *}
+            {if $brand_filter || $price_min || $price_max || $in_stock || $on_sale || $is_new}
+            <div class="mb-3">
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <span class="text-muted small">{intl l="Active Filters"}:</span>
+                    {if $brand_filter}
+                        <span class="badge bg-light text-dark border">
+                            <i class="bi bi-tag me-1"></i>{intl l="Brand"}: {$brand_filter}
+                            <a href="{url current="1" brand="" price_min=$price_min price_max=$price_max in_stock=$in_stock on_sale=$on_sale is_new=$is_new}" class="text-decoration-none text-dark ms-1">&times;</a>
+                        </span>
+                    {/if}
+                    {if $price_min || $price_max}
+                        <span class="badge bg-light text-dark border">
+                            <i class="bi bi-currency-dollar me-1"></i>{if $price_min}{$price_min}{/if}{if $price_min && $price_max} - {/if}{if $price_max}{$price_max}{/if}
+                            <a href="{url current="1" brand=$brand_filter price_min="" price_max=$price_max in_stock=$in_stock on_sale=$on_sale is_new=$is_new}" class="text-decoration-none text-dark ms-1">&times;</a>
+                        </span>
+                    {/if}
+                    {if $in_stock}
+                        <span class="badge bg-light text-dark border">
+                            <i class="bi bi-check-circle me-1"></i>{intl l="In Stock"}
+                            <a href="{url current="1" brand=$brand_filter price_min=$price_min price_max=$price_max in_stock="" on_sale=$on_sale is_new=$is_new}" class="text-decoration-none text-dark ms-1">&times;</a>
+                        </span>
+                    {/if}
+                    {if $on_sale}
+                        <span class="badge bg-light text-dark border">
+                            <i class="bi bi-tag me-1"></i>{intl l="On Sale"}
+                            <a href="{url current="1" brand=$brand_filter price_min=$price_min price_max=$price_max in_stock=$in_stock on_sale="" is_new=$is_new}" class="text-decoration-none text-dark ms-1">&times;</a>
+                        </span>
+                    {/if}
+                    {if $is_new}
+                        <span class="badge bg-light text-dark border">
+                            <i class="bi bi-star me-1"></i>{intl l="New"}
+                            <a href="{url current="1" brand=$brand_filter price_min=$price_min price_max=$price_max in_stock=$in_stock on_sale=$on_sale is_new=""}" class="text-decoration-none text-dark ms-1">&times;</a>
+                        </span>
+                    {/if}
+                </div>
+            </div>
+            {/if}
+
             {* Products Grid/List *}
             {ifloop rel="product_list"}
             <div class="row g-4 {if $mode == 'list'}row-cols-1{else}row-cols-2 row-cols-md-3 row-cols-lg-4{/if}">
                 {loop type="product" name="product_list" category=$category_id brand=$brand_filter limit=$limit page=$product_page order=$product_order}
+                {* Display product only if it passes special filters *}
+                {if ($on_sale && !$IS_PROMO) || ($is_new && !$IS_NEW)}
+                {else}
                 <div class="col">
                     <div class="card card-product h-100">
                         <div class="card-body">
@@ -324,6 +406,7 @@
                         </div>
                     </div>
                 </div>
+                {/if}
                 {/loop}
             </div>
 
@@ -337,13 +420,13 @@
                     </li>
                     {else}
                     <li class="page-item">
-                        <a class="page-link" href="{url current="1" page={$product_page-1} brand={$brand_filter} price_min={$price_min} price_max={$price_max} order={$product_order} limit={$limit} mode={$mode}}"><i class="bi bi-chevron-left"></i> {intl l="Previous"}</a>
+                        <a class="page-link" href="{url current="1" page={$product_page-1} brand=$brand_filter price_min=$price_min price_max=$price_max in_stock=$in_stock on_sale=$on_sale is_new=$is_new order=$product_order limit=$limit mode=$mode}"><i class="bi bi-chevron-left"></i> {intl l="Previous"}</a>
                     </li>
                     {/if}
 
                     {pageloop rel="product_list"}
                     <li class="page-item{if $PAGE eq $CURRENT} active{/if}">
-                        <a class="page-link" href="{url current="1" page=$PAGE brand={$brand_filter} price_min={$price_min} price_max={$price_max} order={$product_order} limit={$limit} mode={$mode}}">{$PAGE}</a>
+                        <a class="page-link" href="{url current="1" page=$PAGE brand=$brand_filter price_min=$price_min price_max=$price_max in_stock=$in_stock on_sale=$on_sale is_new=$is_new order=$product_order limit=$limit mode=$mode}">{$PAGE}</a>
                     </li>
                     {/pageloop}
 
@@ -353,7 +436,7 @@
                     </li>
                     {else}
                     <li class="page-item">
-                        <a class="page-link" href="{url current="1" page={$product_page+1} brand={$brand_filter} price_min={$price_min} price_max={$price_max} order={$product_order} limit={$limit} mode={$mode}}">{intl l="Next"} <i class="bi bi-chevron-right"></i></a>
+                        <a class="page-link" href="{url current="1" page={$product_page+1} brand=$brand_filter price_min=$price_min price_max=$price_max in_stock=$in_stock on_sale=$on_sale is_new=$is_new order=$product_order limit=$limit mode=$mode}">{intl l="Next"} <i class="bi bi-chevron-right"></i></a>
                     </li>
                     {/if}
                 </ul>
@@ -367,7 +450,7 @@
                 <i class="bi bi-inbox display-1 text-muted"></i>
                 <h4 class="mt-3">{intl l="No products found"}</h4>
                 <p class="text-muted">{intl l="Try adjusting your filters to find what you're looking for."}</p>
-                <a href="{url current='1'}" class="btn btn-primary">
+                <a href="{category attr="url"}" class="btn btn-primary">
                     <i class="bi bi-x-circle me-1"></i> {intl l="Clear Filters"}
                 </a>
             </div>
@@ -380,15 +463,92 @@
 {/block}
 
 
-{block name="stylesheet"}
-{hook name="category.stylesheet"}
-{/block}
-
-{block name="after-javascript-include"}
-{hook name="category.after-javascript-include"}
-{/block}
-
 {block name="javascript-initialization"}
 {hook name="category.javascript-initialization"}
 {/block}
 
+{block name="after-javascript-include"}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Apply filters button handler
+    document.getElementById('apply-filters-btn').addEventListener('click', function() {
+        applyFilters();
+    });
+    
+    // Price filter Enter key handler
+    var priceInputs = document.querySelectorAll('.price-filter');
+    priceInputs.forEach(function(input) {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                applyFilters();
+            }
+        });
+    });
+    
+    function applyFilters() {
+        var baseUrl = document.getElementById('category-url').value;
+        var params = new URLSearchParams();
+
+        
+        // Get order from select
+        var orderSelect = document.getElementById('sortby-top');
+        if (orderSelect && orderSelect.value) {
+            params.set('order', orderSelect.value);
+        }
+        
+        // Get limit from select
+        var limitSelect = document.getElementById('limit-top');
+        if (limitSelect && limitSelect.value) {
+            params.set('limit', limitSelect.value);
+        }
+        
+        // Get checkbox filters
+        var checkboxes = document.querySelectorAll('.filter-checkbox:checked');
+        checkboxes.forEach(function(checkbox) {
+            var filterName = checkbox.getAttribute('data-filter');
+            var filterValue = checkbox.getAttribute('data-value');
+            if (filterName && filterValue) {
+                params.set(filterName, filterValue);
+            }
+        });
+        
+        // Get brand filters
+        var brandCheckboxes = document.querySelectorAll('.brand-filter-checkbox:checked');
+        var brandValues = [];
+        brandCheckboxes.forEach(function(checkbox) {
+            brandValues.push(checkbox.value);
+        });
+        if (brandValues.length > 0) {
+            params.set('brand', brandValues.join(','));
+        }
+        
+        // Get price filters
+        var priceMin = document.getElementById('price_min');
+        var priceMax = document.getElementById('price_max');
+        if (priceMin && priceMin.value) {
+            params.set('price_min', priceMin.value);
+        }
+        if (priceMax && priceMax.value) {
+            params.set('price_max', priceMax.value);
+        }
+        
+        // Build and redirect
+        var queryString = params.toString();
+        var newUrl = baseUrl + (queryString ? '?' + queryString : '');
+        window.location.href = newUrl;
+    }
+    
+    // Global function for dropdown changes
+    window.updateFilterUrl = function(value, paramName) {
+        var currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set(paramName, value);
+        currentUrl.searchParams.set('page', '1'); // Reset to first page
+        window.location.href = currentUrl.toString();
+    };
+});
+</script>
+{/block}
+
+{block name="stylesheet"}
+{hook name="category.stylesheet"}
+{/block}
