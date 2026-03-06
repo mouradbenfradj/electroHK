@@ -54,23 +54,6 @@ jobs:
           
           cat local/config/database_prod.yml
 
-      - name: Remove existing SQLite database (if any)
-        run: |
-          DB_FILE="var/database.sqlite"
-          if [ -f "$DB_FILE" ]; then
-            rm -v "$DB_FILE"
-            echo "✅ Ancienne base supprimée"
-          fi
-
-      - name: Install Thelia database with SQLite
-        run: |
-          php Thelia thelia:install \
-            --db_driver=sqlite \
-            --db_name="var/database.sqlite" \
-            --db_username="" \
-            --db_password=""
-          echo "✅ Base de données SQLite installée"
-
       - name: Deploy to FTP server
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
@@ -96,7 +79,7 @@ jobs:
             **/docker-compose.yml
             **/docker/**
             **/tests/**
-            **/cache/**
+            cache/
             **/log/**
             **/setup/**
             **/bin/**
