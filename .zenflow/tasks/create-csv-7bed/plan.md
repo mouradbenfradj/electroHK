@@ -51,16 +51,36 @@ les images que tu trouve qui correspondent au images dans le fichier csv tu les 
 
 peux tu consulter le contenu du repertoire  C:\Mourad\www\electro\e juste a la racine pour ce task
 
-### [ ] Step: clear C:\Mourad\www\electro and file lost file
-<!-- chat-id: 40c8e5b7-64f4-448d-9c5f-5a329a768916 -->
+### [x] Step: fix import
+<!-- chat-id: dff0ff88-0565-427e-8862-72c9b244b334 -->
 
-tu vas travailler sous le repertoire C:\Mourad\www\electro 
-tu ne touche pas a C:\Mourad\www\electro\electro236 et a ces sous repertoire 
-pour les autre repertoire tu supprime tous les doublant qui existe dejat dans C:\Mourad\www\electro\electro236 ou les sous repertoire de C:\Mourad\www\electro\electro236 
-si tu trouve une ou plusieur images de ce fichier setup\importzen\images_manquantes.txt dans les autres repertoire tu les deplace dans le repertoire 
-setup\importzen\images
+en exevutant sous mon contneeur docker 
 
+#  php setup/import.php
+Clearing tables
+Tables cleared with success
+start creating materials feature
+materials feature created successfully
+start creating colors attributes
+colors attributes created with success
+start creating brands
+brands created successfully
+start creating folders
+Folders created successfully
+start creating contents
+Contents created successfully
+start creating categories
+error : Impossible to create an url if title is null
 
-### [ ] Step: suppression du nom d'image en fie
+### [x] Step: structure thelia category sous category
+<!-- chat-id: dc11983b-83d8-4d12-a7f1-800b165db4d9 -->
 
-tu garde les images que tu as trouver et qui doivent existé dans C:\Mourad\www\electro\electro236\setup\importzen\images et tu les suuprime du fichier C:\Mourad\www\electro\electro236\setup\importzen\images_manquantes.txt
+ici setup\thelia.sql tu as ma structure de la base de donnée thelia tu n'y touche pas , juste tu l'analyse pour que tu puissent faire en sorte de corriger les fichier csv sous le repertoire setup\import pour qu'il importe les donnée depuis le fichier setup\import.php en gardant les category avec leurs sous category respectif meme chose pour les autres fichier csv et je vous rappel que l'origine des donnée a importer sans exporter depuis ma base de donnée wordpress avec woocommerce que j'ai fournie l'export en format csv sous le repertoire setup\wordpresswoocomerce
+
+### [ ] Step: langue currency
+<!-- chat-id: 5f23422a-1234-47f8-bda0-1acb7f3fead0 -->
+
+dans ce fichier que tu consultera selement setup\insert.sql.tpl 
+tu as le donnée inserer dans d'autres tables de ma base de donnée 
+je veux que les prix setup\import soit  sous la currency tnd 
+en plus pour les tables du fichier setup\thelia.sql qui non pas un csv sous setup\import  tu verifie setup\wordpresswoocomerce si tu trouve des donnée qui peuvent etre imprter dans ces tableau tu leurs crée leurs propre csv tu importe la totaliter des donnée et tu adapte le fichier setup\import.php pour qu'il les importe
