@@ -95,3 +95,5 @@ jobs:
             **/php-cs/**
             **/php-cs.bat
             **/commits/**
+            local/modules/Colissimo/Loop/**
+            templates/frontOffice/electro/assets/images/product
