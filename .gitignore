@@ -73,3 +73,20 @@ config.codekit
 # Ignore casperjs screenshots
 tests/functionnal/casperjs/screenshot/
 tests/phpunit/Thelia/Tests/Api/fixtures/visuel*.png
+setup\electrohajkacem
+web/cache.php
+setup/wordpresswoocomerce/
+setup/import_images.php
+setup/import6
+setup/import5tdlit
+local/modules/FlatFeeDelivery/
+local/modules/FreeOrder/
+local/modules/FreeShipping/
+local/modules/HookProductsNew/templates/frontOffice/electro/home-body copy.html
+setup/convert.php
+setup/convert_wc_to_thelia.php
+setup/convert_zen.php
+setup/electrohajkacem/
+setup/import2/
+setup/import3/
+local/modules/Colissimo/Loop
