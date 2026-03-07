@@ -82,7 +82,6 @@ jobs:
             **/tests/**
             cache/
             **/log/**
-            **/setup/**
             **/bin/**
             #**/UPGRADE*
             #**/UPDATE*
