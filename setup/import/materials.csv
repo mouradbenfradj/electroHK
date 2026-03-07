@@ -1,6 +1,12 @@
-"Tissu";"Tissue"
-"Bois";"Wood"
-"Métal";"Metal"
-"Plastique";"Plastic"
-"Cuir";"Leather"
-"Verre";"Glass"
+Inox;Inox
+Plastique;Plastique
+"Acier et Plastique";"Acier et Plastique"
+"Métal et Plastique";"Métal et Plastique"
+Aluminium;Aluminium
+PVC;PVC
+Bois;Bois
+Autre;Autre
+MDF;MDF
+Acier;Acier
+Verre;Verre
+Granite;Granite
