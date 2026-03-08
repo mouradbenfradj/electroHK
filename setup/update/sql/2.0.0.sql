@@ -39,24 +39,10 @@ INSERT INTO `resource` (`id`, `code`, `created_at`, `updated_at`) VALUES
 (@max, 'admin.cache', NOW(), NOW());
 
 INSERT INTO resource_i18n (`id`, `locale`, `title`) VALUES
-(@max, 'ar_SA', NULL),
-(@max, 'cs_CZ', NULL),
 (@max, 'de_DE', 'Konfiguration / Cache'),
-(@max, 'el_GR', NULL),
 (@max, 'en_US', 'Configuration / Cache'),
 (@max, 'es_ES', 'Configuración / caché'),
-(@max, 'fa_IR', 'پیکربندی / حافظه موقت'),
-(@max, 'fr_FR', 'Configuration / Cache'),
-(@max, 'hu_HU', NULL),
-(@max, 'id_ID', NULL),
-(@max, 'it_IT', NULL),
-(@max, 'pl_PL', 'Konfiguracja / Cache'),
-(@max, 'pt_BR', NULL),
-(@max, 'pt_PT', NULL),
-(@max, 'ru_RU', NULL),
-(@max, 'sk_SK', NULL),
-(@max, 'tr_TR', 'Yapılandırma / Cache'),
-(@max, 'uk_UA', NULL)
+(@max, 'fr_FR', 'Configuration / Cache')
 ;
 
 SET @max := @max+1;
@@ -65,24 +51,10 @@ INSERT INTO resource (`id`, `code`, `created_at`, `updated_at`) VALUES
 (@max, 'admin.home', NOW(), NOW());
 
 INSERT INTO resource_i18n (`id`, `locale`, `title`) VALUES
-(@max, 'ar_SA', NULL),
-(@max, 'cs_CZ', NULL),
 (@max, 'de_DE', 'Back-Office Startseite'),
-(@max, 'el_GR', NULL),
 (@max, 'en_US', 'Back-office home page'),
 (@max, 'es_ES', 'Página de inicio de back office'),
-(@max, 'fa_IR', NULL),
-(@max, 'fr_FR', 'Page d\'acceuil de l\'administration'),
-(@max, 'hu_HU', NULL),
-(@max, 'id_ID', NULL),
-(@max, 'it_IT', NULL),
-(@max, 'pl_PL', 'Back-office strona główna'),
-(@max, 'pt_BR', NULL),
-(@max, 'pt_PT', NULL),
-(@max, 'ru_RU', NULL),
-(@max, 'sk_SK', 'Back-office – Domovská stránka'),
-(@max, 'tr_TR', 'Arka ofis ana sayfa'),
-(@max, 'uk_UA', NULL)
+(@max, 'fr_FR', 'Page d\'acceuil de l\'administration')
 ;
 
 SET FOREIGN_KEY_CHECKS = 1;
