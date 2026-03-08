@@ -22,7 +22,7 @@
 									</a>
 
 									<div class="dropdown-menu-list-submenu">
-										{loop type="category" name="sub-cat-{$ID}" parent="{$ID}"}
+										{loop type="category" name="sub-cat" parent=$ID}
 										<div>
 											<ul class="list-unstyled">
 												<li>
@@ -53,7 +53,7 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="{$URL}" role="button" data-bs-toggle="dropdown" aria-expanded="false">{$TITLE}</a>
 							<ul class="dropdown-menu">
-								{loop type="category" name="sub-main-{$ID}" parent="{$ID}"}
+								{loop type="category" name="sub-main" parent=$ID}
 								<li><a class="dropdown-item" href="{$URL}">{$TITLE}</a></li>
 								{/loop}
 							</ul>
