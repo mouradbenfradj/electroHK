@@ -39,9 +39,7 @@ local/modules/*
 !local/modules/Carousel/
 !local/modules/Front/
 !local/modules/Tinymce/
-!local/modules/FlatFeeDelivery/
-!local/modules/FreeOrder/
-!local/modules/FreeShipping/
+!local/modules/Colissimo/
 !local/modules/Hook*/
 !local/modules/VirtualProductDelivery/
 !local/modules/VirtualProductControl/
@@ -54,7 +52,6 @@ templates/*
 !templates/frontOffice
 templates/frontOffice/*
 !templates/frontOffice/default
-!templates/frontOffice/electro
 !templates/backOffice
 templates/backOffice/*
 !templates/backOffice/default
@@ -73,26 +70,7 @@ config.codekit
 # Ignore casperjs screenshots
 tests/functionnal/casperjs/screenshot/
 tests/phpunit/Thelia/Tests/Api/fixtures/visuel*.png
-
-web/cache.php
-local/modules/FlatFeeDelivery/
-local/modules/FreeOrder/
-local/modules/FreeShipping/
-local/modules/HookProductsNew/templates/frontOffice/electro/home-body copy.html
-local/modules/Colissimo/Loop
-templates/frontOffice/electro/assets/images/product
-setup/electrohajkacem
 setup/wordpresswoocomerce/
 
-setup/import_images.php
-setup/convert.php
-setup/convert_wc_to_thelia.php
-setup/convert_zen.php
 
-setup/analyze_tables.py
-setup/import/images_manquantes.txt
-setup/read_currency.py
-setup/read_wp_data.py
-setup/read_wp_detailed.py
-setup/read_wp_orders.py
-setup/read_wp_orders2.py
+setup/electrohajkacem
