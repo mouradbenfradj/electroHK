@@ -1,0 +1,22 @@
+/* Slider 85% width, 80vh height, full image visible */
+.swiper {
+    width: 85% !important;
+    height: 80vh !important;
+    margin: 0 auto;
+    overflow: visible !important;
+}
+.swiper-wrapper, .swiper-slide {
+    height: 80vh !important;
+    overflow: visible !important;
+}
+.swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.swiper-slide img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 100%;
+    object-fit: contain !important;
+}

@@ -1,0 +1,43 @@
+{loop type="category" name="category.navigation" parent="0" need_count_child="yes"}
+{* Dynamic Tailwind mega-menu ONLY categories + subcategories *}
+<div class="group/popover flex">
+  <div class="relative flex">
+    <button popovertarget="desktop-menu-{$ID}" class="relative flex items-center justify-center text-sm font-medium transition-colors duration-200 ease-out group-not-has-open/popover:text-gray-700 group-has-open/popover:text-indigo-600 group-not-has-open/popover:hover:text-gray-800">
+      {$TITLE}
+      <span aria-hidden="true" class="absolute inset-x-0 -bottom-px z-30 h-0.5 bg-transparent duration-200 ease-in group-has-open/popover:bg-indigo-600 group-has-open/popover-group:duration-150 group-has-open/popover-group:ease-out"></span>
+    </button>
+    <a href="{$URL}" class="sr-only">{$TITLE}</a>
+  </div>
+  {if $CHILD_COUNT > 0}
+  <el-popover id="desktop-menu-{$ID}" anchor="bottom" popover class="w-full overflow-visible bg-white text-sm text-gray-500 transition transition-discrete [--anchor-gap:1px] backdrop:bg-transparent open:block data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+    <div aria-hidden="true" class="absolute inset-0 top-1/2 bg-white shadow-sm"></div>
+    <div class="relative bg-white">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
+          <div class="col-start-2 grid grid-cols-2 gap-x-8">
+            <div class="group relative text-base sm:text-sm">
+              <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg" alt="" class="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75" />
+              <a href="{$URL}" class="mt-6 block font-medium text-gray-900">
+                <span aria-hidden="true" class="absolute inset-0 z-10"></span>
+                {$TITLE}
+              </a>
+            </div>
+          </div>
+          <div class="row-start-1 grid grid-cols-1 gap-y-10 text-sm">
+            <div>
+              <ul role="list" class="mt-6 space-y-6 sm:mt-4 sm:space-y-4">
+                {loop type="category" name="sub-cat" parent=$ID visible="1" orderby="position"}
+                <li class="flex">
+                  <a href="{$URL}" class="hover:text-gray-800">{$TITLE}</a>
+                </li>
+                {/loop}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </el-popover>
+  {/if}
+</div>
+{/loop}

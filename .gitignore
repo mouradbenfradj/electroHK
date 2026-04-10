@@ -53,6 +53,7 @@ templates/*
 templates/frontOffice/*
 !templates/frontOffice/default
 !templates/frontOffice/electrohk
+!templates/frontOffice/electrohkt
 !templates/frontOffice/electro
 !templates/backOffice
 templates/backOffice/*
