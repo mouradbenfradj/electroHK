@@ -52,6 +52,9 @@ templates/*
 !templates/frontOffice
 templates/frontOffice/*
 !templates/frontOffice/default
+!templates/frontOffice/electrohk
+!templates/frontOffice/electrohkt
+!templates/frontOffice/electro
 !templates/backOffice
 templates/backOffice/*
 !templates/backOffice/default
@@ -70,7 +73,9 @@ config.codekit
 # Ignore casperjs screenshots
 tests/functionnal/casperjs/screenshot/
 tests/phpunit/Thelia/Tests/Api/fixtures/visuel*.png
-setup/wordpresswoocomerce/
 
-
+#my ignore
+setup/wordpresswoocomerce
 setup/electrohajkacem
+setup/importorigin
+setup/uvpxgnzzfh.sql

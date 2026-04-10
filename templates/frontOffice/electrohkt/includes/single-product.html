@@ -1,0 +1,106 @@
+{if $PSE_COUNT > 1}
+{assign var="hasSubmit" value = false}
+{else}
+{assign var="hasSubmit" value = true}
+{/if}
+{assign var="productTitle" value="{$TITLE}"}
+{if not $product_id}
+{assign var="product_id" value=$ID}
+{/if}
+{hook name="singleproduct.top" product="{$product_id}"}
+<a href="{$URL nofilter}" class="group">
+    {loop name="product_thumbnail" type="image" product=$product_id width="{$width}" height="{$height}"
+    resize_mode="borders" limit="1"}
+    <img itemprop="image" src="{$IMAGE_URL nofilter}"
+        class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
+        alt="{$productTitle}">
+    {/loop}
+    {elseloop rel="product_thumbnail"}
+    <img itemprop="image" src="{image file='assets/dist/img/218x146.png'}"
+        class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
+        alt="{$productTitle}">
+    {/elseloop}
+    <h3 class="mt-4 text-sm text-gray-700">{$productTitle}</h3>
+     {if $hasDescription}
+            <div class="description" itemprop="description">
+                <p>{$DESCRIPTION nofilter}</p>
+            </div>
+            {/if}
+
+    {* Stock *}
+    {assign var="current_stock_content" value = "in_stock"}
+    {assign var="current_stock_href" value = "http://schema.org/InStock"}
+    {if {config key="check-available-stock"} != 0}
+    {if $VIRTUAL == 0 && $QUANTITY <= 0} 
+    {assign var="current_stock_content" value="out_stock" } 
+    {assign var="current_stock_href" value="http://schema.org/OutOfStock" } 
+        {/if} 
+        {/if} 
+        {if $IS_PROMO } 
+        {assign var="combination_count" value={count type="product_sale_elements" promo="1" product=$ID}} <p
+        class="mt-1 text-lg font-medium text-gray-900">{intl l="Special Price:"} </span><span class="price">
+            {if $combination_count > 1}
+            {intl l="From %price" price={format_money number=$BEST_TAXED_PRICE}}
+            {else}
+            {format_money number=$BEST_TAXED_PRICE}
+            {/if}</p>
+            {if $SHOW_ORIGINAL_PRICE}
+            <p class="mt-1 text-lg font-medium text-gray-900">{intl l="Regular Price:"}<span
+                    class="price">{format_money
+                    number=$TAXED_PRICE}</span></p>
+            {/if}
+            {else}
+            <p class="mt-1 text-lg font-medium text-gray-900">{format_money number=$BEST_TAXED_PRICE}</p>
+            {/if}
+
+            {if $hasBtn == true}
+                {if $hasSubmit == true && $current_stock_content == "in_stock"}
+                    {form name="thelia.cart.add" }
+                    <form id="form-product-details{$product_id}" action="{url path="/cart/add" }" method="post" class="form-product">
+                        {form_hidden_fields}
+                        <input type="hidden" name="view" value="product">
+                        <input type="hidden" name="product_id" value="{$product_id}">
+                        {form_field field="append"}
+                            <input type="hidden" name="{$name}" value="1">
+                        {/form_field}
+
+                        {if $form_error}<div class="alert alert-error">{$form_error_message}</div>{/if}
+
+                        {form_field field='product_sale_elements_id'}
+                            <input type="hidden" class="pse-id" name="{$name}" value="{$PRODUCT_SALE_ELEMENT}" {$attr}>
+                        {/form_field}
+                        {form_field field="product"}
+                            <input id="{$label_attr.for}" type="hidden" name="{$name}" value="{$product_id}" {$attr} >
+                        {/form_field}
+
+                        <fieldset class="product-cart form-inline">
+                            {form_field field='quantity'}
+                                <div class="form-group group-qty hide {if $error}has-error{elseif $value != "" && !$error}has-success{/if}">
+                                    <label for="{$label_attr.for}">{$label}</label>
+                                    <input type="number" name="{$name}" id="{$label_attr.for}" class="form-control" value="{$value|default:1}" min="0" required>
+                                    {if $error }
+                                        <span class="help-block"><i class="fa fa-remove"></i> {$message}</span>
+                                    {elseif $value != "" && !$error}
+                                        <span class="help-block"><i class="fa fa"></i></span>
+                                    {/if}
+                                </div>
+                            {/form_field}
+                            <div>
+                                <div class="product-btn">
+                                    <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart"}</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                    {/form}
+                {else}
+                    <div>
+                        <div class="product-btn">
+                            <a href="{$URL nofilter}" class="btn btn-primary btn-block"><i class="fa fa-eye"></i> {intl l="View product"}</a>
+                        </div>
+                    </div>
+                {/if}
+            {/if}
+        </a>
+
+{hook name="singleproduct.bottom" product={$product_id}}

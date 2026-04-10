@@ -14,5 +14,6 @@
   "[html] [smarty]": {
     "editor.formatOnSave": false
   },
-  "snyk.advanced.autoSelectOrganization": true
+  "snyk.advanced.autoSelectOrganization": true,
+  "snyk.advanced.organization": "cf9d7b89-7f93-40dd-b5ab-47a8d88a62bc"
 }

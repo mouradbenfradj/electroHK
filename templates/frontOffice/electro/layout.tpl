@@ -130,7 +130,6 @@ GNU General Public License : http://www.gnu.org/licenses/
     <body class="{block name="body-class"}{/block}" itemscope itemtype="http://schema.org/WebPage">
         {hook name="main.body-top"}
         <!-- Accessibility -->
-        <a class="sr-only" href="#content">{intl l="Skip to content"}</a>
         {include file="partials/header.html"}
         {include file="partials/navbar.html"}
        

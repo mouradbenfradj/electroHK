@@ -1,0 +1,191 @@
+/* Electro Carousel Module Styles */
+
+/* Hero Slider Container */
+.hero-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.hero-slider .swiper-container {
+    width: 100%;
+    height: 100%;
+}
+
+.hero-slider .slide-inner {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+}
+
+.min-height-400 {
+    min-height: 400px;
+}
+
+.hero-slider .slide-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem 0;
+}
+
+.hero-slider .badge {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+
+.hero-slider .slide-content h2 {
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+    .hero-slider .slide-content h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .hero-slider .slide-content h2 {
+        font-size: 3rem;
+    }
+}
+
+.hero-slider .slide-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+    .hero-slider .slide-content p {
+        font-size: 1.125rem;
+    }
+}
+
+.hero-slider .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.hero-slider .btn svg {
+    transition: transform 0.3s ease;
+}
+
+.hero-slider .btn:hover svg {
+    transform: translateX(4px);
+}
+
+.hero-slider .swiper-pagination {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.hero-slider .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid transparent;
+    opacity: 1;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.hero-slider .swiper-pagination-bullet:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.hero-slider .swiper-pagination-bullet-active {
+    background: #fff;
+    border-color: #fff;
+    transform: scale(1.2);
+}
+
+.hero-slider .swiper-button-next,
+.hero-slider .swiper-button-prev {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    color: #333;
+    z-index: 10;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-slider .swiper-button-next:hover,
+.hero-slider .swiper-button-prev:hover {
+    background: #fff;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero-slider .swiper-button-next {
+    right: 1rem;
+}
+
+.hero-slider .swiper-button-prev {
+    left: 1rem;
+}
+
+.hero-slider .swiper-button-next::after,
+.hero-slider .swiper-button-prev::after {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+@media (max-width: 767px) {
+    .hero-slider .swiper-button-next,
+    .hero-slider .swiper-button-prev {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .hero-slider .swiper-button-next::after,
+    .hero-slider .swiper-button-prev::after {
+        font-size: 1rem;
+    }
+    
+    .hero-slider .slide-inner {
+        min-height: 300px;
+    }
+}
+
+.hero-slider .swiper-slide {
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.hero-slider .swiper-slide-active {
+    opacity: 1;
+}
+
+.hero-slider .slide-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0.1) 50%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    z-index: 1;
+}
+

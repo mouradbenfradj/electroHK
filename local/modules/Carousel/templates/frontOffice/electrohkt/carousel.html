@@ -1,0 +1,33 @@
+{ifloop rel="carousel.front"}
+<!-- Slider main container -->
+<div id="main-carousel" class="main-carousel-swiper swiper">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+        {loop type="carousel" name="carousel.front" }
+        <div class="swiper-slide">
+             {if $URL}<a href="{$URL|default:'#'}">{/if}
+                <img src="{$IMAGE_URL}" alt="{$ALT}" width="100%">
+                {if $URL}</a>{/if}
+
+            <div class="carousel-caption">
+                {if $TITLE}<h3>{$TITLE}</h3>{/if}
+                {if $DESCRIPTION}{$DESCRIPTION nofilter}{/if}
+            </div>
+        </div>
+       
+        {/loop}
+        ...
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+    <!-- If we need scrollbar -->
+    <div class="swiper-scrollbar-horizontal"></div>
+</div>
+
+{/ifloop}

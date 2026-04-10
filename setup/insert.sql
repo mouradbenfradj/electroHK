@@ -1,6 +1,6 @@
 INSERT INTO `lang`(`id`,`title`,`code`,`locale`,`url`,`date_format`,`time_format`,`datetime_format`,`decimal_separator`,`thousands_separator`,`decimals`,`active`,`visible`,`by_default`,`created_at`,`updated_at`)VALUES
-(1, 'Français', 'fr', 'fr_FR', '', 'd/m/Y', 'H:i:s', 'd/m/Y H:i:s', ',', ' ', '2', '1', '1', '0', NOW(), NOW()),
-(2, 'English', 'en', 'en_US', '', 'm-d-Y', 'h:i:s', 'm-d-Y h:i:s', '.', ' ', '2', '1', '1', '1', NOW(), NOW()),
+(1, 'Français', 'fr', 'fr_FR', '', 'd/m/Y', 'H:i:s', 'd/m/Y H:i:s', ',', ' ', '2', '1', '1', '1', NOW(), NOW()),
+(2, 'English', 'en', 'en_US', '', 'm-d-Y', 'h:i:s', 'm-d-Y h:i:s', '.', ' ', '2', '1', '1', '0', NOW(), NOW()),
 (3, 'Castellano', 'es', 'es_ES', '', 'm-d-Y', 'h:i:s', 'm-d-Y h:i:s', ',', '.', '2', '1', '1', '0', NOW(), NOW()),
 (4, 'Italiano', 'it', 'it_IT', '', 'd/m/Y', 'H:i:s', 'd/m/y H:i:s', ',', ' ', '2', '1', '1', '0', NOW(), NOW()),
 (5, 'Russian', 'ru', 'ru_RU', '', 'j.n.Y', 'H:i:s', 'j.n.Y H:i:s', ',', ' ', '2', '0', '0', '0', NOW(), NOW()),
@@ -9,7 +9,7 @@ INSERT INTO `lang`(`id`,`title`,`code`,`locale`,`url`,`date_format`,`time_format
 
 INSERT INTO `config` (`id`, `name`, `value`, `secured`, `hidden`, `created_at`, `updated_at`) VALUES
 (1, 'check-available-stock', '1', 0, 0, NOW(), NOW()),
-(2, 'active-front-template', 'default', 0, 0, NOW(), NOW()),
+(2, 'active-front-template', 'electro', 0, 0, NOW(), NOW()),
 (3, 'active-admin-template', 'default', 0, 0, NOW(), NOW()),
 (4, 'active-pdf-template', 'default', 0, 0, NOW(), NOW()),
 (5, 'active-mail-template', 'default', 0, 0, NOW(), NOW()),
@@ -81,7 +81,7 @@ INSERT INTO `config` (`id`, `name`, `value`, `secured`, `hidden`, `created_at`, 
 ;
 
 INSERT INTO `module` (`id`, `code`, `type`, `activate`, `position`, `full_namespace`, `hidden`, `mandatory`, `created_at`, `updated_at`) VALUES
-(1, 'Carousel', 1, 0, 1, 'Carousel\\Carousel', 0, 0, NOW(), NOW()),
+(1, 'Carousel', 1, 1, 1, 'Carousel\\Carousel', 0, 0, NOW(), NOW()),
 (2, 'Colissimo', 2, 0, 1, 'Colissimo\\Colissimo', 0, 0, NOW(), NOW()),
 (3, 'Cheque', 3, 0, 1, 'Cheque\\Cheque', 0, 0, NOW(), NOW()),
 (4, 'Front', 1, 1, 2, 'Front\\Front', 1, 0, NOW(), NOW()),
@@ -860,7 +860,7 @@ INSERT INTO `customer_title`(`id`, `by_default`, `position`, `created_at`, `upda
 
 INSERT INTO `currency` (`id`, `code`, `symbol`, `format`, `rate`, `visible`, `position`, `by_default`, `created_at`, `updated_at`)
 VALUES
-(1, 'EUR', '€', '%n %s','1.00', 1, 1, '1', NOW(), NOW()),
+(1, 'TND', 'DT', '%n%s', '1.000000', 1, 1, '1', NOW(), NOW()),
 (2, 'USD', '$', '%s%n', '1.26', 1, 2, '0', NOW(), NOW()),
 (3, 'GBP', '£', '%s%n','0.89', 1, 3, '0', NOW(), NOW()),
 (4, 'CHF', 'CHF', '%n %s', '1.34183', 0, 4, '0', NOW(), NOW()),
@@ -905,7 +905,7 @@ VALUES
 (43, 'HUF', 'Ft‎', '%n %s', '276.334', 0, 43, '0', NOW(), NOW()),
 (44, 'KES', 'KSh', '%s %n', '1.000000', 0, 44, '0', NOW(), NOW()),
 (45, 'UAH', '₴', '%n %s', '1', 0, 45, '0', NOW(), NOW()),
-(46, 'TND', 'DT', '%n%s', '1.000000', 0, 46, '0', NOW(), NOW()),
+(46, 'EUR', '€', '%n %s','1.00', 1, 46, '0', NOW(), NOW()),
 (47, 'BGN', 'лв', '%n %s', '1.95580', 0, 47, '0', NOW(), NOW()),
 (48, 'INR', '₹', '%s %n', '60.748205', 0, 48, '0', NOW(), NOW());
 
