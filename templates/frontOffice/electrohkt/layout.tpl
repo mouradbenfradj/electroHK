@@ -377,7 +377,7 @@ GNU General Public License : http://www.gnu.org/licenses/
 
     <p class="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">Get free delivery on orders over $100</p>
 
-    <div aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div aria-label="Top" class="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
       <div class="border-b border-gray-200">
         <div class="flex h-16 items-center">
           <button type="button" command="show-modal" commandfor="mobile-menu" class="relative rounded-md bg-white p-2 text-gray-400 lg:hidden">
@@ -457,7 +457,7 @@ GNU General Public License : http://www.gnu.org/licenses/
         </div>
       </div>
     </div>
-    <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <nav aria-label="Top" class="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
 
           <!-- Flyout menus -->
           <el-popover-group class="group/popover-group hidden lg:ml-8 lg:block lg:self-stretch">
@@ -468,7 +468,7 @@ GNU General Public License : http://www.gnu.org/licenses/
     </nav>
     
 <div id="categories-swiper" class="swip hidden-categories-swiper relative my-4 h-[20vh] max-h-[150px]">
-  <div class="absolute inset-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-11 gap-3 p-3 overflow-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+    <div class="absolute inset-0 flex flex-row flex-nowrap items-center justify-start gap-2 p-3 overflow-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
     {loop type="category" name="hidden-cat" parent="0" visible="0" orderby="position"}
     <a href="{$URL}" class="group flex flex-col items-center justify-center text-center transition-all duration-200 hover:scale-[1.05]">
       <div class="relative h-14 w-14 shadow-lg group-hover:shadow-xl flex-shrink-0">
