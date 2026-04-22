@@ -20,3 +20,10 @@
     max-height: 100%;
     object-fit: contain !important;
 }
+
+.electro-navigation {
+    left: calc(0px + var(--anchor-offset, 0px));
+    top: calc(104px + var(--anchor-gap, 0px));
+    --button-width: 50.875px;
+    position: absolute;
+}

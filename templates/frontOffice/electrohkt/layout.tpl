@@ -1,21 +1,4 @@
-<!doctype html>
-<!--
- ______   __  __     ______     __         __     ______
-/\__  _\ /\ \_\ \   /\  ___\   /\ \       /\ \   /\  __ \
-\/_/\ \/ \ \  __ \  \ \  __\   \ \ \____  \ \ \  \ \  __ \
-   \ \_\  \ \_\ \_\  \ \_____\  \ \_____\  \ \_\  \ \_\ \_\
-    \/_/   \/_/\/_/   \/_____/   \/_____/   \/_/   \/_/\/_/
-
-
-Copyright (c) OpenStudio
-email : info@thelia.net
-web : http://www.thelia.net
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 3 of the
-GNU General Public License : http://www.gnu.org/licenses/
--->
+<!DOCTYPE html>
 
 {* Declare assets directory, relative to template base directory *}
 {declare_assets directory='assets/dist'}
@@ -34,598 +17,1768 @@ GNU General Public License : http://www.gnu.org/licenses/
 {if not $store_description}{assign var="store_description" value={$store_name}}{/if}
 
 {* paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither *}
-<!--[if lt IE 7 ]><html class="no-js oldie ie6" lang="{$lang_code}"> <![endif]-->
-<!--[if IE 7 ]><html class="no-js oldie ie7" lang="{$lang_code}"> <![endif]-->
-<!--[if IE 8 ]><html class="no-js oldie ie8" lang="{$lang_code}"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="{$lang_code}" class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7 ]><html class="oldie ie6" lang="{$lang_code}"> <![endif]-->
+<!--[if IE 7 ]><html class="oldie ie7" lang="{$lang_code}"> <![endif]-->
+<!--[if IE 8 ]><html class="oldie ie8" lang="{$lang_code}"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="{$lang_code}">
+<!--<![endif]-->
+
 <head>
-    {hook name="main.head-top"}
-    {* Test if javascript is enabled *}
-    <script>(function(H) { H.className=H.className.replace(/\bno-js\b/,'js') } )(document.documentElement);</script>
-
-    <meta charset="utf-8">
-
-    {* Page Title *}
-    <title>{block name="page-title"}{strip}{if $page_title}{$page_title}{elseif $breadcrumbs}{foreach from=$breadcrumbs|array_reverse item=breadcrumb}{$breadcrumb.title|unescape} - {/foreach}{$store_name}{else}{$store_name}{/if}{/strip}{/block}</title>
-
-    {* Meta Tags *}
-    <meta name="generator" content="{intl l='Thelia V2'}">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    {block name="meta"}
-        <meta name="description" content="{if $page_description}{$page_description}{else}{$store_description|strip|truncate:120}{/if}">
+  {hook name="main.head-top"}
+  <title>
+    {block name="page-title"}
+      {strip}
+        {if $page_title}{$page_title}
+        {elseif $breadcrumbs}
+          {foreach from=$breadcrumbs|array_reverse item=breadcrumb}{$breadcrumb.title|unescape}
+          - {/foreach}{$store_name}
+        {else}{$store_name}
+        {/if}
+      {/strip}
     {/block}
-{* Thelia CSS commented to avoid conflicts *}
-{* {stylesheets file='assets/dist/css/thelia.min.css'}
-        <link rel="stylesheet" href="{$asset_url}">
-{/stylesheets} *}
+  </title>
+  <meta charset="utf-8">
+  <meta name="generator" content="{intl l='Thelia V2'}">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  {block name="meta"}
+    <meta name="description"
+      content="{if $page_description}{$page_description}{else}{$store_description|strip|truncate:120}{/if}">
+  {/block}
 
-    {*
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  {stylesheets file='assets/css/vendor.css'}
+  <link rel="stylesheet" href="{$asset_url}">
+  {/stylesheets}
+  {stylesheets file='assets/css/style.css'}
+  <link rel="stylesheet" href="{$asset_url}">
+  {/stylesheets}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+  {hook name="main.stylesheet"}
 
-    If you want to generate the CSS assets on the fly, just replace the stylesheet inclusion above by the following.
-     Then, in your back-office, go to Configuration -> System Variables and set process_assets to 1.
-     Now, when you're accessing the front office in developpement mode (index_dev.php)  the CSS is recompiled when a
-     change in the source files is detected.
+  {block name="stylesheet"}{/block}
+  {local_media type="favicon" width=32 height=32}
+  <link rel="icon" type="{$MEDIA_MIME_TYPE}" href="{$MEDIA_URL}" />
+  {/local_media}
 
-     See http://doc.thelia.net/en/documentation/templates/assets.html#activate-automatic-assets-generation for details.
+  {* Feeds *}
+  <link rel="alternate" type="application/rss+xml" title="{intl l='All products'}"
+    href="{url path="/feed/catalog/%lang" lang=$lang_locale}" />
+  <link rel="alternate" type="application/rss+xml" title="{intl l='All contents'}"
+    href="{url path="/feed/content/%lang" lang=$lang_locale}" />
+  <link rel="alternate" type="application/rss+xml" title="{intl l='All brands'}"
+    href="{url path="/feed/brand/%lang" lang=$lang_locale}" />
+  {block name="feeds"}{/block}
 
-    {stylesheets file='assets/src/less/thelia.less' filters='less'}
-        <link rel="stylesheet" href="{$asset_url}">
-    {/stylesheets}
-
-    *}
-
-    {hook name="main.stylesheet"}
-
-    {block name="stylesheet"}{/block}
-
-        <style type="text/tailwindcss">
-            .electro-navigation {
-                left: calc(0px + var(--anchor-offset, 0px));
-                top: calc(104px + var(--anchor-gap, 0px));
-                --button-width: 50.875px;
-                position: absolute;
-            }
-        </style>
-
-{stylesheets file='assets/css/custom.css'}
-    <link rel="stylesheet" href="{$asset_url}">
-{/stylesheets}
-    {* Favicon *}
-    {* PNG file favicons are not supported by IE 10 and lower. In this case, we use the default .ico file in the template. *}
-
-    <!--[if lt IE 11]>
-    <link rel="shortcut icon" type="image/x-icon" href="{image file='assets/dist/img/favicon.ico'}" />
-    <![endif]-->
-
-    {local_media type="favicon" width=32 height=32}
-    <link rel="icon" type="{$MEDIA_MIME_TYPE}" href="{$MEDIA_URL}" />
-    {/local_media}
-
-    {* Feeds *}
-    <link rel="alternate" type="application/rss+xml" title="{intl l='All products'}" href="{url path="/feed/catalog/%lang" lang=$lang_locale}" />
-    <link rel="alternate" type="application/rss+xml" title="{intl l='All contents'}" href="{url path="/feed/content/%lang" lang=$lang_locale}" />
-    <link rel="alternate" type="application/rss+xml" title="{intl l='All brands'}"   href="{url path="/feed/brand/%lang" lang=$lang_locale}" />
-    {block name="feeds"}{/block}
-
-    {* HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries *}
-    <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-    {javascripts file="assets/dist/js/vendors/html5shiv.min.js"}
-        <script>window.html5 || document.write('<script src="{$asset_url}"><\/script>');</script>
-    {/javascripts}
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
-    {javascripts file="assets/dist/js/vendors/respond.min.js"}
-        <script>window.respond || document.write('<script src="{$asset_url}"><\/script>');</script>
-    {/javascripts}
-    <![endif]-->
-<!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
-<script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
-
-    {hook name="main.head-bottom"}
+  {hook name="main.head-bottom"}
 </head>
-<body class="{block name="body-class"}{/block}" itemscope itemtype="http://schema.org/WebPage">
-    {hook name="main.body-top"}
-<!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
-<div class="bg-white">
-  <!-- Mobile menu -->
-  <el-dialog>
-    <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
-      <el-dialog-backdrop class="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-closed:opacity-0"></el-dialog-backdrop>
-      <div tabindex="0" class="fixed inset-0 flex focus:outline-none">
-        <el-dialog-panel class="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-closed:-translate-x-full">
-          <div class="flex px-4 pt-5 pb-2">
-            <button type="button" command="close" commandfor="mobile-menu" class="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400">
-              <span class="absolute -inset-0.5"></span>
-              <span class="sr-only">Close menu</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
-                <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </button>
-          </div>
 
-          <!-- Links -->
-          <el-tab-group class="mt-2 block">
-            <div class="border-b border-gray-200">
-              <el-tab-list class="-mb-px flex space-x-8 px-4">
-                <button class="flex-1 border-b-2 border-transparent px-1 py-4 text-base font-medium whitespace-nowrap text-gray-900 aria-selected:border-indigo-600 aria-selected:text-indigo-600">Women 2</button>
-                <button class="flex-1 border-b-2 border-transparent px-1 py-4 text-base font-medium whitespace-nowrap text-gray-900 aria-selected:border-indigo-600 aria-selected:text-indigo-600">Men</button>
-              </el-tab-list>
-            </div>
-            <el-tab-panels>
-              <div class="space-y-10 px-4 pt-10 pb-8">
-                <div class="grid grid-cols-2 gap-x-4">
-                  <div class="group relative text-sm">
-                    <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg" alt="Models sitting back to back, wearing Basic Tee in black and bone." class="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75" />
-                    <a href="#" class="mt-6 block font-medium text-gray-900">
-                      <span aria-hidden="true" class="absolute inset-0 z-10"></span>
-                      New Arrivals
-                    </a>
-                    <p aria-hidden="true" class="mt-1">Shop now</p>
-                  </div>
-                  <div class="group relative text-sm">
-                    <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-02.jpg" alt="Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees." class="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75" />
-                    <a href="#" class="mt-6 block font-medium text-gray-900">
-                      <span aria-hidden="true" class="absolute inset-0 z-10"></span>
-                      Basic Tees
-                    </a>
-                    <p aria-hidden="true" class="mt-1">Shop now</p>
-                  </div>
-                </div>
-                <div>
-                  <p id="women-clothing-heading-mobile" class="font-medium text-gray-900">Clothing</p>
-                  <ul role="list" aria-labelledby="women-clothing-heading-mobile" class="mt-6 flex flex-col space-y-6">
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Tops</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Dresses</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Pants</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Denim</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Sweaters</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">T-Shirts</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Jackets</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Activewear</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Browse All</a>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <p id="women-accessories-heading-mobile" class="font-medium text-gray-900">Accessories</p>
-                  <ul role="list" aria-labelledby="women-accessories-heading-mobile" class="mt-6 flex flex-col space-y-6">
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Watches</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Wallets</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Bags</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Sunglasses</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Hats</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Belts</a>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <p id="women-brands-heading-mobile" class="font-medium text-gray-900">Brands</p>
-                  <ul role="list" aria-labelledby="women-brands-heading-mobile" class="mt-6 flex flex-col space-y-6">
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Full Nelson</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">My Way</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Re-Arranged</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Counterfeit</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Significant Other</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div hidden class="space-y-10 px-4 pt-10 pb-8">
-                <div class="grid grid-cols-2 gap-x-4">
-                  <div class="group relative text-sm">
-                    <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg" alt="Drawstring top with elastic loop closure and textured interior padding." class="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75" />
-                    <a href="#" class="mt-6 block font-medium text-gray-900">
-                      <span aria-hidden="true" class="absolute inset-0 z-10"></span>
-                      New Arrivals
-                    </a>
-                    <p aria-hidden="true" class="mt-1">Shop now</p>
-                  </div>
-                  <div class="group relative text-sm">
-                    <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-02-image-card-06.jpg" alt="Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt." class="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75" />
-                    <a href="#" class="mt-6 block font-medium text-gray-900">
-                      <span aria-hidden="true" class="absolute inset-0 z-10"></span>
-                      Artwork Tees
-                    </a>
-                    <p aria-hidden="true" class="mt-1">Shop now</p>
-                  </div>
-                </div>
-                <div>
-                  <p id="men-clothing-heading-mobile" class="font-medium text-gray-900">Clothing</p>
-                  <ul role="list" aria-labelledby="men-clothing-heading-mobile" class="mt-6 flex flex-col space-y-6">
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Tops</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Pants</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Sweaters</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">T-Shirts</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Jackets</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Activewear</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Browse All</a>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <p id="men-accessories-heading-mobile" class="font-medium text-gray-900">Accessories</p>
-                  <ul role="list" aria-labelledby="men-accessories-heading-mobile" class="mt-6 flex flex-col space-y-6">
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Watches</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Wallets</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Bags</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Sunglasses</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Hats</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Belts</a>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <p id="men-brands-heading-mobile" class="font-medium text-gray-900">Brands</p>
-                  <ul role="list" aria-labelledby="men-brands-heading-mobile" class="mt-6 flex flex-col space-y-6">
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Re-Arranged</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Counterfeit</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">Full Nelson</a>
-                    </li>
-                    <li class="flow-root">
-                      <a href="#" class="-m-2 block p-2 text-gray-500">My Way</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </el-tab-panels>
-          </el-tab-group>
+<body class="{block name="body-class"}{/block}">
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <defs>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="link" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M12 19a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm5 0a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm0-4a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm-5 0a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm7-12h-1V2a1 1 0 0 0-2 0v1H8V2a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3Zm1 17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9h16Zm0-11H4V6a1 1 0 0 1 1-1h1v1a1 1 0 0 0 2 0V5h8v1a1 1 0 0 0 2 0V5h1a1 1 0 0 1 1 1ZM7 15a1 1 0 1 0-1-1a1 1 0 0 0 1 1Zm0 4a1 1 0 1 0-1-1a1 1 0 0 0 1 1Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="arrow-right" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M17.92 11.62a1 1 0 0 0-.21-.33l-5-5a1 1 0 0 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l5-5a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="category" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M19 5.5h-6.28l-.32-1a3 3 0 0 0-2.84-2H5a3 3 0 0 0-3 3v13a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-10a3 3 0 0 0-3-3Zm1 13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-13a1 1 0 0 1 1-1h4.56a1 1 0 0 1 .95.68l.54 1.64a1 1 0 0 0 .95.68h7a1 1 0 0 1 1 1Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="calendar" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M19 4h-2V3a1 1 0 0 0-2 0v1H9V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7h16Zm0-9H4V7a1 1 0 0 1 1-1h2v1a1 1 0 0 0 2 0V6h6v1a1 1 0 0 0 2 0V6h2a1 1 0 0 1 1 1Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M20.16 4.61A6.27 6.27 0 0 0 12 4a6.27 6.27 0 0 0-8.16 9.48l7.45 7.45a1 1 0 0 0 1.42 0l7.45-7.45a6.27 6.27 0 0 0 0-8.87Zm-1.41 7.46L12 18.81l-6.75-6.74a4.28 4.28 0 0 1 3-7.3a4.25 4.25 0 0 1 3 1.25a1 1 0 0 0 1.42 0a4.27 4.27 0 0 1 6 6.05Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="plus" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="minus" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M19 11H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="cart" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M8.5 19a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 8.5 19ZM19 16H7a1 1 0 0 1 0-2h8.491a3.013 3.013 0 0 0 2.885-2.176l1.585-5.55A1 1 0 0 0 19 5H6.74a3.007 3.007 0 0 0-2.82-2H3a1 1 0 0 0 0 2h.921a1.005 1.005 0 0 1 .962.725l.155.545v.005l1.641 5.742A3 3 0 0 0 7 18h12a1 1 0 0 0 0-2Zm-1.326-9l-1.22 4.274a1.005 1.005 0 0 1-.963.726H8.754l-.255-.892L7.326 7ZM16.5 19a1.5 1.5 0 1 0 1.5 1.5a1.5 1.5 0 0 0-1.5-1.5Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="check" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46l-3.13-3.14A1 1 0 1 0 5.29 13l3.84 3.84a1 1 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="trash" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M10 18a1 1 0 0 0 1-1v-6a1 1 0 0 0-2 0v6a1 1 0 0 0 1 1ZM20 6h-4V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2ZM10 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4Zm7 14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8h10Zm-3-1a1 1 0 0 0 1-1v-6a1 1 0 0 0-2 0v6a1 1 0 0 0 1 1Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="star-outline" viewBox="0 0 15 15">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+          d="M7.5 9.804L5.337 11l.413-2.533L4 6.674l2.418-.37L7.5 4l1.082 2.304l2.418.37l-1.75 1.793L9.663 11L7.5 9.804Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="star-solid" viewBox="0 0 15 15">
+        <path fill="currentColor"
+          d="M7.953 3.788a.5.5 0 0 0-.906 0L6.08 5.85l-2.154.33a.5.5 0 0 0-.283.843l1.574 1.613l-.373 2.284a.5.5 0 0 0 .736.518l1.92-1.063l1.921 1.063a.5.5 0 0 0 .736-.519l-.373-2.283l1.574-1.613a.5.5 0 0 0-.283-.844L8.921 5.85l-.968-2.062Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="search" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="user" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M15.71 12.71a6 6 0 1 0-7.42 0a10 10 0 0 0-6.22 8.18a1 1 0 0 0 2 .22a8 8 0 0 1 15.9 0a1 1 0 0 0 1 .89h.11a1 1 0 0 0 .88-1.1a10 10 0 0 0-6.25-8.19ZM12 12a4 4 0 1 1 4-4a4 4 0 0 1-4 4Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="close" viewBox="0 0 15 15">
+        <path fill="currentColor"
+          d="M7.953 3.788a.5.5 0 0 0-.906 0L6.08 5.85l-2.154.33a.5.5 0 0 0-.283.843l1.574 1.613l-.373 2.284a.5.5 0 0 0 .736.518l1.92-1.063l1.921 1.063a.5.5 0 0 0 .736-.519l-.373-2.283l1.574-1.613a.5.5 0 0 0-.283-.844L8.921 5.85l-.968-2.062Z" />
+      </symbol>
+    </defs>
+  </svg>
 
-          <div class="space-y-6 border-t border-gray-200 px-4 py-6">
-            <div class="flow-root">
-              <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Company</a>
-            </div>
-            <div class="flow-root">
-              <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Stores</a>
-            </div>
-          </div>
+  <div class="preloader-wrapper">
+    <div class="preloader">
+    </div>
+  </div>
+  {hook name="main.body-top"}
 
-          <div class="space-y-6 border-t border-gray-200 px-4 py-6">
-            <div class="flow-root">
-              <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Sign in</a>
-            </div>
-            <div class="flow-root">
-              <a href="#" class="-m-2 block p-2 font-medium text-gray-900">Create account</a>
-            </div>
-          </div>
 
-          <div class="border-t border-gray-200 px-4 py-6">
-            <a href="#" class="-m-2 flex items-center p-2">
-              <img src="https://tailwindcss.com/plus-assets/img/flags/flag-canada.svg" alt="" class="block h-auto w-5 shrink-0" />
-              <span class="ml-3 block text-base font-medium text-gray-900">CAD</span>
-              <span class="sr-only">, change currency</span>
-            </a>
-          </div>
-        </el-dialog-panel>
-      </div>
-    </dialog>
-  </el-dialog>
-
-<header class="relative bg-white/90 backdrop-blur-md shadow-lg z-50">
+  <header>
     {hook name="main.header-top"}
-
-    <p class="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">Get free delivery on orders over $100</p>
-
-    <div aria-label="Top" class="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
-      <div class="border-b border-gray-200">
-        <div class="flex h-16 items-center">
-          <button type="button" command="show-modal" commandfor="mobile-menu" class="relative rounded-md bg-white p-2 text-gray-400 lg:hidden">
-            <span class="absolute -inset-0.5"></span>
-            <span class="sr-only">Open menu</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
-              <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </button>
-
-          <!-- Logo -->
-          <div class="ml-4 flex lg:ml-0">
-            <a href="#">
-              <span class="sr-only">Your Company</span>
-              <a href="{navigate to="index"}" title="{$store_name}">
-                  {local_media type="logo"}
-                  <img src="{$MEDIA_URL}" alt="{$store_name}"  class="h-15 w-auto">
-                  {/local_media}
-              </a>
+    <div class="container-fluid">
+      <div class="row py-3 border-bottom">
+        <div class="col-sm-4 col-lg-3 text-center text-sm-start">
+          <div class="main-logo">
+            <a href="{navigate to="index"}" title="{$store_name}">
+              {local_media type="logo"}
+              <img src="{$MEDIA_URL}" alt="{$store_name}" class="img-fluid">
+              {/local_media}
             </a>
           </div>
+        </div>
+        {ifhook rel="main.navbar-secondary"}
+        {hook name="main.navbar-secondary"}
+        {/ifhook}
 
-                    <div class="navbar-header">
-                        <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-secondary">
-                            <span class="sr-only">{intl l="Toggle navigation"}</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand visible-xs" href="{navigate to="index"}">{$store_name}</a>
-                    </div>
+        <div
+          class="col-sm-8 col-lg-4 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 
-                    {ifhook rel="main.navbar-secondary"}
-                        {* Place everything within .nav-collapse to hide it until above 768px *}
-                        <nav class="navbar-collapse collapse nav-secondary" role="navigation" aria-label="{intl l="Secondary Navigation"}">
-                            {hook name="main.navbar-secondary"}
-                        </nav>
-                    {/ifhook}
+          {ifhook rel="main.navbar-secondary-right"}
+          {hook name="main.navbar-secondary-right"}
+          {/ifhook}
 
-          <div class="ml-auto flex items-center">
-            <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-              <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Sign in</a>
-              <span aria-hidden="true" class="h-6 w-px bg-gray-200"></span>
-              <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Create account</a>
+        </div>
+
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row py-3">
+        <div class="d-flex  justify-content-center justify-content-sm-between align-items-center">
+          <nav class="main-menu d-flex navbar navbar-expand-lg">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+              aria-controls="offcanvasNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+              aria-labelledby="offcanvasNavbarLabel">
+
+              <div class="offcanvas-header justify-content-center">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+
+              <div class="offcanvas-body">
+                {*
+                <select class="filter-categories border-0 mb-0 me-5">
+                  <option>Shop by Departments</option>
+                  <option>Groceries</option>
+                  <option>Drinks</option>
+                  <option>Chocolates</option>
+                </select>
+                *}
+
+                <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
+                  {hook name="main.navbar-primary"}
+                </ul>
+
+              </div>
+
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  {hook name="main.header-bottom"}
+  {hook name="main.content-top"}
+  {block name="breadcrumb"}{include file="misc/breadcrumb.tpl"}{/block}
+  <div id="content">{block name="main-content"}{/block}</div>
+  {hook name="main.content-bottom"}
+
+  <section class="py-5 overflow-hidden">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="section-header d-flex flex-wrap justify-content-between mb-5">
+            <h2 class="section-title">{intl l="Category" d="fo.electro"}</h2>
+
+            <div class="d-flex align-items-center">
+              <a href="{url path='/category'}" class="btn-link text-decoration-none">{intl l="View all"} {intl l="Category" d="fo.electro"} →</a>
+              <div class="swiper-buttons">
+                <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
+                <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="category-carousel swiper">
+            <div class="swiper-wrapper">
+                {loop type="category" name="category.home-body" parent="0"}
+
+              <a href="index.html" class="nav-link category-item swiper-slide">
+              {loop type="image" name="image_test" category="$ID" resize_mode="borders" limit="1"}
+              <img src="{$IMAGE_URL}" alt="{$TITLE}">
+              {/loop}
+                <h3 class="category-title">{$TITLE}</h3>
+              </a>
+               {/loop}
+               {*
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-bread-baguette.png" alt="Category Thumbnail">
+                <h3 class="category-title">Breads & Sweets</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-soft-drinks-bottle.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-wine-glass-bottle.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-animal-products-drumsticks.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-bread-herb-flour.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-vegetables-broccoli.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-vegetables-broccoli.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-vegetables-broccoli.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-vegetables-broccoli.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-vegetables-broccoli.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              <a href="index.html" class="nav-link category-item swiper-slide">
+                <img src="images/icon-vegetables-broccoli.png" alt="Category Thumbnail">
+                <h3 class="category-title">Fruits & Veges</h3>
+              </a>
+              *}
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section class="py-5">
+    <div class="container-fluid">
+      <div class="row">
+        {loop type="folder" name="the-loop-name"}
+        <div class="col-md-6">
+          <div class="banner-ad bg-danger mb-3"
+          {loop type="image" name="image_test" source="folder" source_id="$ID"}
+     style="background: url({$IMAGE_URL});background-repeat: no-repeat;background-position: right bottom;"
+{/loop}
+          >
+            <div class="banner-content p-5">
+
+              <div class="categories text-primary fs-3 fw-bold">{$CHAPO}</div>
+              <h3 class="banner-title">{$TITLE}</h3>
+              <p>{$DESCRIPTION}</p>
+              <a href="{$URL}" class="btn btn-dark text-uppercase">Show Now</a>
+
             </div>
 
-            <div class="hidden lg:ml-8 lg:flex">
-              <a href="#" class="flex items-center text-gray-700 hover:text-gray-800">
-                <img src="https://tailwindcss.com/plus-assets/img/flags/flag-canada.svg" alt="" class="block h-auto w-5 shrink-0" />
-                <span class="ml-3 block text-sm font-medium">CAD</span>
-                <span class="sr-only">, change currency</span>
+          </div>
+        </div>
+        {/loop}
+
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 overflow-hidden">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="section-header d-flex flex-wrap justify-content-between my-5">
+
+            <h2 class="section-title">Best selling products</h2>
+
+            <div class="d-flex align-items-center">
+              <a href="#" class="btn-link text-decoration-none">View All Categories →</a>
+              <div class="swiper-buttons">
+                <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
+                <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="products-carousel swiper">
+            <div class="swiper-wrapper">
+
+              <div class="product-item swiper-slide">
+                <span class="badge bg-success position-absolute m-3">-15%</span>
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoes.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <span class="badge bg-success position-absolute m-3">-15%</span>
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoketchup.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <span class="badge bg-success position-absolute m-3">-15%</span>
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <span class="badge bg-success position-absolute m-3">-15%</span>
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoes.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoketchup.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / products-carousel -->
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container-fluid">
+
+      <div class="bg-secondary py-5 my-5 rounded-5"
+        style="background: url('images/bg-leaves-img-pattern.png') no-repeat;">
+        <div class="container my-5">
+          <div class="row">
+            <div class="col-md-6 p-5">
+              <div class="section-header">
+                <h2 class="section-title display-4">Get <span class="text-primary">25% Discount</span> on your first
+                  purchase</h2>
+              </div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dictumst amet, metus, sit massa posuere
+                maecenas. At tellus ut nunc amet vel egestas.</p>
+            </div>
+            <div class="col-md-6 p-5">
+              <form>
+                <div class="mb-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" class="form-control form-control-lg" name="name" id="name" placeholder="Name">
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Email</label>
+                  <input type="email" class="form-control form-control-lg" name="email" id="email"
+                    placeholder="abc@mail.com">
+                </div>
+                <div class="form-check form-check-inline mb-3">
+                  <label class="form-check-label" for="subscribe">
+                    <input class="form-check-input" type="checkbox" id="subscribe" value="subscribe">
+                    Subscribe to the newsletter</label>
+                </div>
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-dark btn-lg">Submit</button>
+                </div>
+              </form>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-5 overflow-hidden">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="section-header d-flex justify-content-between">
+
+            <h2 class="section-title">Most popular products</h2>
+
+            <div class="d-flex align-items-center">
+              <a href="#" class="btn-link text-decoration-none">View All Categories →</a>
+              <div class="swiper-buttons">
+                <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
+                <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="products-carousel swiper">
+            <div class="swiper-wrapper">
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoes.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoketchup.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoes.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoketchup.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / products-carousel -->
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 overflow-hidden">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="section-header d-flex justify-content-between">
+
+            <h2 class="section-title">Just arrived</h2>
+
+            <div class="d-flex align-items-center">
+              <a href="#" class="btn-link text-decoration-none">View All Categories →</a>
+              <div class="swiper-buttons">
+                <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
+                <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="products-carousel swiper">
+            <div class="swiper-wrapper">
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoes.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoketchup.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoes.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-tomatoketchup.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+              <div class="product-item swiper-slide">
+                <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                    <use xlink:href="#heart"></use>
+                  </svg></a>
+                <figure>
+                  <a href="index.html" title="Product Title">
+                    <img src="images/thumb-bananas.png" class="tab-image">
+                  </a>
+                </figure>
+                <h3>Sunstar Fresh Melon Juice</h3>
+                <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
+                    <use xlink:href="#star-solid"></use>
+                  </svg> 4.5</span>
+                <span class="price">$18.00</span>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="input-group product-qty">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <span class="input-group-btn">
+                      <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / products-carousel -->
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="latest-blog" class="py-5">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="section-header d-flex align-items-center justify-content-between my-5">
+          <h2 class="section-title">Our Recent Blog</h2>
+          <div class="btn-wrap align-right">
+            <a href="#" class="d-flex align-items-center nav-link">Read All Articles <svg width="24" height="24">
+                <use xlink:href="#arrow-right"></use>
+              </svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <article class="post-item card border-0 shadow-sm p-3">
+            <div class="image-holder zoom-effect">
+              <a href="#">
+                <img src="{* images/post-thumb-1.jpg *}" alt="post" class="card-img-top">
               </a>
             </div>
+            <div class="card-body">
+              <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
+                <div class="meta-date"><svg width="16" height="16">
+                    <use xlink:href="#calendar"></use>
+                  </svg>22 Aug 2021</div>
+                <div class="meta-categories"><svg width="16" height="16">
+                    <use xlink:href="#category"></use>
+                  </svg>tips & tricks</div>
+              </div>
+              <div class="post-header">
+                <h3 class="post-title">
+                  <a href="#" class="text-decoration-none">Top 10 casual look ideas to dress up your kids</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec
+                  quam. A in arcu, hendrerit neque dolor morbi...</p>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-4">
+          <article class="post-item card border-0 shadow-sm p-3">
+            <div class="image-holder zoom-effect">
+              <a href="#">
+                <img src="{* images/post-thumb-2.jpg *}" alt="post" class="card-img-top">
+              </a>
+            </div>
+            <div class="card-body">
+              <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
+                <div class="meta-date"><svg width="16" height="16">
+                    <use xlink:href="#calendar"></use>
+                  </svg>25 Aug 2021</div>
+                <div class="meta-categories"><svg width="16" height="16">
+                    <use xlink:href="#category"></use>
+                  </svg>trending</div>
+              </div>
+              <div class="post-header">
+                <h3 class="post-title">
+                  <a href="#" class="text-decoration-none">Latest trends of wearing street wears supremely</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec
+                  quam. A in arcu, hendrerit neque dolor morbi...</p>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-4">
+          <article class="post-item card border-0 shadow-sm p-3">
+            <div class="image-holder zoom-effect">
+              <a href="#">
+                <img src="{* images/post-thumb-3.jpg *}" alt="post" class="card-img-top">
+              </a>
+            </div>
+            <div class="card-body">
+              <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
+                <div class="meta-date"><svg width="16" height="16">
+                    <use xlink:href="#calendar"></use>
+                  </svg>28 Aug 2021</div>
+                <div class="meta-categories"><svg width="16" height="16">
+                    <use xlink:href="#category"></use>
+                  </svg>inspiration</div>
+              </div>
+              <div class="post-header">
+                <h3 class="post-title">
+                  <a href="#" class="text-decoration-none">10 Different Types of comfortable clothes ideas for women</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec
+                  quam. A in arcu, hendrerit neque dolor morbi...</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            <!-- Search -->
-            <div class="flex lg:ml-6">
-              <a href="#" class="p-2 text-gray-400 hover:text-gray-500">
-                <span class="sr-only">Search</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
-                  <path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" stroke-linecap="round" stroke-linejoin="round" />
+  <section class="py-5 my-5">
+    <div class="container-fluid">
+
+      <div class="bg-warning py-5 rounded-5" style="background-image: url('images/bg-pattern-2.png') no-repeat;">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <img src="images/phone.png" alt="phone" class="image-float img-fluid">
+            </div>
+            <div class="col-md-8">
+              <h2 class="my-5">Shop faster with foodmart App</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis sed ptibus liberolectus nonet
+                psryroin. Amet sed lorem posuere sit iaculis amet, ac urna. Adipiscing fames semper erat ac in
+                suspendisse iaculis. Amet blandit tortor praesent ante vitae. A, enim pretiummi senectus magna. Sagittis
+                sed ptibus liberolectus non et psryroin.</p>
+              <div class="d-flex gap-2 flex-wrap">
+                <img src="{* images/app-store.jpg *}" alt="app-store">
+                <img src="{* images/google-play.jpg *}" alt="google-play">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container-fluid">
+      <h2 class="my-5">People are also looking for</h2>
+      <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Angie’s Boomchickapop Corn</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Salty kettle Corn</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Chobani Greek Yogurt</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Sweet Vanilla Yogurt</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Foster Farms Takeout Crispy wings</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Warrior Blend Organic</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Chao Cheese Creamy</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Chicken meatballs</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Angie’s Boomchickapop Corn</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Salty kettle Corn</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Chobani Greek Yogurt</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Sweet Vanilla Yogurt</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Foster Farms Takeout Crispy wings</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Warrior Blend Organic</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Chao Cheese Creamy</a>
+      <a href="#" class="btn btn-warning me-2 mb-2">Chicken meatballs</a>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container-fluid">
+      <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-5">
+        <div class="col">
+          <div class="card mb-3 border-0">
+            <div class="row">
+              <div class="col-md-2 text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M21.5 15a3 3 0 0 0-1.9-2.78l1.87-7a1 1 0 0 0-.18-.87A1 1 0 0 0 20.5 4H6.8l-.33-1.26A1 1 0 0 0 5.5 2h-2v2h1.23l2.48 9.26a1 1 0 0 0 1 .74H18.5a1 1 0 0 1 0 2h-13a1 1 0 0 0 0 2h1.18a3 3 0 1 0 5.64 0h2.36a3 3 0 1 0 5.82 1a2.94 2.94 0 0 0-.4-1.47A3 3 0 0 0 21.5 15Zm-3.91-3H9L7.34 6H19.2ZM9.5 20a1 1 0 1 1 1-1a1 1 0 0 1-1 1Zm8 0a1 1 0 1 1 1-1a1 1 0 0 1-1 1Z" />
                 </svg>
-              </a>
+              </div>
+              <div class="col-md-10">
+                <div class="card-body p-0">
+                  <h5>Free delivery</h5>
+                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                </div>
+              </div>
             </div>
-
-            <!-- Cart -->
-            <div class="ml-4 flow-root lg:ml-6">
-              <a href="#" class="group -m-2 flex items-center p-2">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 shrink-0 text-gray-400 group-hover:text-gray-500">
-                  <path d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" stroke-linecap="round" stroke-linejoin="round" />
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mb-3 border-0">
+            <div class="row">
+              <div class="col-md-2 text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M19.63 3.65a1 1 0 0 0-.84-.2a8 8 0 0 1-6.22-1.27a1 1 0 0 0-1.14 0a8 8 0 0 1-6.22 1.27a1 1 0 0 0-.84.2a1 1 0 0 0-.37.78v7.45a9 9 0 0 0 3.77 7.33l3.65 2.6a1 1 0 0 0 1.16 0l3.65-2.6A9 9 0 0 0 20 11.88V4.43a1 1 0 0 0-.37-.78ZM18 11.88a7 7 0 0 1-2.93 5.7L12 19.77l-3.07-2.19A7 7 0 0 1 6 11.88v-6.3a10 10 0 0 0 6-1.39a10 10 0 0 0 6 1.39Zm-4.46-2.29l-2.69 2.7l-.89-.9a1 1 0 0 0-1.42 1.42l1.6 1.6a1 1 0 0 0 1.42 0L15 11a1 1 0 0 0-1.42-1.42Z" />
                 </svg>
-                <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-                <span class="sr-only">items in cart, view bag</span>
-              </a>
+              </div>
+              <div class="col-md-10">
+                <div class="card-body p-0">
+                  <h5>100% secure payment</h5>
+                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mb-3 border-0">
+            <div class="row">
+              <div class="col-md-2 text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M22 5H2a1 1 0 0 0-1 1v4a3 3 0 0 0 2 2.82V22a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-9.18A3 3 0 0 0 23 10V6a1 1 0 0 0-1-1Zm-7 2h2v3a1 1 0 0 1-2 0Zm-4 0h2v3a1 1 0 0 1-2 0ZM7 7h2v3a1 1 0 0 1-2 0Zm-3 4a1 1 0 0 1-1-1V7h2v3a1 1 0 0 1-1 1Zm10 10h-4v-2a2 2 0 0 1 4 0Zm5 0h-3v-2a4 4 0 0 0-8 0v2H5v-8.18a3.17 3.17 0 0 0 1-.6a3 3 0 0 0 4 0a3 3 0 0 0 4 0a3 3 0 0 0 4 0a3.17 3.17 0 0 0 1 .6Zm2-11a1 1 0 0 1-2 0V7h2ZM4.3 3H20a1 1 0 0 0 0-2H4.3a1 1 0 0 0 0 2Z" />
+                </svg>
+              </div>
+              <div class="col-md-10">
+                <div class="card-body p-0">
+                  <h5>Quality guarantee</h5>
+                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mb-3 border-0">
+            <div class="row">
+              <div class="col-md-2 text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M12 8.35a3.07 3.07 0 0 0-3.54.53a3 3 0 0 0 0 4.24L11.29 16a1 1 0 0 0 1.42 0l2.83-2.83a3 3 0 0 0 0-4.24A3.07 3.07 0 0 0 12 8.35Zm2.12 3.36L12 13.83l-2.12-2.12a1 1 0 0 1 0-1.42a1 1 0 0 1 1.41 0a1 1 0 0 0 1.42 0a1 1 0 0 1 1.41 0a1 1 0 0 1 0 1.42ZM12 2A10 10 0 0 0 2 12a9.89 9.89 0 0 0 2.26 6.33l-2 2a1 1 0 0 0-.21 1.09A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20Zm0 18H5.41l.93-.93a1 1 0 0 0 0-1.41A8 8 0 1 1 12 20Z" />
+                </svg>
+              </div>
+              <div class="col-md-10">
+                <div class="card-body p-0">
+                  <h5>guaranteed savings</h5>
+                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mb-3 border-0">
+            <div class="row">
+              <div class="col-md-2 text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M18 7h-.35A3.45 3.45 0 0 0 18 5.5a3.49 3.49 0 0 0-6-2.44A3.49 3.49 0 0 0 6 5.5A3.45 3.45 0 0 0 6.35 7H6a3 3 0 0 0-3 3v2a1 1 0 0 0 1 1h1v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-6h1a1 1 0 0 0 1-1v-2a3 3 0 0 0-3-3Zm-7 13H8a1 1 0 0 1-1-1v-6h4Zm0-9H5v-1a1 1 0 0 1 1-1h5Zm0-4H9.5A1.5 1.5 0 1 1 11 5.5Zm2-1.5A1.5 1.5 0 1 1 14.5 7H13ZM17 19a1 1 0 0 1-1 1h-3v-7h4Zm2-8h-6V9h5a1 1 0 0 1 1 1Z" />
+                </svg>
+              </div>
+              <div class="col-md-10">
+                <div class="card-body p-0">
+                  <h5>Daily offers</h5>
+                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <nav aria-label="Top" class="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
+  </section>
 
-          <!-- Flyout menus -->
-          <el-popover-group class="group/popover-group hidden lg:ml-8 lg:block lg:self-stretch">
-            <div class="flex h-full space-x-8">
-            {hook name="main.navbar-primary"}
+  <footer class="py-5">
+    <div class="container-fluid">
+      <div class="row">
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="footer-menu">
+            <img src="images/logo.png" alt="logo">
+            <div class="social-links mt-5">
+              <ul class="d-flex list-unstyled gap-2">
+                <li>
+                  <a href="#" class="btn btn-outline-light">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M15.12 5.32H17V2.14A26.11 26.11 0 0 0 14.26 2c-2.72 0-4.58 1.66-4.58 4.7v2.62H6.61v3.56h3.07V22h3.68v-9.12h3.06l.46-3.56h-3.52V7.05c0-1.05.28-1.73 1.76-1.73Z" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="btn btn-outline-light">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M22.991 3.95a1 1 0 0 0-1.51-.86a7.48 7.48 0 0 1-1.874.794a5.152 5.152 0 0 0-3.374-1.242a5.232 5.232 0 0 0-5.223 5.063a11.032 11.032 0 0 1-6.814-3.924a1.012 1.012 0 0 0-.857-.365a.999.999 0 0 0-.785.5a5.276 5.276 0 0 0-.242 4.769l-.002.001a1.041 1.041 0 0 0-.496.89a3.042 3.042 0 0 0 .027.439a5.185 5.185 0 0 0 1.568 3.312a.998.998 0 0 0-.066.77a5.204 5.204 0 0 0 2.362 2.922a7.465 7.465 0 0 1-3.59.448A1 1 0 0 0 1.45 19.3a12.942 12.942 0 0 0 7.01 2.061a12.788 12.788 0 0 0 12.465-9.363a12.822 12.822 0 0 0 .535-3.646l-.001-.2a5.77 5.77 0 0 0 1.532-4.202Zm-3.306 3.212a.995.995 0 0 0-.234.702c.01.165.009.331.009.488a10.824 10.824 0 0 1-.454 3.08a10.685 10.685 0 0 1-10.546 7.93a10.938 10.938 0 0 1-2.55-.301a9.48 9.48 0 0 0 2.942-1.564a1 1 0 0 0-.602-1.786a3.208 3.208 0 0 1-2.214-.935q.224-.042.445-.105a1 1 0 0 0-.08-1.943a3.198 3.198 0 0 1-2.25-1.726a5.3 5.3 0 0 0 .545.046a1.02 1.02 0 0 0 .984-.696a1 1 0 0 0-.4-1.137a3.196 3.196 0 0 1-1.425-2.673c0-.066.002-.133.006-.198a13.014 13.014 0 0 0 8.21 3.48a1.02 1.02 0 0 0 .817-.36a1 1 0 0 0 .206-.867a3.157 3.157 0 0 1-.087-.729a3.23 3.23 0 0 1 3.226-3.226a3.184 3.184 0 0 1 2.345 1.02a.993.993 0 0 0 .921.298a9.27 9.27 0 0 0 1.212-.322a6.681 6.681 0 0 1-1.026 1.524Z" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="btn btn-outline-light">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M23 9.71a8.5 8.5 0 0 0-.91-4.13a2.92 2.92 0 0 0-1.72-1A78.36 78.36 0 0 0 12 4.27a78.45 78.45 0 0 0-8.34.3a2.87 2.87 0 0 0-1.46.74c-.9.83-1 2.25-1.1 3.45a48.29 48.29 0 0 0 0 6.48a9.55 9.55 0 0 0 .3 2a3.14 3.14 0 0 0 .71 1.36a2.86 2.86 0 0 0 1.49.78a45.18 45.18 0 0 0 6.5.33c3.5.05 6.57 0 10.2-.28a2.88 2.88 0 0 0 1.53-.78a2.49 2.49 0 0 0 .61-1a10.58 10.58 0 0 0 .52-3.4c.04-.56.04-3.94.04-4.54ZM9.74 14.85V8.66l5.92 3.11c-1.66.92-3.85 1.96-5.92 3.08Z" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="btn btn-outline-light">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M17.34 5.46a1.2 1.2 0 1 0 1.2 1.2a1.2 1.2 0 0 0-1.2-1.2Zm4.6 2.42a7.59 7.59 0 0 0-.46-2.43a4.94 4.94 0 0 0-1.16-1.77a4.7 4.7 0 0 0-1.77-1.15a7.3 7.3 0 0 0-2.43-.47C15.06 2 14.72 2 12 2s-3.06 0-4.12.06a7.3 7.3 0 0 0-2.43.47a4.78 4.78 0 0 0-1.77 1.15a4.7 4.7 0 0 0-1.15 1.77a7.3 7.3 0 0 0-.47 2.43C2 8.94 2 9.28 2 12s0 3.06.06 4.12a7.3 7.3 0 0 0 .47 2.43a4.7 4.7 0 0 0 1.15 1.77a4.78 4.78 0 0 0 1.77 1.15a7.3 7.3 0 0 0 2.43.47C8.94 22 9.28 22 12 22s3.06 0 4.12-.06a7.3 7.3 0 0 0 2.43-.47a4.7 4.7 0 0 0 1.77-1.15a4.85 4.85 0 0 0 1.16-1.77a7.59 7.59 0 0 0 .46-2.43c0-1.06.06-1.4.06-4.12s0-3.06-.06-4.12ZM20.14 16a5.61 5.61 0 0 1-.34 1.86a3.06 3.06 0 0 1-.75 1.15a3.19 3.19 0 0 1-1.15.75a5.61 5.61 0 0 1-1.86.34c-1 .05-1.37.06-4 .06s-3 0-4-.06a5.73 5.73 0 0 1-1.94-.3a3.27 3.27 0 0 1-1.1-.75a3 3 0 0 1-.74-1.15a5.54 5.54 0 0 1-.4-1.9c0-1-.06-1.37-.06-4s0-3 .06-4a5.54 5.54 0 0 1 .35-1.9A3 3 0 0 1 5 5a3.14 3.14 0 0 1 1.1-.8A5.73 5.73 0 0 1 8 3.86c1 0 1.37-.06 4-.06s3 0 4 .06a5.61 5.61 0 0 1 1.86.34a3.06 3.06 0 0 1 1.19.8a3.06 3.06 0 0 1 .75 1.1a5.61 5.61 0 0 1 .34 1.9c.05 1 .06 1.37.06 4s-.01 3-.06 4ZM12 6.87A5.13 5.13 0 1 0 17.14 12A5.12 5.12 0 0 0 12 6.87Zm0 8.46A3.33 3.33 0 1 1 15.33 12A3.33 3.33 0 0 1 12 15.33Z" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="btn btn-outline-light">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M1.04 17.52q.1-.16.32-.02a21.308 21.308 0 0 0 10.88 2.9a21.524 21.524 0 0 0 7.74-1.46q.1-.04.29-.12t.27-.12a.356.356 0 0 1 .47.12q.17.24-.11.44q-.36.26-.92.6a14.99 14.99 0 0 1-3.84 1.58A16.175 16.175 0 0 1 12 22a16.017 16.017 0 0 1-5.9-1.09a16.246 16.246 0 0 1-4.98-3.07a.273.273 0 0 1-.12-.2a.215.215 0 0 1 .04-.12Zm6.02-5.7a4.036 4.036 0 0 1 .68-2.36A4.197 4.197 0 0 1 9.6 7.98a10.063 10.063 0 0 1 2.66-.66q.54-.06 1.76-.16v-.34a3.562 3.562 0 0 0-.28-1.72a1.5 1.5 0 0 0-1.32-.6h-.16a2.189 2.189 0 0 0-1.14.42a1.64 1.64 0 0 0-.62 1a.508.508 0 0 1-.4.46L7.8 6.1q-.34-.08-.34-.36a.587.587 0 0 1 .02-.14a3.834 3.834 0 0 1 1.67-2.64A6.268 6.268 0 0 1 12.26 2h.5a5.054 5.054 0 0 1 3.56 1.18a3.81 3.81 0 0 1 .37.43a3.875 3.875 0 0 1 .27.41a2.098 2.098 0 0 1 .18.52q.08.34.12.47a2.856 2.856 0 0 1 .06.56q.02.43.02.51v4.84a2.868 2.868 0 0 0 .15.95a2.475 2.475 0 0 0 .29.62q.14.19.46.61a.599.599 0 0 1 .12.32a.346.346 0 0 1-.16.28q-1.66 1.44-1.8 1.56a.557.557 0 0 1-.58.04q-.28-.24-.49-.46t-.3-.32a4.466 4.466 0 0 1-.29-.39q-.2-.29-.28-.39a4.91 4.91 0 0 1-2.2 1.52a6.038 6.038 0 0 1-1.68.2a3.505 3.505 0 0 1-2.53-.95a3.553 3.553 0 0 1-.99-2.69Zm3.44-.4a1.895 1.895 0 0 0 .39 1.25a1.294 1.294 0 0 0 1.05.47a1.022 1.022 0 0 0 .17-.02a1.022 1.022 0 0 1 .15-.02a2.033 2.033 0 0 0 1.3-1.08a3.13 3.13 0 0 0 .33-.83a3.8 3.8 0 0 0 .12-.73q.01-.28.01-.92v-.5a7.287 7.287 0 0 0-1.76.16a2.144 2.144 0 0 0-1.76 2.22Zm8.4 6.44a.626.626 0 0 1 .12-.16a3.14 3.14 0 0 1 .96-.46a6.52 6.52 0 0 1 1.48-.22a1.195 1.195 0 0 1 .38.02q.9.08 1.08.3a.655.655 0 0 1 .08.36v.14a4.56 4.56 0 0 1-.38 1.65a3.84 3.84 0 0 1-1.06 1.53a.302.302 0 0 1-.18.08a.177.177 0 0 1-.08-.02q-.12-.06-.06-.22a7.632 7.632 0 0 0 .74-2.42a.513.513 0 0 0-.08-.32q-.2-.24-1.12-.24q-.34 0-.8.04q-.5.06-.92.12a.232.232 0 0 1-.16-.04a.065.065 0 0 1-.02-.08a.153.153 0 0 1 .02-.06Z" />
+                    </svg>
+                  </a>
+                </li>
+              </ul>
             </div>
-          </el-popover-group>
-    </nav>
-    
-<div id="categories-swiper" class="swip hidden-categories-swiper relative my-4 h-[20vh] max-h-[150px]">
-    <div class="absolute inset-0 flex flex-row flex-nowrap items-center justify-start gap-2 p-3 overflow-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-    {loop type="category" name="hidden-cat" parent="0" visible="0" orderby="position"}
-    <a href="{$URL}" class="group flex flex-col items-center justify-center text-center transition-all duration-200 hover:scale-[1.05]">
-      <div class="relative h-14 w-14 shadow-lg group-hover:shadow-xl flex-shrink-0">
-        {if $IMAGE}
-        <img src="{$IMAGE}" alt="{$TITLE}" class="h-full w-full rounded-full object-cover border-3 border-white shadow-md" />
-        {else}
-        <div class="h-full w-full rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md">{$TITLE|truncate:2:""}</div>
-        {/if}
+          </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+          <div class="footer-menu">
+            <h5 class="widget-title">Ultras</h5>
+            <ul class="menu-list list-unstyled">
+              <li class="menu-item">
+                <a href="#" class="nav-link">About us</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Conditions </a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Our Journals</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Careers</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Affiliate Programme</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Ultras Press</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6">
+          <div class="footer-menu">
+            <h5 class="widget-title">Customer Service</h5>
+            <ul class="menu-list list-unstyled">
+              <li class="menu-item">
+                <a href="#" class="nav-link">FAQ</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Contact</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Privacy Policy</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Returns & Refunds</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Cookie Guidelines</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Delivery Information</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6">
+          <div class="footer-menu">
+            <h5 class="widget-title">Customer Service</h5>
+            <ul class="menu-list list-unstyled">
+              <li class="menu-item">
+                <a href="#" class="nav-link">FAQ</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Contact</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Privacy Policy</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Returns & Refunds</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Cookie Guidelines</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="nav-link">Delivery Information</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="footer-menu">
+            <h5 class="widget-title">Subscribe Us</h5>
+            <p>Subscribe to our newsletter to get updates about our grand offers.</p>
+            <form class="d-flex mt-3 gap-0" role="newsletter">
+              <input class="form-control rounded-start rounded-0 bg-light" type="email" placeholder="Email Address"
+                aria-label="Email Address">
+              <button class="btn btn-dark rounded-end rounded-0" type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
       </div>
-      <span class="text-[10px] font-medium text-gray-700 group-hover:text-indigo-600 max-w-[60px] truncate leading-tight mt-1 px-1 block">{$TITLE}</span>
-    </a>
-    {/loop}
+    </div>
+  </footer>
+  <div id="footer-bottom">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 copyright">
+          <p>© 2023 Foodmart. All rights reserved.</p>
+        </div>
+        <div class="col-md-6 credit-link text-start text-md-end">
+          <p>Free HTML Template by <a href="https://templatesjungle.com/">TemplatesJungle</a> Distributed by <a
+              href="https://themewagon">ThemeWagon</a></p>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  {block name="before-javascript-include"}{/block}
+  <script src="{javascript file='assets/js/jquery-1.11.0.min.js'}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
+  </script>
+  <script src="{javascript file='assets/js/plugins.js'}"></script>
+  {hook name="main.after-javascript-include"}
 
-    {hook name="main.header-bottom"}
-  </header>
-</div>
+  {block name="after-javascript-include"}{/block}
 
-                {hook name="main.content-top"}
-                {block name="breadcrumb"}{include file="misc/breadcrumb.tpl"}{/block}
-                <div id="content">{block name="main-content"}{/block}</div>
-                {hook name="main.content-bottom"}
+  {hook name="main.javascript-initialization"}
 
-{ifhook rel="main.footer-top"}
-                <section class="footer-block">
-                    <div class="container">
-                        <div class="blocks row">
-                            {hook name="main.footer-top"}
-                        </div>
-                    </div>
-                </section>
-            {/ifhook}
-            {elsehook rel="main.footer-top"}
-                <section class="footer-banner">
-                    <div class="container">
-                        <div class="banner row banner-col-3">
-                            <div class="col col-sm-4">
-                                <span class="fa fa-truck fa-flip-horizontal"></span>
-                                {intl l="Free shipping"} <small>{intl l="Orders over $50"}</small>
-                            </div>
-                            <div class="col col-sm-4">
-                                <span class="fa fa-credit-card"></span>
-                                {intl l="Secure payment"} <small>{intl l="Multi-payment platform"}</small>
-                            </div>
-                            <div class="col col-sm-4">
-                                <span class="fa fa-info"></span>
-                                {intl l="Need help ?"} <small>{intl l="Questions ? See our F.A.Q."}</small>
-                            </div>
-                        </div>
-                    </div>
-                </section><!-- /.footer-banner -->
-            {/elsehook}
-
-            {ifhook rel="main.footer-body"}
-                <section class="footer-block">
-                    <div class="container">
-                        <div class="blocks row">
-                            {hookblock name="main.footer-body"  fields="id,class,title,content"}
-                            {forhook rel="main.footer-body"}
-                                <div class="col col-sm-3">
-                                    <section {if $id} id="{$id}"{/if} class="block {if $class} block-{$class}{/if}">
-                                        <div class="block-heading"><h3 class="block-title">{$title}</h3></div>
-                                        <div class="block-content">
-                                            {$content nofilter}
-                                        </div>
-                                    </section>
-                                </div>
-                            {/forhook}
-                            {/hookblock}
-                        </div>
-                    </div>
-                </section>
-            {/ifhook}
-
-            {ifhook rel="main.footer-bottom"}
-                <footer class="footer-info" role="contentinfo">
-                    <div class="container">
-                        <div class="info row">
-                            <div class="col-lg-9">
-                                {hook name="main.footer-bottom"}
-                            </div>
-                            <div class="col-lg-3">
-                                <section class="copyright">{intl l="Copyright"} &copy; <time datetime="{'Y-m-d'|date}">{'Y'|date}</time> <a href="http://thelia.net" rel="external">Thelia</a></section>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            {/ifhook}
-            {elsehook rel="main.footer-bottom"}
-                <footer class="footer-info" role="contentinfo">
-                    <div class="container">
-                        <div class="info row">
-                            <nav class="nav-footer col-lg-9" role="navigation">
-                                <ul class="list-unstyled list-inline">
-                                    {$folder_information={config key="information_folder_id"}}
-                                    {if $folder_information}
-                                        {loop name="footer_links" type="content" folder=$folder_information}
-                                            <li><a href="{$URL nofilter}">{$TITLE}</a></li>
-                                        {/loop}
-                                    {/if}
-                                    <li><a href="{url path="/contact"}">{intl l="Contact Us"}</a></li>
-                                </ul>
-                            </nav>
-                            <section class="copyright col-lg-3">{intl l="Copyright"} &copy; <time datetime="{'Y-m-d'|date}">{'Y'|date}</time> <a href="http://thelia.net" rel="external">Thelia</a></section>
-                        </div>
-                    </div>
-                </footer><!-- /.footer-info -->
-            {/elsehook}    
-
-    {block name="before-javascript-include"}{/block}
-    <!-- JavaScript -->
-
-    <!-- Jquery -->
-    <!--[if lt IE 9]><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> <![endif]-->
-    <!--[if (gte IE 9)|!(IE)]><!--><script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script><!--<![endif]-->
-    {javascripts file="assets/dist/js/vendors/jquery.min.js"}
-        <script>window.jQuery || document.write('<script src="{$asset_url}"><\/script>');</script>
-    {/javascripts}
-
-    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-    {* do no try to load messages_en, as this file does not exists *}
-    {if $lang_code != 'en'}
-        <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/localization/messages_{$lang_code}.js"></script>
-    {/if}
-
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    {javascripts file="assets/dist/js/vendors/bootstrap.min.js"}
-        <script>if(typeof($.fn.modal) === 'undefined') { document.write('<script src="{$asset_url}"><\/script>'); }</script>
-    {/javascripts}
-
-    {javascripts file="assets/dist/js/vendors/bootbox.js"}
-        <script src="{$asset_url}"></script>
-    {/javascripts}
-
-    {hook name="main.after-javascript-include"}
-
-    {block name="after-javascript-include"}{/block}
-
-    {hook name="main.javascript-initialization"}
-    <script>
-       // fix path for addCartMessage
-       // if you use '/' in your URL rewriting, the cart message is not displayed
-       // addCartMessageUrl is used in thelia.js to update the mini-cart content
-       var addCartMessageUrl = "{url path='ajax/addCartMessage'}";
-    </script>
-    {block name="javascript-initialization"}{/block}
-
-    <!-- Custom scripts -->
-<script src="{javascript file='assets/dist/js/thelia.min.js'}"></script>
-
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-{javascripts file='assets/js/custom.js'}
-    <script src="{$asset_url}"></script>
-{/javascripts}
-
-    {hook name="main.body-bottom"}
+  {block name="javascript-initialization"}{/block}
+  <script src="{javascript file='assets/js/script.js'}"></script>
+  {hook name="main.body-bottom"}
 </body>
+
 </html>
