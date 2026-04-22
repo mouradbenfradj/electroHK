@@ -238,7 +238,8 @@
             <h2 class="section-title">{intl l="Category" d="fo.electro"}</h2>
 
             <div class="d-flex align-items-center">
-              <a href="{url path='/category'}" class="btn-link text-decoration-none">{intl l="View all"} {intl l="Category" d="fo.electro"} →</a>
+              <a href="{url path='/category'}" class="btn-link text-decoration-none">{intl l="View all"}
+                {intl l="Category" d="fo.electro"} →</a>
               <div class="swiper-buttons">
                 <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
                 <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
@@ -253,16 +254,16 @@
 
           <div class="category-carousel swiper">
             <div class="swiper-wrapper">
-                {loop type="category" name="category.home-body" parent="0"}
+              {loop type="category" name="category.home-body" parent="0"}
 
               <a href="index.html" class="nav-link category-item swiper-slide">
-              {loop type="image" name="image_test" category="$ID" resize_mode="borders" limit="1"}
-              <img src="{$IMAGE_URL}" alt="{$TITLE}">
-              {/loop}
+                {loop type="image" name="image_test" category="$ID" resize_mode="borders" limit="1"}
+                <img src="{$IMAGE_URL}" alt="{$TITLE}">
+                {/loop}
                 <h3 class="category-title">{$TITLE}</h3>
               </a>
-               {/loop}
-               {*
+              {/loop}
+              {*
               <a href="index.html" class="nav-link category-item swiper-slide">
                 <img src="images/icon-bread-baguette.png" alt="Category Thumbnail">
                 <h3 class="category-title">Breads & Sweets</h3>
@@ -325,11 +326,9 @@
       <div class="row">
         {loop type="folder" name="the-loop-name"}
         <div class="col-md-6">
-          <div class="banner-ad bg-danger mb-3"
-          {loop type="image" name="image_test" source="folder" source_id="$ID"}
-     style="background: url({$IMAGE_URL});background-repeat: no-repeat;background-position: right bottom;"
-{/loop}
-          >
+          <div class="banner-ad bg-danger mb-3" {loop type="image" name="image_test" source="folder" source_id="$ID"}
+            style="background: url({$IMAGE_URL});background-repeat: no-repeat;background-position: right bottom;"
+            {/loop}>
             <div class="banner-content p-5">
 
               <div class="categories text-primary fs-3 fw-bold">{$CHAPO}</div>
