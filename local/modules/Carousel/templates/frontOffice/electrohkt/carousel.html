@@ -13,10 +13,10 @@
                     <div class="row banner-content p-5">
                       <div class="content-wrapper col-md-7">
                         <div class="categories my-3">{*100% natural*}</div>
-                         {if $TITLE}<h3 class="display-4">{$TITLE}</h3>{/if}
-                         {if $DESCRIPTION}<p>{$DESCRIPTION nofilter}</p>{/if}
+                        <h3 class="display-4"> {if $TITLE}{$TITLE}{/if}</h3>
+                        <p> {if $DESCRIPTION}{$DESCRIPTION nofilter}{/if}</p>
                         {if $URL}<a href="{$URL|default:'#'}"
-                          class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">{/if}Shop Now{if $URL}</a>{/if}
+                          class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Shop Now</a>{/if}
                       </div>
                       <div class="img-wrapper col-md-5">
                         <img src="{$IMAGE_URL}" alt="{$ALT}" class="img-fluid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
