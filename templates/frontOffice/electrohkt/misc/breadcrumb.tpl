@@ -1,22 +1,12 @@
-<nav class="nav-breadcrumb" role="navigation" aria-labelledby="breadcrumb-label">
-    <strong id="breadcrumb-label" class="sr-only">{intl l="You are here:"}</strong>
-
-    <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList" >
-        <li itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement" ><a href="{navigate to="index"}" itemprop="item">
-            <span itemprop="name">{intl l="Home"}</span></a>
-            <meta itemprop="position" content="1">
-        </li>
-        {foreach $breadcrumbs as $breadcrumb}
-        {if $breadcrumb.title}
-            {if $breadcrumb@last}
-                <li itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement" class="active"><span itemprop="name">{$breadcrumb.title|unescape}</span></li>
-            {else}
-                <li itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement" >
-                    <a href="{$breadcrumb.url|default:'#' nofilter}"  title="{$breadcrumb.title|unescape}" itemprop="item"><span itemprop="name">{$breadcrumb.title|unescape}</span></a>
-                    <meta itemprop="position" content="{$breadcrumb@key+2}">
-                </li>
-            {/if}
-        {/if}
-        {/foreach}
-    </ul>
-</nav><!-- /.nav-breadcrumb -->
+<section class="py-5 mb-5" style="background: url(images/background-pattern.jpg);">
+      <div class="container-fluid">
+        <div class="d-flex justify-content-between">
+          <h1 class="page-title pb-2">About Us</h1>
+          <nav class="breadcrumb fs-6">
+            <a class="breadcrumb-item nav-link" href="#">Home</a>
+            <a class="breadcrumb-item nav-link" href="#">Pages</a>
+            <span class="breadcrumb-item active" aria-current="page">About Us</span>
+          </nav>
+        </div>
+      </div>
+    </section>

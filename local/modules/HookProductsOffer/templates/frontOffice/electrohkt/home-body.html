@@ -1,37 +1,52 @@
-{ifloop rel="current-sales"}
-    <section id="products-offer" class="grid">
-    {loop name="current-sales" type="sale" limit="2"}
-        <section id="product-sale-{$ID}">
-            <div class="products-heading">
-                <h2>{$SALE_LABEL} <a href="{url path="/sale" sale=$ID}" class="btn-all">{intl l="+ View All" d="hookproductsoffer.fo.default"}</a></h2>
-                <div class="short-description" itemprop="description">{$CHAPO}</div>
+
+  <section class="py-5 overflow-hidden">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="section-header d-flex flex-wrap flex-wrap justify-content-between mb-5">
+
+            <h2 class="section-title">{intl l="Newly Arrived"} {intl l="Brands"}</h2>
+
+            <div class="d-flex align-items-center">
+              <a href="#" class="btn-link text-decoration-none">{intl l="View All"} {intl l="Brands"} →</a>
+              <div class="swiper-buttons">
+                <button class="swiper-prev brand-carousel-prev btn btn-yellow">❮</button>
+                <button class="swiper-next brand-carousel-next btn btn-yellow">❯</button>
+              </div>
             </div>
+          </div>
 
-            <div class="products-content">
-                <ul class="products-grid list-unstyled row">
-                    {loop name="products_in_sale" type="product" limit="4" sale=$ID}
-                        {include file="includes/single-product.html" colClass="col-md-3 col-sm-4" product_id=$ID hasBtn=false hasDescription=false width="218" height="146"}
-                    {/loop}
-                </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="brand-carousel swiper">
+            <div class="swiper-wrapper">
+              {loop type="brand" name="brand.home-body"}
+              <div class="swiper-slide">
+                <div class="card mb-3 p-3 rounded-4 shadow border-0">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} }
+                      <img src="{$IMAGE_URL nofilter}" class="img-fluid rounded" alt="{$TITLE}">
+                      {/loop}
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body py-0">
+                        <p class="text-muted mb-0">{$TITLE}</p>
+                        <h5 class="card-title">{$DESCRIPTION}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/loop}
             </div>
-        </section><!-- #products-sale-XX -->
-    {/loop}
-    </section>
-{/ifloop}
-{* Display "regular" promos, if any, only if we don't have active sales *}
+          </div>
 
-{elseloop rel="current-sales"}
-{ifloop rel="product_promo"}
-    <div class="bg-white">
-        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-             <h2 class="sr-only">{intl l="Offers" d="hookproductsoffer.fo.default"} <a href="{url path="/view_all" type="offers"}" class="btn-all">{intl l="+ View All" d="hookproductsoffer.fo.default"}</a></h2>
         </div>
-
-        <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                {loop name="product_promo" type="product" limit="4" promo="yes"}
-                    {include file="includes/single-product.html" colClass="col-md-3 col-sm-4" product_id=$ID hasBtn=false hasDescription=false width="218" height="146"}
-                {/loop}
-        </div>
-      </div><!-- #products-offer -->
-{/ifloop}
-{/elseloop}
+      </div>
+    </div>
+  </section>
