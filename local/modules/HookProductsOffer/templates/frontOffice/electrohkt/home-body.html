@@ -1,52 +1,93 @@
+<section class="py-5 overflow-hidden">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
 
-  <section class="py-5 overflow-hidden">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
+        <div class="section-header d-flex flex-wrap justify-content-between mb-5">
+          <h2 class="section-title">{intl l="Category" d="fo.electro"}</h2>
 
-          <div class="section-header d-flex flex-wrap flex-wrap justify-content-between mb-5">
-
-            <h2 class="section-title">{intl l="Newly Arrived"} {intl l="Brands"}</h2>
-
-            <div class="d-flex align-items-center">
-              <a href="#" class="btn-link text-decoration-none">{intl l="View All"} {intl l="Brands"} →</a>
-              <div class="swiper-buttons">
-                <button class="swiper-prev brand-carousel-prev btn btn-yellow">❮</button>
-                <button class="swiper-next brand-carousel-next btn btn-yellow">❯</button>
-              </div>
+          <div class="d-flex align-items-center">
+            <a href="{url path='/category'}" class="btn-link text-decoration-none">{intl l="View all"}
+              {intl l="Category" d="fo.electro"} →</a>
+            <div class="swiper-buttons">
+              <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
+              <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
             </div>
           </div>
-
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
 
-          <div class="brand-carousel swiper">
-            <div class="swiper-wrapper">
-              {loop type="brand" name="brand.home-body"}
-              <div class="swiper-slide">
-                <div class="card mb-3 p-3 rounded-4 shadow border-0">
-                  <div class="row g-0">
-                    <div class="col-md-4">
-                      {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} }
-                      <img src="{$IMAGE_URL nofilter}" class="img-fluid rounded" alt="{$TITLE}">
-                      {/loop}
-                    </div>
-                    <div class="col-md-8">
-                      <div class="card-body py-0">
-                        <p class="text-muted mb-0">{$TITLE}</p>
-                        <h5 class="card-title">{$DESCRIPTION}</h5>
-                      </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="category-carousel swiper">
+          <div class="swiper-wrapper">
+            {loop type="category" name="category.home-body" parent="0"}
+
+            <a href="index.html" class="nav-link category-item swiper-slide">
+              {loop type="image" name="image_test" category="$ID" resize_mode="borders" limit="1"}
+              <img src="{$IMAGE_URL}" alt="{$TITLE}">
+              {/loop}
+              <h3 class="category-title">{$TITLE}</h3>
+            </a>
+            {/loop}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 overflow-hidden">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="section-header d-flex flex-wrap flex-wrap justify-content-between mb-5">
+
+          <h2 class="section-title">{intl l="Newly Arrived"} {intl l="Brands"}</h2>
+
+          <div class="d-flex align-items-center">
+            <a href="#" class="btn-link text-decoration-none">{intl l="View All"} {intl l="Brands"} →</a>
+            <div class="swiper-buttons">
+              <button class="swiper-prev brand-carousel-prev btn btn-yellow">❮</button>
+              <button class="swiper-next brand-carousel-next btn btn-yellow">❯</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="brand-carousel swiper">
+          <div class="swiper-wrapper">
+            {loop type="brand" name="brand.home-body"}
+            <div class="swiper-slide">
+              <div class="card mb-3 p-3 rounded-4 shadow border-0">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    {loop name="brand.image" type="image" source="brand" source_id="$ID" limit="1" }
+                    <img src="{$IMAGE_URL}" class="img-fluid rounded" alt="{$TITLE}">
+                    {/loop}
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body py-0">
+                      <p class="text-muted mb-0">{$TITLE}</p>
+                      <h5 class="card-title">{$DESCRIPTION}</h5>
                     </div>
                   </div>
                 </div>
               </div>
-              {/loop}
             </div>
+            {/loop}
           </div>
-
         </div>
+
       </div>
     </div>
-  </section>
+  </div>
+</section>
