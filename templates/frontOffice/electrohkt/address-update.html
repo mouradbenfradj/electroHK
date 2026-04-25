@@ -17,25 +17,26 @@
 {/block}
 
 {block name="main-content"}
-    <div class="main">
+<section class="py-5 my-5">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="card border-0 shadow-sm p-4 p-lg-5 rounded-4">
+                    <h1 class="page-header mb-4 section-title">{intl l="Address Update"}</h1>
 
-    <article class="col-main" role="main" aria-labelledby="main-label">
+                    {hook name="address-update.top"}
 
-    <h1 id="main-label" class="page-header">{intl l="Address Update"}</h1>
-
-    {hook name="address-update.top"}
-
-    {form name="thelia.front.address.update"}
-    {loop name="customer.update" type="address" customer="current" id=$address_id}
-        <form id="form-address" class="form-horizontal" action="{url path="/address/update/%address_id" address_id=$address_id}" method="post">
-        {form_field field='success_url'}
-            {if $value}
-                {$next_url=$value}
-            {else}
-                {$next_url=$smarty.get.next|default:{url path="/account"}}
-            {/if}
-            <input type="hidden" name="{$name}" value="{$next_url nofilter}" />
-        {/form_field}
+                    {form name="thelia.front.address.update"}
+                    {loop name="customer.update" type="address" customer="current" id=$address_id}
+                        <form id="form-address" action="{url path="/address/update/%address_id" address_id=$address_id}" method="post">
+                            {form_field field='success_url'}
+                                {if $value}
+                                    {$next_url=$value}
+                                {else}
+                                    {$next_url=$smarty.get.next|default:{url path="/account"}}
+                                {/if}
+                                <input type="hidden" name="{$name}" value="{$next_url nofilter}" />
+                            {/form_field}
 
         {form_field field='error_message'}
             <input type="hidden" name="{$name}" value="{intl l="missing or invalid data"}" />

@@ -17,19 +17,20 @@
 {/block}
 
 {block name="main-content"}
-    <div class="main">
+<section class="py-5 my-5">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="card border-0 shadow-sm p-4 p-lg-5 rounded-4">
+                    <h1 class="page-header mb-4 text-center section-title">{intl l="Update Profile"}</h1>
 
-        <article class="col-main" role="main" aria-labelledby="main-label">
+                    {hook name="account-update.top"}
 
-            <h1 id="main-label" class="page-header">{intl l="Update Profile"}</h1>
-
-            {hook name="account-update.top"}
-
-            {form name="thelia.front.customer.profile.update"}
-            <form id="form-register" class="form-horizontal" action="{url path="/account/update"}" method="post">
-                {form_field field='success_url'}
-                    <input type="hidden" name="{$name}" value="{url path="/account"}" />
-                {/form_field}
+                    {form name="thelia.front.customer.profile.update"}
+                    <form id="form-register" action="{url path="/account/update"}" method="post">
+                        {form_field field='success_url'}
+                            <input type="hidden" name="{$name}" value="{url path="/account"}" />
+                        {/form_field}
 
                 {form_hidden_fields}
 
