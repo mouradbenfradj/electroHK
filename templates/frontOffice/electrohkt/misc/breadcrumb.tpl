@@ -1,4 +1,4 @@
-<section class="py-5 mb-5" style="background: url(images/background-pattern.jpg);">
+<section class="py-5 mb-5" {* style="background: url(images/background-pattern.jpg);" *}>
   <div class="container-fluid">
     <div class="d-flex justify-content-between">
       <h1 class="page-title pb-2">{intl l="You are here:"}</h1>

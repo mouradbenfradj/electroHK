@@ -235,7 +235,9 @@
 
         <div class="col-lg-3 col-md-6 col-sm-6">
           <div class="footer-menu">
-            <img src="images/logo.png" alt="logo">
+              {local_media type="logo"}
+                <img src="{$MEDIA_URL}" alt="{$store_name}">
+              {/local_media}
             <div class="social-links mt-5">
               <ul class="d-flex list-unstyled gap-2">
                 <li>
