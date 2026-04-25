@@ -17,10 +17,14 @@
     {set_previous_url ignore_current="1"}
 
     {hook name="login.top"}
-    <div class="main">
-        {hook name="login.main-top"}
-        <article class="col-main" role="main" aria-labelledby="main-label">
-            <h1 id="main-label" class="page-header">{intl l="Login"}</h1>
+<section class="py-5 my-5">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-xl-5">
+                    <div class="card border-0 shadow-sm p-4 p-lg-5 rounded-4">
+                        {hook name="login.main-top"}
+                        <article class="card-body" role="main" aria-labelledby="main-label">
+                            <h1 id="main-label" class="page-header mb-4 text-center section-title">{intl l="Login"}</h1>
             {form name="thelia.front.customer.login"}
             <form id="form-login" action="{url path="/login"}" method="post" {form_enctype} novalidate>
                 {if {$smarty.get.validation_done}}
@@ -91,14 +95,21 @@
                     </fieldset>
                 </fieldset>
                 {hook name="login.form-bottom"}
-                <div class="group-btn">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> {intl l="Next"}</button>
+                                {hook name="login.form-bottom"}
+                                <div class="d-grid mt-4">
+                                    <button type="submit" class="btn btn-dark btn-lg"><svg width="20" height="20" class="me-2">
+                                        <use xlink:href="#arrow-right"></use>
+                                    </svg>{intl l="Se connecter"}</button>
+                                </div>
+                            </form>
+                            {/form}
+                        </article>
+                        {hook name="login.main-bottom"}
+                    </div>
                 </div>
-            </form>
-            {/form}
-        </article>
-        {hook name="login.main-bottom"}
-    </div>
+            </div>
+        </div>
+    </section>
     {hook name="login.bottom"}
 {/block}
 
