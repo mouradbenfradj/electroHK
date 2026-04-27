@@ -1,0 +1,14 @@
+<p>{intl l="Sign up to receive our latest news." d="hooknewsletter.fo.default"}</p>
+{form name="thelia.front.newsletter"}
+<form id="form-newsletter-mini" class="d-flex mt-3 gap-0" role="newsletter" action="{url path="/newsletter"}"
+    method="post">
+    {form_hidden_fields}
+    {form_field field="email"}
+    <input name="{$name}" class="form-control rounded-start rounded-0 bg-light" id="{$label_attr.for}-mini" type="email"
+        placeholder="{intl l="Your email address" d="hooknewsletter.fo.default" }" aria-label="{intl l="Email address"
+        d="hooknewsletter.fo.default" }" {if $required} aria-required="true" required{/if}>
+    {/form_field}
+    <button class="btn btn-dark rounded-end rounded-0" type="submit">{intl l="Subscribe"
+        d="hooknewsletter.fo.default"}</button>
+</form>
+{/form}

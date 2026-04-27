@@ -1,0 +1,58 @@
+{extends file="layout.tpl"}
+
+
+{block name="body-class"}page-view-all{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+{$breadcrumbs = [
+['title' => {intl l="wishList"}, 'url'=>{url path="/wishList"}]
+]}
+{/block}
+
+{block name='Breadcrumb'}
+{intl l="Wish list"}
+{/block}
+{block name="main-content"}
+<section class="py-5">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bootstrap-tabs product-tabs">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-all" role="tabpanel"
+                            aria-labelledby="nav-all-tab">
+                            <div
+                                class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                                
+                                {loop name="wishlist" type="wishlist"}
+                                {loop name="products-in-wishlist" type="product" id="{$WISHLIST_PRODUCT_LIST}"}
+                                    {include file="includes/single-product.html" product_id=$ID}
+                                {/loop}
+                                {/loop}
+                                
+                            </div>
+                            <!-- / product-grid -->
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="stylesheet"}
+{hook name="viewall.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+{hook name="viewall.after-javascript-include"}
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="viewall.javascript-initialization"}
+{/block}

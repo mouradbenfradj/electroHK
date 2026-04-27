@@ -1,4 +1,5 @@
 <?php
+
 /*************************************************************************************/
 /*      This file is part of the Thelia package.                                     */
 /*                                                                                   */
@@ -12,8 +13,8 @@
 
 namespace HookContact\Hook;
 
-use Thelia\Core\Event\Hook\HookRenderBlockEvent;
 use Thelia\Core\Hook\BaseHook;
+use Thelia\Core\Event\Hook\HookRenderBlockEvent;
 
 /**
  * Class FrontHook
@@ -29,7 +30,7 @@ class FrontHook extends BaseHook
             $event->add(
                 array(
                     "id" => "contact-footer-body",
-                    "class" => "contact",
+                    "class" => "col-md-2 col-sm-6",
                     "title" => $this->trans("Contact", array(), "hookcontact"),
                     "content" => $content
                 )

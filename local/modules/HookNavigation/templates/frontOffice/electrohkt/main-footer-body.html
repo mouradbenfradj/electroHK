@@ -1,17 +1,15 @@
 {ifloop rel="blog.articles"}
-<ul>
+<ul class="menu-list list-unstyled">
     {loop type="content" name="blog.articles" folder=$bodyFolderId limit=3}
-    <li>
-        <a href="{$URL}">
-            <h4 class="block-subtitle">{$TITLE}</h4>
-            <p>{$CHAPO}</p>
-        </a>
+    <li class="menu-item">
+        <a href="{$URL}" class="nav-link">{$TITLE}</a>
+        <p>{$CHAPO}</p>
     </li>
     {/loop}
 </ul>
 {/ifloop}
 {elseloop rel="blog.articles"}
-<ul>
-    <li>{intl l="No articles currently" d="hooknavigation.fo.default"}</li>
+<ul class="menu-list list-unstyled">
+    <li class="menu-item">{intl l="No articles currently" d="hooknavigation.fo.default"}</li>
 </ul>
 {/elseloop}

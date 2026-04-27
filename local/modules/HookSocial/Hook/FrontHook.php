@@ -1,4 +1,5 @@
 <?php
+
 /*************************************************************************************/
 /*      This file is part of the Thelia package.                                     */
 /*                                                                                   */
@@ -12,26 +13,27 @@
 
 namespace HookSocial\Hook;
 
-use Thelia\Core\Event\Hook\HookRenderBlockEvent;
 use Thelia\Core\Hook\BaseHook;
+use Thelia\Core\Event\Hook\HookRenderBlockEvent;
 
 /**
  * Class FrontHook
  * @package HookCurrency\Hook
  * @author Julien Chanséaume <jchanseaume@openstudio.fr>
  */
-class FrontHook extends BaseHook {
+class FrontHook extends BaseHook
+{
 
     public function onMainFooterBody(HookRenderBlockEvent $event)
     {
         $content = trim($this->render("main-footer-body.html"));
-        if ("" != $content){
+        if ("" != $content) {
             $event->add(array(
                 "id" => "social-footer-body",
-                "class" => "social",
+                "class" => "col-lg-3 col-md-6 col-sm-6",
                 "title" => $this->trans("Follow us", array(), "hooksocial"),
                 "content" => $content
             ));
         }
     }
-} 
+}
