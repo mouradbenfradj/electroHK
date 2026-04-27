@@ -7,12 +7,11 @@
     <div class="offcanvas-body">
       <div class="order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-primary">Search 2</span>
+          <span class="text-primary">{intl l="Search a product" d="hooksearch.fo.default"}</span>
         </h4>
-        <form role="search" action="index.html" method="get" class="d-flex mt-3 gap-0">
-          <input class="form-control rounded-start rounded-0 bg-light" type="email"
-            placeholder="What are you looking for?" aria-label="What are you looking for?">
-          <button class="btn btn-dark rounded-end rounded-0" type="submit">Search</button>
+        <form role="search" action="{url path="/search"}" method="get" class="d-flex mt-3 gap-0">
+          <input type="search" name="q" id="q" placeholder="{intl l="Search..." d="hooksearch.fo.default"}" class="form-control rounded-start rounded-0 bg-light" autocomplete="off" aria-required="true" required pattern=".{ldelim}2,{rdelim}" title="{intl l="Minimum 2 characters." d="hooksearch.fo.default"}" aria-label="{intl l="Search a product" d="hooksearch.fo.default"}">
+            <button class="btn btn-dark rounded-end rounded-0" type="submit">{intl l="Search" d="hooksearch.fo.default"}</button>
         </form>
       </div>
     </div>

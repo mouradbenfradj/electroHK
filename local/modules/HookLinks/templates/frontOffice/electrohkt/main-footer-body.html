@@ -1,0 +1,29 @@
+<ul class="menu-list list-unstyled">
+    {loop name="footer_links" type="content" folder="2"}
+    <li class="menu-item">
+        <a href="{$URL}" class="nav-link">{$TITLE}</a>
+    </li>
+    {/loop}
+    {loop type="auth" name="customer_is_logged" role="CUSTOMER"}
+    <li class="menu-item">
+        <a href="{url path="/logout"}" class="nav-link">{intl l="Log out!" d="hooklinks.fo.default"}</a>
+    </li>
+    <li class="menu-item">
+        <a href="{url path="/account"}" class="nav-link">{intl l="My Account" d="hooklinks.fo.default"}</a>
+    </li>
+    {/loop}
+    {elseloop rel="customer_is_logged"}
+    <li class="menu-item">
+        <a href="{url path="/login"}" class="nav-link">{intl l="Login" d="hooklinks.fo.default"}</a>
+    </li>
+    <li class="menu-item">
+        <a href="{url path="/register"}" class="nav-link">{intl l="Register" d="hooklinks.fo.default"}</a>
+    </li>
+    {/elseloop}
+    <li class="menu-item">
+        <a href="{url path="/cart"}" class="nav-link">{intl l="Cart" d="hooklinks.fo.default"}</a>
+    </li>
+    <li class="menu-item">
+        <a href="{url path="/order/delivery"}" class="nav-link">{intl l="Checkout" d="hooklinks.fo.default"}</a>
+    </li>
+</ul>

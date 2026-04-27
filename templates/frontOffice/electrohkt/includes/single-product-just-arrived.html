@@ -1,48 +1,172 @@
+{if $PSE_COUNT > 1}
+{assign var="hasSubmit" value = false}
+{else}
+{assign var="hasSubmit" value = true}
+{/if}
+{assign var="productTitle" value="{$TITLE}"}
 {if not $product_id}
 {assign var="product_id" value=$ID}
 {/if}
+<article class="product-item swiper-slide">
 
-<div class="product-item swiper-slide">
-    <a href="#" class="btn-wishlist"><svg width="24" height="24">
+    {hook name="singleproduct.top" product="{$product_id}"}
+    {if $IS_PROMO == 1 }
+    <span class="badge bg-success position-absolute m-3">
+        {assign var="combination_count" value={count type="product_sale_elements" promo="1" product=$ID}}
+        {if $combination_count > 1}
+        {intl l="From %price" price={format_money number=$BEST_TAXED_PRICE}}
+        {else}
+        {if $TAXED_PRICE && $TAXED_PRICE != 1 }
+        {assign var="discount_percent" value=($TAXED_PRICE - $BEST_TAXED_PRICE) * 100 / $TAXED_PRICE}
+        {intl l="%percent%" percent=$discount_percent|number_format:0}
+        {else}
+        {format_money number=$BEST_TAXED_PRICE}
+        {/if}
+        {/if}
+    </span>
+    {/if}
+    {if {in_wishlist product_id="$ID" wish_list_id="$WHISH_LIST_ID"}}
+    <a href="{url path="/wishlist/remove/$ID"}" class="btn-wishlist">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="black">
+            <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+    </a>
+    {else}
+    <a href="{url path="/wishlist/add/$ID"}" class="btn-wishlist">
+        <svg width="24" height="24">
             <use xlink:href="#heart"></use>
-        </svg></a>
+        </svg>
+    </a>
+    {/if}
     <figure>
-
-        <a href="{$URL}" itemprop="url" title="{$TITLE}">
-            {ifloop rel="image_product_best_seliing" }
-            {$IMAGE_URL}
-            <img itemprop="image" class="tab-image" {loop name="image_product_best_seliing" type="image" limit="1"
-                product="{$product_id}" force_return="true" } src="{$IMAGE_URL}" {/loop} alt="{$TITLE}">
-            {/ifloop}
-            {elseloop rel="image_product_best_seliing"}
-            <img itemprop="image" class="tab-image" src="{image file='assets/dist/img/280x196.png'}"
-                alt="Product #{$LOOP_COUNT}">
+        <a href="{$URL nofilter}" itemprop="url" tabindex="-1" title="{$productTitle}">
+            {loop name="product_thumbnail" type="image" product=$product_id width="{$width}" height="{$height}"
+            resize_mode="borders" limit="1"}
+            <img itemprop="image" src="{$IMAGE_URL nofilter}" class="tab-image" alt="{$productTitle}">
+            {/loop}
+            {elseloop rel="product_thumbnail"}
+            <img itemprop="image" src="{image file='assets/dist/img/218x146.png'}" class="tab-image"
+                alt="{$productTitle}">
             {/elseloop}
         </a>
     </figure>
-    <h3>{$TITLE}</h3>
-    <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary">
-            <use xlink:href="#star-solid"></use>
+    <h3>
+        <a href="{$URL nofilter}">{$productTitle}</a>
+    </h3>
+    {*
+    {if $hasDescription}
+    <h6>{$DESCRIPTION nofilter}</h6>
+    {/if}
+    *}
+    {* Stock *}
+    {assign var="current_stock_content" value = "in_stock"}
+    {assign var="current_stock_href" value = "http://schema.org/InStock"}
+    {if {config key="check-available-stock"} != 0}
+    {if $VIRTUAL == 0 && $QUANTITY <= 0} {assign var="current_stock_content" value="out_stock" } {assign
+        var="current_stock_href" value="http://schema.org/OutOfStock" } {/if} {/if} <span class="qty">1 Unit</span>
+        <span class="rating">
+            <svg width="24" height="24" class="text-primary">
+                <use xlink:href="#star-solid">
+
+                </use>
         </svg> 4.5</span>
-    <span class="price">{format_money number=$BEST_TAXED_PRICE}</span>
+        {if $IS_PROMO }
+
+        {assign var="combination_count" value={count type="product_sale_elements" promo="1" product=$ID}}
+        <span class="price">
+            {if $SHOW_ORIGINAL_PRICE}
+            <del>{* {intl l="Regular Price:"} *} {format_money number=$TAXED_PRICE}</del>
+            {/if}
+        </span>
+        <span class="price">
+
+            {if $combination_count > 1}
+            {intl l="From %price" price={format_money number=$BEST_TAXED_PRICE}}
+            {else}
+            {format_money number=$BEST_TAXED_PRICE}
+            {/if}
+        </span>
+        {else}
+        <span class="price">
+            {format_money number=$BEST_TAXED_PRICE}
+        </span>
+        {/if}
+        {if $hasBtn == true}
     <div class="d-flex align-items-center justify-content-between">
+            {if $hasSubmit == true && $current_stock_content == "in_stock"}
+            {form name="thelia.cart.add" }
+            <form id="form-product-details{$product_id}" action="{url path="/cart/add" }" method="post"
+                class="form-product">
+                {form_hidden_fields}
+                <input type="hidden" name="view" value="product">
+                <input type="hidden" name="product_id" value="{$product_id}">
+                {form_field field="append"}
+                <input type="hidden" name="{$name}" value="1">
+                {/form_field}
+
+                {if $form_error}<div class="alert alert-error">{$form_error_message}</div>{/if}
+
+                {form_field field='product_sale_elements_id'}
+                <input type="hidden" class="pse-id" name="{$name}" value="{$PRODUCT_SALE_ELEMENT}" {$attr}>
+                {/form_field}
+                {form_field field="product"}
+                <input id="{$label_attr.for}" type="hidden" name="{$name}" value="{$product_id}" {$attr}>
+                {/form_field}
+
+
+                {form_field field='quantity'}
         <div class="input-group product-qty">
             <span class="input-group-btn">
                 <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
                     <svg width="16" height="16">
-                        <use xlink:href="#minus"></use>
+                                <use xlink:href="#minus">
+
+                                </use>
                     </svg>
                 </button>
             </span>
-            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                    <input type="number" name="{$name}" id="{$label_attr.for}"
+                        class="form-control input-number quantity" value="{$value|default:1}" min="0"
+                        required>
             <span class="input-group-btn">
-                <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                        <button type="button" class="quantity-right-plus btn btn-success btn-number"
+                            data-type="plus">
                     <svg width="16" height="16">
                         <use xlink:href="#plus"></use>
                     </svg>
                 </button>
             </span>
+                    {if $error }
+                    <span class="help-block">
+                        <i class="fa fa-remove"></i> {$message}
+                    </span>
+                    {elseif $value != "" && !$error}
+                    <span class="help-block">
+                        <i class="fa fa"></i>
+                    </span>
+                    {/if}
         </div>
-        <a href="#" class="nav-link">{intl l="Add to cart"} <iconify-icon icon="uil:shopping-cart"></a>
+                {/form_field}
+                <button type="submit" class="nav-link">
+                    {intl l="Add to cart"}
+                    <svg width="18" height="18">
+                        <use xlink:href="#cart"></use>
+                    </svg>
+                </button>
+            </form>
+            {/form}
+            {else}
+            <div>
+                <div class="product-btn">
+                    <a href="{$URL nofilter}" class="btn btn-primary btn-block">
+                        <i class="fa fa-eye"></i>
+                        {intl l="View product"}
+                    </a>
     </div>
 </div>
+            {/if}
+        </div>
+        {/if}
+        {hook name="singleproduct.bottom" product={$product_id}}
+</article>

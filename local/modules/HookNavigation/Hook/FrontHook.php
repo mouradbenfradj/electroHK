@@ -13,11 +13,11 @@
 
 namespace HookNavigation\Hook;
 
-use HookNavigation\HookNavigation;
-use HookNavigation\Model\Config\HookNavigationConfigValue;
-use Thelia\Core\Event\Hook\HookRenderBlockEvent;
-use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
+use HookNavigation\HookNavigation;
+use Thelia\Core\Event\Hook\HookRenderEvent;
+use Thelia\Core\Event\Hook\HookRenderBlockEvent;
+use HookNavigation\Model\Config\HookNavigationConfigValue;
 
 /**
  * Class FrontHook.
@@ -34,7 +34,7 @@ class FrontHook extends BaseHook
         if ('' != $content) {
             $event->add(array(
                 'id' => 'navigation-footer-body',
-                'class' => 'links',
+                'class' => 'col-md-2 col-sm-6',
                 'title' => $this->trans('Latest articles', array(), HookNavigation::MESSAGE_DOMAIN),
                 'content' => $content,
             ));
