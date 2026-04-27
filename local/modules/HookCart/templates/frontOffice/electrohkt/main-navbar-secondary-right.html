@@ -1,11 +1,25 @@
 <div class="cart text-end d-none d-lg-block dropdown">
     <button class="border-0 bg-transparent d-flex flex-column gap-2 lh-1" type="button" data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-        <span class="fs-6 text-muted dropdown-toggle"> {intl l="Cart" d="hookcart.fo.default"} {cart attr="count_item"}</span>
-        <span class="cart-total fs-5 fw-bold"></span>
+        <span class="fs-6 text-muted dropdown-toggle"> {intl l="Cart" d="hookcart.fo.default"} {cart
+            attr="count_item"}</span>
+        {ifloop rel="cartloop"}
+        {assign "total_price" 0}
+        {loop type="cart" name="cartloop"}
+        {if $IS_PROMO == 1}
+        {assign "real_price" $PROMO_TAXED_PRICE}
+        {assign "real_total_price" $TOTAL_PROMO_TAXED_PRICE}
+        {else}
+        {assign "real_price" $TAXED_PRICE}
+        {assign "real_total_price" $TOTAL_TAXED_PRICE}
+        {/if}
+        {assign "total_price" $total_price + $real_total_price}
+        {/loop}
+        <span class="cart-total fs-5 fw-bold">{format_money number=$total_price}</span>
+        {/ifloop}
+        {elseloop rel="cartloop"}
+        <span class="cart-total fs-5 fw-bold">0</span>
+        {/elseloop}
+
     </button>
 </div>
-
-{*
-{hook name="mini-cart"}
-*}
